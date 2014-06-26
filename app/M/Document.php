@@ -614,7 +614,7 @@
                 #当前移动文件件夹更新成功后需要对文件件夹下的所有子文件件夹的fs_code, fs_encrypt进行处理
                 self::dealwithmovefscode($document_id, $new_fs_code, $ret['data']['fs_id_path'], $ret['data']['fs_is_share'], $encrypt);
                 $rs['msg'] = '操作成功';
-                $rs['data'] = array('document_name'=>$document_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$document_intro);
+                $rs['data'] = array('document_name'=>$document_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$document_intro, 'fs_encrypt'=>$encrypt);
                 $rs['success'] = true;
                 #记录文件操作日志
                 $doclog = array('fs_id'=>$document_id, 'fs_name'=>$document_name, 'fs_intro'=>$document_intro, 'fs_size'=>0, 'fs_type'=>'', 'fs_hashname'=>$hashname,'log_user'=>$login_user_info['u_id'], 'log_type'=>2, 'log_lastname'=>$document_name);
@@ -710,7 +710,7 @@
             if($res){
                 $rs['msg'] = '操作成功';
                 $rs['success'] = true;
-                $rs['data'] = array('document_name'=>$file_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$file_intro);
+                $rs['data'] = array('document_name'=>$file_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$file_intro,'fs_encrypt'=>$file_encrypt, 'fs_haspaper'=>$file_haspaper);
                 #记录文件操作日志
                 $doclog = array('fs_id'=>$file_id, 'fs_name'=>$file_name, 'fs_intro'=>$file_intro, 'fs_size'=>$file_size, 'fs_type'=>$ret['data']['fs_type'], 'fs_hashname'=>$ret['data']['fs_hashname'],'log_user'=>$login_user_info['u_id'], 'log_type'=>2, 'log_lastname'=>$file_name);
                 M_Log::doclog($doclog);

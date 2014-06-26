@@ -38,7 +38,7 @@ Ext.define('FS.controller.PowerMenu',{
         }
     },
     //菜单功能
-    opendoc: function(view, rcd, item, index, event){
+    opendoc: function(view, rcd, item, index, event){alert(11);
         event.preventDefault();
         event.stopEvent();
         if(rcd.get('fs_isdir')==1){

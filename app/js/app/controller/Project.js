@@ -87,9 +87,9 @@ Ext.define('FS.controller.Project',{
     },
     alterfile: function(view, rcd, item, index, event){
         if(rcd.get('fs_isdir')==1){
-            this.editdocumentformPanel(rcd);
+            this.editdocumentformPanel(view, rcd, item, index, event);
         }else{
-            this.editfileformPanel(rcd, parentrcd); 
+            this.editfileformPanel(view, rcd, item, index, event); 
         }
     },
     addshare: function(view, rcd, item, index, event){
@@ -189,8 +189,17 @@ Ext.define('FS.controller.Project',{
         refreshtree(rcd, 1);
     },
 
-
-    editdocumentformPanel:function(rcd){
+    //文件夹编辑
+    editdocumentformPanel:function(view, rcd, item, index, event){
+        function isencrypt(val){
+            if(val=='1'){
+                return '<font color="red">已加密</font>';
+            }else if(val=='0'){
+                return '否'; 
+            }else{
+                return '';
+            }
+        };
         var editprojectform = Ext.create('Ext.form.Panel', {
             frame: true,
             bodyStyle: 'padding: 5 5 5 5',
@@ -249,13 +258,12 @@ Ext.define('FS.controller.Project',{
                             params: editprojectform.getForm().getValues(),
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-                                if(rcd.index==undefined){ //tree
-                                    rcd.set('text', action.result.data.document_pathname + '（'+action.result.data.document_intro+'）');
-                                }else{
-                                    rcd.set('text', action.result.data.document_pathname);
-                                }
+
+                                rcd.set('text', action.result.data.document_pathname);
                                 rcd.set('fs_name', action.result.data.document_name);
                                 rcd.set('fs_intro', action.result.data.document_intro);
+                                rcd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                rcd.commit();
                                 win.hide(); 
                             },
                             failure: function(form, action){
@@ -285,6 +293,127 @@ Ext.define('FS.controller.Project',{
         });
         editprojectform.form.reset();
         editprojectform.isAdd = true;
+        win.setTitle('编辑-'+rcd.get('fs_name'));
+        win.show();
+    },
+    //文件编辑
+    editfileformPanel: function(view, rcd, item, index, event){
+        function haspaper(val){
+            if(val==rcd.get('fs_haspaper')){
+                return true;
+            } 
+            return false;
+        }
+        function encrypt(val){
+            if(val==rcd.get('fs_encrypt')){
+                return true;
+            } 
+            return false;
+        }
+        var editprojectform = Ext.create('Ext.form.Panel', {
+            frame: true,
+            bodyStyle: 'padding: 5 5 5 5',
+            defaultType: 'textfield',
+            buttonAlign: 'center',
+            defaults: {
+                autoFitErrors: false,
+                labelSeparator : '：',
+                labelWidth: 100,
+                allowBlank: false,
+                blankText: '不允许为空',
+                labelAlign: 'left',
+                msgTarget: 'under'  
+            },
+            items: [{
+                xtype:'hiddenfield',
+                name: 'file_id',
+                value: rcd.get('fs_id')
+            },{
+                xtype:'hiddenfield',
+                name: 'size',
+                value: rcd.get('fs_size')
+            },{
+                xtype:'hiddenfield',
+                name: 'type',
+                value: rcd.get('fs_type')
+            },{
+                xtype:'hiddenfield',
+                name: 'file_oldname',
+                value: rcd.get('fs_name')
+            },{
+                xtype:'hiddenfield',
+                name: 'file_parentid',
+                value: rcd.get('fs_parent')
+            },{
+                xtype:'textfield',
+                name: 'file_name',
+                fieldLabel: '编号',
+                width: 300,
+                value:rcd.get('fs_name')
+            }, {
+                xtype:'textfield',
+                width: 300,
+                name: 'file_intro',
+                fieldLabel: '名称',
+                value:rcd.get('fs_intro')
+            }, {
+                xtype:'radiogroup',
+                fieldLabel: '是否有纸版',
+                width:200,
+                items: [
+                { boxLabel: '是', name: 'haspaper', inputValue: '1',checked:haspaper(1)},
+                { boxLabel: '否', name: 'haspaper', inputValue: '0',checked:haspaper(0)}
+                ]
+            }, {
+                xtype:'radiogroup',
+                fieldLabel: '是否加密',
+                width:200,
+                items: [
+                { boxLabel: '是', name: 'encrypt', inputValue: '1', checked:encrypt(1)},
+                { boxLabel: '否', name: 'encrypt', inputValue: '0', checked:encrypt(0)}
+                ]
+            }],
+            buttons:[{
+                text: '确定',
+                handler: function(){
+                    if(editprojectform.form.isValid()){
+                        editprojectform.getForm().submit({
+                            url: base_path+'index.php?c=document&a=editfile',
+                            method: 'post',
+                            timeout: 30,
+                            params: editprojectform.getForm().getValues(),
+                            success: function(form, action){
+                                win.hide();
+                                Ext.Msg.alert('温馨提示', action.result.msg);
+                                
+                                rcd.set('text', action.result.data.document_pathname);
+                                
+                                rcd.set('fs_name', action.result.data.document_name);
+                                rcd.set('fs_intro', action.result.data.document_intro);
+                                rcd.set('fs_haspaper', action.result.data.fs_haspaper);
+                                rcd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                rcd.commit();
+                            },
+                            failure: function(form, action){
+                                Ext.Msg.alert('温馨提示', action.result.msg);
+                            }
+                        });
+                    }
+                }
+            }]
+        });
+
+        var win = Ext.create('Ext.window.Window',{
+            layout:'fit',
+            width:350,
+            closeAction:'hide',
+            resizable: false,
+            shadow: true,
+            modal: true,
+            closable : true,
+            items: editprojectform
+        });
+        editprojectform.form.reset();
         win.setTitle('编辑-'+rcd.get('fs_name'));
         win.show();
     }
