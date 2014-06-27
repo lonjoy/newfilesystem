@@ -8,10 +8,7 @@ Ext.define('FS.view.project.GridMenu',{
             items:[{
                 text: '新建文件夹',
                 iconCls:'icon-doc-new',
-                handler: function(){
-                    this.up("menu").hide();
-                    adddocumentform(rcd);
-                }
+                ename: 'newdir'
             },{
                 text:'上传文件',
                 iconCls:'icon-doc-upload', 

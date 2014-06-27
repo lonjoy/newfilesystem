@@ -614,7 +614,7 @@
                 #当前移动文件件夹更新成功后需要对文件件夹下的所有子文件件夹的fs_code, fs_encrypt进行处理
                 self::dealwithmovefscode($document_id, $new_fs_code, $ret['data']['fs_id_path'], $ret['data']['fs_is_share'], $encrypt);
                 $rs['msg'] = '操作成功';
-                $rs['data'] = array('document_name'=>$document_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$document_intro, 'fs_encrypt'=>$encrypt);
+                $rs['data'] = array('document_name'=>$document_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$document_intro, 'fs_encrypt'=>$encrypt, 'fs_lastmodify'=>$edittime);
                 $rs['success'] = true;
                 #记录文件操作日志
                 $doclog = array('fs_id'=>$document_id, 'fs_name'=>$document_name, 'fs_intro'=>$document_intro, 'fs_size'=>0, 'fs_type'=>'', 'fs_hashname'=>$hashname,'log_user'=>$login_user_info['u_id'], 'log_type'=>2, 'log_lastname'=>$document_name);
@@ -707,10 +707,10 @@
             fs_code='{$new_fs_code}'  WHERE fs_id='$file_id'";
             $res = self::$db->query($sql);
             //$file_textname = substr(self::getFilenamepath($file_id), 1);
-            if($res){
+            if($res){                
                 $rs['msg'] = '操作成功';
                 $rs['success'] = true;
-                $rs['data'] = array('document_name'=>$file_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$file_intro,'fs_encrypt'=>$file_encrypt, 'fs_haspaper'=>$file_haspaper);
+                $rs['data'] = array('document_name'=>$file_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$file_intro,'fs_encrypt'=>$file_encrypt, 'fs_haspaper'=>$file_haspaper, 'fs_lastmodify'=>$edittime);
                 #记录文件操作日志
                 $doclog = array('fs_id'=>$file_id, 'fs_name'=>$file_name, 'fs_intro'=>$file_intro, 'fs_size'=>$file_size, 'fs_type'=>$ret['data']['fs_type'], 'fs_hashname'=>$ret['data']['fs_hashname'],'log_user'=>$login_user_info['u_id'], 'log_type'=>2, 'log_lastname'=>$file_name);
                 M_Log::doclog($doclog);
@@ -1248,27 +1248,24 @@
                     }else{
                         $filecode = substr(self::getFilenamepath($fs_id), 1);
                     }
-                    if(ZF_Libs_IOFile::rm($fs_fullpath)){
+                    //删除物理文件
+                    if(!ZF_Libs_IOFile::rm($fs_fullpath)){
+                        #记录系统操作日志
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . '(无此文件) 操作失败'));
+                    }
 
-                        //删除数据库记录
-                        $sql = "delete from ".self::$document_table." where fs_id='{$fs_id}' ";
-                        if(self::$db->query($sql)){
-                            $rs['msg'] = '操作成功！';
-                            $rs['success'] = true;
-                            #记录文件操作日志
-                            $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
-                            M_Log::doclog($doclog);
-                            #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作成功'));
-                            return $rs;
-                        } else{
-                            $rs['msg'] = '操作失败！';
-                            $rs['success'] = false;
-                            #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作失败'));
-                            return $rs;  
-                        }
-                    }else {
+                    //删除数据库记录
+                    $sql = "delete from ".self::$document_table." where fs_id='{$fs_id}' ";
+                    if(self::$db->query($sql)){
+                        $rs['msg'] = '操作成功！';
+                        $rs['success'] = true;
+                        #记录文件操作日志
+                        $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
+                        M_Log::doclog($doclog);
+                        #记录系统操作日志
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作成功'));
+                        return $rs;
+                    } else{
                         $rs['msg'] = '操作失败！';
                         $rs['success'] = false;
                         #记录系统操作日志

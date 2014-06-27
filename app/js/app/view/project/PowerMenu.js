@@ -8,7 +8,7 @@ Ext.define('FS.view.project.PowerMenu',{
             items:[]
         });
         this.callParent(arguments);
-        
+
         //后端判断最好，先前端吧
         this.powermenu={
             "open":{
@@ -62,17 +62,21 @@ Ext.define('FS.view.project.PowerMenu',{
                 ename: 'refresh'
         }};
     },
-    addMenuItem: function(isdir, isproject){
+    addMenuItem: function(isdir, isproject, obj){
         var fun=[];
         var treefun=[];
-        if(isdir==1 && isproject==0){
-            fun=['refresh','open']; 
-        }
-        else if(isdir==1){
-            fun=['open', 'alterfile','newdir', 'upload', 'del','powersetting', 'addshare','cannelshare'];
-            treefun=['refresh','copystruct'];
-        }else{
-            fun=['open', 'alterfile', 'del', 'download', 'history'];
+        if(obj=='powermenu'){
+            if(isdir==1 && isproject==0){
+                fun=['open']; 
+            }
+            else if(isdir==1){
+                fun=['open', 'alterfile','newdir', 'upload', 'del','powersetting', 'addshare','cannelshare'];
+                treefun=['refresh','copystruct'];
+            }else{
+                fun=['open', 'alterfile', 'del', 'download', 'history'];
+            }
+        }else if(obj=='gridmenu'){
+            fun=['newdir', 'upload'];
         }
         this.addpower(fun);   
     },

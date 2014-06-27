@@ -1,15 +1,12 @@
-Ext.define('FS.store.Project',{
+Ext.define('FS.store.HistoryList',{
     extend: 'Ext.data.Store',
-    model: 'FS.model.Project',
+    model: 'FS.model.HistoryList',
     autoLoad: false,
     pageSize: 10,
     proxy:{
         type: 'ajax',
         api: {
-            read: 'index.php?c=document&a=listdocumentgrid',
-            update: 'index.php?c=document&a=listdocument',
-            create: 'index.php?c=document&a=listdocument',
-            destroy: 'index.php?c=document&a=listdocument'
+            read: base_path + "index.php?c=document&a=showhistory", 
         },
         reader: {
             type: 'json',

@@ -1,4 +1,4 @@
-Ext.define('FS.model.Project',{
+Ext.define('FS.model.List',{
     extend: 'Ext.data.Model',
     idProperty: 'id',
     fields: [

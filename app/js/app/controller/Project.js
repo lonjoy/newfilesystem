@@ -1,32 +1,32 @@
 Ext.define('FS.controller.Project',{
     extend: 'Ext.app.Controller',
     stores: [
-    'Project'
+    'List',
+    'HistoryList'
     ],
     views:[
     'project.List',
     'project.GridMenu',
-    'project.PowerMenu'        
+    'project.PowerMenu',
+    'project.HistoryList'        
     ],
     init: function(){
         this.control({
             'projectList': {
-                containercontextmenu: this.gridmenu,
+                containercontextmenu: this.powermenufun,
                 itemdblclick: this.opendoc,
-                itemcontextmenu: this.powermenu
+                itemcontextmenu: this.powermenufun
             },
             'powermenu':{
                 click: this.getfunction
             }
 
         });
-        this.gridmenu = Ext.widget('gridmenu');
         this.powermenu = Ext.widget('powermenu');
     },
     gridmenu: function(view,  event){
         event.preventDefault();
         event.stopEvent();
-        requires:['FS.view.project.GridMenu'],
         Ext.widget('gridmenu').showAt(event.getXY());
     },
     //菜单功能
@@ -41,19 +41,27 @@ Ext.define('FS.controller.Project',{
         }
     },
     //权限菜单
-    powermenu: function(view, rcd, item, index, event){
-        event.preventDefault();
-        event.stopEvent();
-
-        view.getSelectionModel().select(rcd);
-        //防止重复创建VIEW
-        this.rcd=rcd;
-        this.gridview=view;
-        this.item=item;
-        this.rowindex=index;
-        this.event=event;
-        this.powermenu.addMenuItem(rcd.get('fs_isdir')); //根据是否是文件进行显示
-        this.powermenu.showAt(event.getXY());
+    powermenufun: function(view, rcd, item, index, event){
+        if(arguments.length==2){
+            arguments[1].preventDefault();
+            arguments[1].stopEvent();
+            var obj='gridmenu';
+            this.powermenu.addMenuItem(null,null, obj); //根据是否是文件进行显示
+            this.powermenu.showAt(arguments[1].getXY());
+        }else{
+            event.preventDefault();
+            event.stopEvent();
+            view.getSelectionModel().select(rcd);
+            //防止重复创建VIEW
+            this.rcd=rcd;
+            this.gridview=view;
+            this.item=item;
+            this.rowindex=index;
+            this.event=event;
+            var obj='powermenu';
+            this.powermenu.addMenuItem(rcd.get('fs_isdir'),rcd.get('fs_parent'), obj); //根据是否是文件进行显示
+            this.powermenu.showAt(event.getXY());
+        }
     },
     getfunction: function(menu, item, e){
         if(item.ename=='open'){
@@ -99,8 +107,20 @@ Ext.define('FS.controller.Project',{
         sharedoc_delsetting(rcd);
     },
     history: function(view, rcd, item, index, event){
-        alert('history');
-        showhistorygrid(rcd);
+        var panel = Ext.widget("historypanel");
+        var win = Ext.create('Ext.window.Window',{
+            layout:'fit',
+            width:700,
+            height: 400,
+            closeAction:'hide',
+            resizable: false,
+            shadow: true,
+            modal: true,
+            items: panel
+        });
+        panel.getView().getStore().load({params:{fs_id:rcd.get('fs_id')}});
+        win.setTitle('历史版本');
+        win.show();
     },
     download: function(view, rcd, item, index, event){
         Ext.Msg.show({  
@@ -111,7 +131,28 @@ Ext.define('FS.controller.Project',{
             buttons: Ext.Msg.OKCANCEL,
             fn: function(btn){
                 if(btn=='ok'){
-                    downloadfilefs(rcd);
+                    var msgTip = Ext.MessageBox.show({
+                        title:'提示',
+                        width: 250,
+                        msg: '正在获取下载资源……'
+                    });
+
+                    Ext.Ajax.request({
+                        url: base_path + "index.php?c=document&a=downloadfile",
+                        params : rcd.getData(),
+                        method : 'POST',
+                        success: function(response, options){
+                            msgTip.hide();
+                            var result = Ext.JSON.decode(response.responseText);
+                            if(result.success){
+                                location.href=base_path + "index.php?c=document&a=downloadfile&file="+result.msg;
+                                return true;
+                            }else{
+                                Ext.Msg.alert('提示', result.msg); 
+                                return false;
+                            }
+                        }
+                    });    
                 }
                 return false;
             } 
@@ -121,47 +162,42 @@ Ext.define('FS.controller.Project',{
         powersettingformPanel(rcd);
     },
     del: function(view, rcd, item, index, event){
-        var selectlength = projectTreePanel.getSelectionModel().getSelection().length;
-        if(selectlength>1){
-            var selectrcd = projectTreePanel.getSelectionModel().getSelection();
-            var array=[];
-            for(var i in selectrcd){
-                if(Ext.isEmpty(array)){
-                    array.push(selectrcd[i].parentNode);
-                }else
-                    if(!Ext.Array.contains(array, selectrcd[i].parentNode)){
-                    Ext.Msg.alert('提示', '请选择同一个文件夹下的文件进行操作！');
-                    return false;
+        Ext.Msg.show({  
+            title:'提示',
+            closable: false, 
+            msg:'确定删除 '+rcd.get('text'), 
+            icon:Ext.MessageBox.QUESTION,
+            buttons: Ext.Msg.OKCANCEL,
+            fn: function(btn){
+                if(btn=='ok'){
+                    var msgTip = Ext.MessageBox.show({
+                        title:'提示',
+                        width: 250,
+                        msg: '正在删除……'
+                    });
+                    Ext.Ajax.request({
+                        url: base_path + "index.php?c=document&a=deldocument",
+                        params : rcd.getData(),
+                        method : 'POST',
+                        success: function(response, options){
+                            msgTip.hide();
+                            var result = Ext.JSON.decode(response.responseText);
+                            if(result.success){
+                                Ext.Msg.alert('提示', result.msg);
+                                view.getStore().remove(rcd);
+                                view.refresh();
+                                return true;
+                            }else{
+                                Ext.Msg.alert('提示', result.msg);
+                                view.refresh(); 
+                                return false;
+                            }
+                        }
+                    });
                 }
-            }
-            Ext.Msg.show({  
-                title:'提示',
-                closable: false, 
-                msg:'确定进行批量删除这'+selectlength+'个文件么？', 
-                icon:Ext.MessageBox.QUESTION,
-                buttons: Ext.Msg.OKCANCEL,
-                fn: function(btn){
-                    if(btn=='ok'){
-                        batch_deldocumentfs(selectrcd);
-                    }
-                    return false;
-                } 
-            });
-        }else{
-            Ext.Msg.show({  
-                title:'提示',
-                closable: false, 
-                msg:'确定删除 '+rcd.get('text'), 
-                icon:Ext.MessageBox.QUESTION,
-                buttons: Ext.Msg.OKCANCEL,
-                fn: function(btn){
-                    if(btn=='ok'){
-                        deldocumentfs(rcd, parentrcd);
-                    }
-                    return false;
-                } 
-            });
-        }
+                return false;
+            } 
+        });
     },
     newdir: function(view, rcd, item, index, event){
         adddocumentform(rcd);
@@ -258,11 +294,11 @@ Ext.define('FS.controller.Project',{
                             params: editprojectform.getForm().getValues(),
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-
                                 rcd.set('text', action.result.data.document_pathname);
                                 rcd.set('fs_name', action.result.data.document_name);
                                 rcd.set('fs_intro', action.result.data.document_intro);
                                 rcd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                rcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
                                 rcd.commit();
                                 win.hide(); 
                             },
@@ -385,13 +421,14 @@ Ext.define('FS.controller.Project',{
                             success: function(form, action){
                                 win.hide();
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-                                
+
                                 rcd.set('text', action.result.data.document_pathname);
-                                
+
                                 rcd.set('fs_name', action.result.data.document_name);
                                 rcd.set('fs_intro', action.result.data.document_intro);
                                 rcd.set('fs_haspaper', action.result.data.fs_haspaper);
                                 rcd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                rcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
                                 rcd.commit();
                             },
                             failure: function(form, action){
