@@ -2,7 +2,8 @@ Ext.define('FS.controller.Project',{
     extend: 'Ext.app.Controller',
     stores: [
     'List',
-    'HistoryList'
+    'HistoryList',
+    'ParentRecord'
     ],
     views:[
     'project.List',
@@ -34,6 +35,9 @@ Ext.define('FS.controller.Project',{
         event.preventDefault();
         event.stopEvent();
         if(rcd.get('fs_isdir')==1){
+            //add parent record
+            this.getParentRecordStore().removeAll();
+            this.getParentRecordStore().add(rcd);
             view.ownerCt.getStore().load({params:{fs_id:rcd.get('fs_id')}});
         }
         if(rcd.get('fs_isdir')==0){
@@ -45,7 +49,11 @@ Ext.define('FS.controller.Project',{
         if(arguments.length==2){
             arguments[1].preventDefault();
             arguments[1].stopEvent();
+            this.gridview=arguments[0];
             var obj='gridmenu';
+            this.rcd=undefined;
+            this.item=undefined;
+            this.event=event;
             this.powermenu.addMenuItem(null,null, obj); //根据是否是文件进行显示
             this.powermenu.showAt(arguments[1].getXY());
         }else{
@@ -200,7 +208,90 @@ Ext.define('FS.controller.Project',{
         });
     },
     newdir: function(view, rcd, item, index, event){
-        adddocumentform(rcd);
+        if(typeof rcd=='undefined'){ //if it is gridmenu
+            var parent_record = this.getParentRecordStore().getAt(0);
+        }else{
+            var parent_record=rcd;
+        }
+        var adddocumentformPanel = Ext.create('Ext.form.Panel', {
+            autoHeight : true,
+            frame: true,
+            bodyStyle: 'padding: 5 5 5 5',
+            defaultType: 'textfield',
+            buttonAlign: 'center',
+            defaults: {
+                autoFitErrors: false,
+                labelSeparator : '：',
+                labelWidth: 80,
+                width: 300,
+                labelAlign: 'left'
+                //msgTarget: 'under'  
+            },
+            items: [{
+                xtype:'hiddenfield',
+                name: 'project_doc_parentid',
+                value: parent_record.get('fs_id')
+            },{
+                xtype:'textfield',
+                fieldLabel: '上级文件夹',
+                readOnly:true,
+                value:parent_record.get('text')
+            }, {
+                xtype:'textfield',
+                name: 'project_doc_name',
+                id: 'project_doc_name',
+                allowBlank: false,
+                blankText: '不允许为空',
+                fieldLabel: '文件夹编号'
+            }, {
+                xtype:'textfield',
+                width: 300,
+                name: 'project_doc_intro',
+                id: 'project_doc_intro',
+                allowBlank: false,
+                blankText: '不允许为空',
+                fieldLabel: '文件夹名称'
+            },{
+                xtype:'radiogroup',
+                fieldLabel: '是否加密',
+                width:250,
+                items: [
+                { boxLabel: '是', name: 'encrypt', inputValue: '1'},
+                { boxLabel: '否', name: 'encrypt', inputValue: '0', checked:true}
+                ]
+            }],
+            buttons:[{
+                text: '添加',
+                handler: function(){
+                    if(adddocumentformPanel.form.isValid()){
+                        adddocumentformPanel.getForm().submit({
+                            url: base_path+'index.php?c=document&a=adddocument',
+                            method: 'post',
+                            timeout: 30,
+                            params: adddocumentformPanel.getForm().getValues,
+                            success: function(form, action){
+                                Ext.Msg.alert('温馨提示', action.result.msg);
+                                view.ownerCt.getStore().load({params:{fs_id:parent_record.get('fs_id')}});
+                                win.close();
+                            },
+                            failure: function(form, action){
+                                Ext.Msg.alert('温馨提示', action.result.msg);
+                            }
+                        });
+                    }
+                }
+            }]
+        });
+        var win = Ext.create('Ext.window.Window',{
+            layout:'fit',
+            width:350,
+            resizable: false,
+            modal: true,
+            closable : true,
+            items: adddocumentformPanel
+        });
+        win.setTitle('新建文件夹');
+        win.show();
     },
     upload: function(view, rcd, item, index, event){
         var uppanel = Ext.create('Org.fileupload.Panel',{
@@ -227,15 +318,6 @@ Ext.define('FS.controller.Project',{
 
     //文件夹编辑
     editdocumentformPanel:function(view, rcd, item, index, event){
-        function isencrypt(val){
-            if(val=='1'){
-                return '<font color="red">已加密</font>';
-            }else if(val=='0'){
-                return '否'; 
-            }else{
-                return '';
-            }
-        };
         var editprojectform = Ext.create('Ext.form.Panel', {
             frame: true,
             bodyStyle: 'padding: 5 5 5 5',
@@ -279,8 +361,8 @@ Ext.define('FS.controller.Project',{
                 fieldLabel: '是否加密',
                 width:250,
                 items: [
-                { boxLabel: '是', name: 'encrypt', inputValue: '1', checked:encrypt(1)},
-                { boxLabel: '否', name: 'encrypt', inputValue: '0', checked:encrypt(0)}
+                { boxLabel: '是', name: 'encrypt', inputValue: '1', checked:'1'==rcd.get('fs_encrypt')},
+                { boxLabel: '否', name: 'encrypt', inputValue: '0', checked:'0'==rcd.get('fs_encrypt')}
                 ]
             }],
             buttons:[{
@@ -310,13 +392,6 @@ Ext.define('FS.controller.Project',{
                 }
             }]
         });
-        /*是否加密*/
-        function encrypt(val){
-            if(val==rcd.get('fs_encrypt')){
-                return true;
-            } 
-            return false;
-        }
         var win = Ext.create('Ext.window.Window',{
             layout:'fit',
             width:350,
@@ -334,18 +409,6 @@ Ext.define('FS.controller.Project',{
     },
     //文件编辑
     editfileformPanel: function(view, rcd, item, index, event){
-        function haspaper(val){
-            if(val==rcd.get('fs_haspaper')){
-                return true;
-            } 
-            return false;
-        }
-        function encrypt(val){
-            if(val==rcd.get('fs_encrypt')){
-                return true;
-            } 
-            return false;
-        }
         var editprojectform = Ext.create('Ext.form.Panel', {
             frame: true,
             bodyStyle: 'padding: 5 5 5 5',
@@ -397,16 +460,16 @@ Ext.define('FS.controller.Project',{
                 fieldLabel: '是否有纸版',
                 width:200,
                 items: [
-                { boxLabel: '是', name: 'haspaper', inputValue: '1',checked:haspaper(1)},
-                { boxLabel: '否', name: 'haspaper', inputValue: '0',checked:haspaper(0)}
+                { boxLabel: '是', name: 'haspaper', inputValue: '1',checked:'1'==rcd.get('fs_haspaper')},
+                { boxLabel: '否', name: 'haspaper', inputValue: '0',checked:'0'==rcd.get('fs_haspaper')}
                 ]
             }, {
                 xtype:'radiogroup',
                 fieldLabel: '是否加密',
                 width:200,
                 items: [
-                { boxLabel: '是', name: 'encrypt', inputValue: '1', checked:encrypt(1)},
-                { boxLabel: '否', name: 'encrypt', inputValue: '0', checked:encrypt(0)}
+                { boxLabel: '是', name: 'encrypt', inputValue: '1', checked:'1'==rcd.get('fs_encrypt')},
+                { boxLabel: '否', name: 'encrypt', inputValue: '0', checked:'0'==rcd.get('fs_encrypt')}
                 ]
             }],
             buttons:[{

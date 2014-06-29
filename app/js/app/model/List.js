@@ -3,6 +3,8 @@ Ext.define('FS.model.List',{
     idProperty: 'id',
     fields: [
         {name: 'id', type: 'int'},
+        {name: 'fs_id', type: 'int'},
+        {name: 'fs_parent', type: 'int'},
         {name: 'text', type: 'string'},
         {name: 'fs_name', type: 'string'},
         {name: 'fs_isdir', type: 'int'},
@@ -11,7 +13,6 @@ Ext.define('FS.model.List',{
         {name: 'fs_haspaper', type: 'int'},
         {name: 'fs_create', type: 'string'},
         {name: 'fs_lastmodify', type: 'string'},
-        {name: 'fs_id', type: 'int'},
         {name: 'icon', type: 'string'},
         {name: 'fs_size', type: 'string'},
         {name: 'managerok', type: 'string'},
