@@ -1802,10 +1802,10 @@
                     }
                 }elseif($login_user_info['u_grade']==98 || $login_user_info['u_grade']==99){ #系统监察员|系统管理员， 对加密的文件此用户不可以看到
                     $where .= $fs_id ? '' : ' and fs_parent=0 ';
-                    $where .= " and fs_encrypt!='1' ";
+                    $where .= " and (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) ";
                 }elseif($login_user_info['u_grade']==1 || $login_user_info['u_grade']==2){  //组管理员，组领导
                     if($login_user_info['u_grade']==1){  #20130916 添加组管理员不可以查看加密文件
-                        $where .= " and (fs_encrypt!='1' or (fs_encrypt='1' and fs_user='{$login_user_info['u_id']}' )) ";
+                        $where .= " and (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) ";
                     }
 
                     $where .= $fs_id ? '' : " or fs_group='{$login_user_info['u_targetgroup']}' ";

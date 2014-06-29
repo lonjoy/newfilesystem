@@ -24,7 +24,7 @@ Ext.define('FS.view.layout.Header', {
 				iconCls : 'icon-logout',
 				listeners: {
 					click: function(){
-						//window.location.href=base_path+'index.php?c=login&a=loginout'; 
+						window.location.href=base_path+'index.php?c=login&a=loginout'; 
 					}
 				}
 			}]

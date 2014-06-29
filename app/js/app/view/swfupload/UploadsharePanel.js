@@ -1,11 +1,11 @@
-Ext.define("Org.fileupload.FileModel",{
+Ext.define("Share.fileupload.FileModel",{
     extend:"Ext.data.Model",
     fields : [ 'id', 'name', 'type', 'size', 'filestatus', 'percent', 'haspaper', 'hasencrypt','filecode', 'filedesc', 'dragfile', 'coverfile' ]
 
 });
-Ext.define("Org.fileupload.Panel", {
+Ext.define("Share.fileupload.Panel", {
     extend : "Ext.panel.Panel",
-    alias : "widget.fileuploadPanel",
+    alias : "widget1.fileuploadPanel",
     layout:"fit",
     initComponent : function() {
         this.width='100%';
@@ -45,99 +45,95 @@ Ext.define("Org.fileupload.Panel", {
         this.items = [ {
             listeners:{
                 'itemcontextmenu':function(myself,model,item,index,e,eopt){
-                    var selectmodel = myself.getSelectionModel().getSelection();
-                    if(selectmodel.length>1){
-                        var rightClick = Ext.create('Ext.menu.Menu', {
-                            autoDestroy:true,
-                            items : [
-                            {
-                                text : '取消上传',
-                                scope:this.ownerCt,
-                                handler:function(){
-                                    var store = Ext.data.StoreManager.lookup("fileItems");
-                                    for(var i in selectmodel){
-                                        var cur_model = selectmodel[i];
-                                        this.swfupload.cancelUpload(cur_model.get("id"),false);
-                                        store.remove(cur_model);
-                                        var stats=this.swfupload.getStats();
-                                        var label=Ext.getCmp("queue_id");
-                                        label.setText(label.text="文件队列:"+stats.files_queued);
-                                    }
-                                },
-                                icon:"js/swfupload/image/icons/remove.png"
-                            }],
-                            listeners:{
-                                show:function(myself,o){
-                                    if(model.get("filestatus")!=-1){
-                                        myself.items.getAt(0).setDisabled(true);
-                                    }
-                                    if(model.get("filestatus")==-4){
-                                        myself.items.getAt(1).setDisabled(true);
-                                    }
+                    var selectmodel=myself.getSelectionModel();
+                    selectmodel.select(model);
+                    var rightClick = Ext.create('Ext.menu.Menu', {
+                        autoDestroy:true,
+                        items : [{
+                            scope:this.ownerCt,
+                            text : '开始上传',
+                            handler:function(){
+                                //console.log("点击开始上传");
+                                var isok = true;
+                                //判断文件编号是否添加
+                                if(Ext.isEmpty(model.get("filecode"))){
+                                    alert('文件没有填写文件编号！');
+                                    isok = false;
+                                    return;
                                 }
-                            }
-                        });
-                    }else{  //单文件操作
-                        myself.getSelectionModel().select(model); 
+                                var regex = /[a-zA-Z0-9\-].*?/;
+                                if(!regex.test(model.get("filecode"))){
+                                    alert('请输入正确格式的文件编号');
+                                    isok = false;
+                                    return;
+                                }
+                                if(Ext.isEmpty(model.get("haspaper"))){
+                                    alert('文件没有填写是否有纸质版！');
+                                    isok = false;
+                                    return;
+                                }
+                                if(isok){ 
+                                    this.swfupload.customSettings.scope_handler.continuous=false;
+                                    this.swfupload.startUpload(model.get("id"));
+                                    //console.log(model.get("id")); 
+                                    model.set("filestatus",-2);
+                                }
+                            },
+                            icon:"js/swfupload/image/icons/upload.gif"
+                        }, {
+                            text : '取消上传',
+                            scope:this.ownerCt,
+                            handler:function(){
+                                var store = Ext.data.StoreManager.lookup("fileItemshare");
+                                this.swfupload.cancelUpload(model.get("id"),false);
+                                //model.set("filestatus",SWFUpload.FILE_STATUS.CANCELLED);
+                                //model.commit();
+                                store.remove(model);
+                                var stats=this.swfupload.getStats();
+                                var label=Ext.getCmp("queue_id_share");
+                                label.setText(label.text="文件队列:"+stats.files_queued);
+                            },
+                            icon:"js/swfupload/image/icons/remove.png"
+                        },{ 
+                            text: '上移', 
+                            iconCls: 'arrow-upon-icon',  
+                            handler: function(){ 
+                                if(index == 0) { 
+                                    return; 
+                                } 
+                                var store = Ext.data.StoreManager.lookup("fileItemshare");   
+                                var data = store.getAt(index);
+                                var up_data = store.getAt(index-1);
+                                var record=Ext.create("Share.fileupload.FileModel",{
+                                    id: data.get('id'),
+                                    name : data.get('name'),
+                                    type : data.get('type'),
+                                    size : data.get('size'),
+                                    filestatus : data.get('filestatus'),
+                                    percent : data.get('percent'),
+                                    haspaper : data.get('haspaper'),
+                                    hasencrypt : data.get('hasencrypt'),
+                                    filecode: up_data.get('filecode'),
+                                    filedesc: data.get('filedesc'),
+                                    dragfile: data.get('dragfile'),
+                                    percent: data.get('percent')
+                                });
+                                up_data.set('filecode', data.get('filecode'));
 
-                        var rightClick = Ext.create('Ext.menu.Menu', {
-                            autoDestroy:true,
-                            items : [{
-                                scope:this.ownerCt,
-                                text : '开始上传',
-                                handler:function(){
-                                    //console.log("点击开始上传");
-                                    var isok = true;
-                                    //判断文件编号是否添加
-                                    if(Ext.isEmpty(model.get("filecode"))){
-                                        alert('文件没有填写文件编号！');
-                                        isok = false;
-                                        return;
-                                    }
-                                    var regex = /[a-zA-Z0-9\-].*?/;
-                                    if(!regex.test(model.get("filecode"))){
-                                        alert('请输入正确格式的文件编号');
-                                        isok = false;
-                                        return;
-                                    }
-                                    if(Ext.isEmpty(model.get("haspaper"))){
-                                        alert('文件没有填写是否有纸质版！');
-                                        isok = false;
-                                        return;
-                                    }
-                                    if(isok){ 
-                                        this.swfupload.customSettings.scope_handler.continuous=false;
-                                        this.swfupload.startUpload(model.get("id"));
-                                        //console.log(model.get("id")); 
-                                        model.set("filestatus",-2);
-                                    }
-                                },
-                                icon:"js/swfupload/image/icons/upload.gif"
-                            }, {
-                                text : '取消上传',
-                                scope:this.ownerCt,
-                                handler:function(){
-                                    var store = Ext.data.StoreManager.lookup("fileItems");
-                                    this.swfupload.cancelUpload(model.get("id"),false);
-                                    //model.set("filestatus",SWFUpload.FILE_STATUS.CANCELLED);
-                                    //model.commit();
-                                    store.remove(model);
-                                    var stats=this.swfupload.getStats();
-                                    var label=Ext.getCmp("queue_id");
-                                    label.setText(label.text="文件队列:"+stats.files_queued);
-                                },
-                                icon:"js/swfupload/image/icons/remove.png"
-                            },{ 
-                                text: '上移', 
-                                iconCls: 'arrow-upon-icon',  
-                                handler: function(){ 
-                                    if(index == 0) { 
-                                        return; 
-                                    } 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
+                                store.removeAt(index);  
+                                store.insert(index - 1, record);
+                                //this.getView().refresh();        
+                            }, 
+                            scope: this 
+                        },{ 
+                            text: '下移', 
+                            iconCls: 'arrow-downon-icon',  
+                            handler: function(){ 
+                                var store = Ext.data.StoreManager.lookup("fileItemshare");   
+                                if(index < store.getCount() - 1) { 
                                     var data = store.getAt(index);
-                                    var up_data = store.getAt(index-1);
-                                    var record=Ext.create("Org.fileupload.FileModel",{
+                                    var down_data = store.getAt(index+1);
+                                    var record=Ext.create("Share.fileupload.FileModel",{
                                         id: data.get('id'),
                                         name : data.get('name'),
                                         type : data.get('type'),
@@ -146,58 +142,28 @@ Ext.define("Org.fileupload.Panel", {
                                         percent : data.get('percent'),
                                         haspaper : data.get('haspaper'),
                                         hasencrypt : data.get('hasencrypt'),
-                                        filecode: up_data.get('filecode'),
+                                        filecode: down_data.get('filecode'),
                                         filedesc: data.get('filedesc'),
                                         dragfile: data.get('dragfile'),
                                         percent: data.get('percent')
                                     });
-                                    up_data.set('filecode', data.get('filecode'));
-
+                                    down_data.set('filecode', data.get('filecode'));
                                     store.removeAt(index);  
-                                    store.insert(index - 1, record);
-                                    //this.getView().refresh();        
-                                }, 
-                                scope: this 
-                            },{ 
-                                text: '下移', 
-                                iconCls: 'arrow-downon-icon',  
-                                handler: function(){ 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
-                                    if(index < store.getCount() - 1) { 
-                                        var data = store.getAt(index);
-                                        var down_data = store.getAt(index+1);
-                                        var record=Ext.create("Org.fileupload.FileModel",{
-                                            id: data.get('id'),
-                                            name : data.get('name'),
-                                            type : data.get('type'),
-                                            size : data.get('size'),
-                                            filestatus : data.get('filestatus'),
-                                            percent : data.get('percent'),
-                                            haspaper : data.get('haspaper'),
-                                            hasencrypt : data.get('hasencrypt'),
-                                            filecode: down_data.get('filecode'),
-                                            filedesc: data.get('filedesc'),
-                                            dragfile: data.get('dragfile'),
-                                            percent: data.get('percent')
-                                        });
-                                        down_data.set('filecode', data.get('filecode'));
-                                        store.removeAt(index);  
-                                        store.insert(index + 1, record); 
-                                        //this.getView().refresh(); 
-                                    }       
-                            }}],
-                            listeners:{
-                                show:function(myself,o){
-                                    if(model.get("filestatus")!=-1){
-                                        myself.items.getAt(0).setDisabled(true);
-                                    }
-                                    if(model.get("filestatus")==-4){
-                                        myself.items.getAt(1).setDisabled(true);
-                                    }
+                                    store.insert(index + 1, record); 
+                                    //this.getView().refresh(); 
+                                }       
+                        }}],
+                        listeners:{
+                            show:function(myself,o){
+                                if(model.get("filestatus")!=-1){
+                                    myself.items.getAt(0).setDisabled(true);
+                                }
+                                if(model.get("filestatus")==-4){
+                                    myself.items.getAt(1).setDisabled(true);
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                     e.preventDefault(); 
                     rightClick.showAt(e.getXY()); 
                     //console.log("鼠标右键点击");
@@ -205,10 +171,9 @@ Ext.define("Org.fileupload.Panel", {
             },
             xtype : "grid",
             border : false,
-            multiSelect: true,
             store : Ext.create("Ext.data.Store",{
-                model:"Org.fileupload.FileModel",
-                storeId:"fileItems"
+                model:"Share.fileupload.FileModel",
+                storeId:"fileItemshare"
             }),
             columns : [ 
             {
@@ -279,48 +244,6 @@ Ext.define("Org.fileupload.Panel", {
                 scope: this
                 //hidden:true
             } ],
-            viewConfig: {
-                plugins: {
-                    ptype: 'gridviewdragdrop',
-                    dragText: '拖放到此区域'
-                },
-                listeners: {
-                    drop: function(node, data, dropRec, dropPosition) {
-                        var viewstore = data.view.getStore();
-                        var arr=[];
-                        var regex=/^\d+$/;
-                        /*将现有的是数据编号的文件编号进行排序*/
-                        for (var i = 0; i <viewstore.getCount(); i++) {
-                            var model=viewstore.getAt(i);
-                            var fc = model.get('filecode');
-                            if(regex.test(fc)){
-                                arr.push(parseInt(fc));
-                            }
-                        }
-                        arr.sort(compareInt);
-                        /*重新对是数字编号的文件进行赋值*/
-                        for (var i = 0; i <viewstore.getCount(); i++) {
-                            var model=viewstore.getAt(i);
-                            var fc = model.get('filecode');
-                            if(regex.test(fc)){
-                                model.set('filecode', arr.shift());
-                                model.commit();
-                            }
-                        }
-                        function compareInt(int1, int2){
-                            var iNum1 = parseInt(int1);   //强制转换成int 型;
-                            var iNum2 = parseInt(int2);
-                            if(iNum1 < iNum2){
-                                return -1;
-                            }else if(iNum1 > iNum2){
-                                return 1;
-                            }else{
-                                return 0;
-                            }
-                        }
-                    }
-                }
-            },
             plugins: [
             Ext.create('Ext.grid.plugin.CellEditing', {
                 clicksToEdit: 1,
@@ -332,7 +255,7 @@ Ext.define("Org.fileupload.Panel", {
                             var parentid = obj.initialConfig.items[0].postParams.fs_id;
 
                             Ext.Ajax.request({
-                                url: base_path + "index.php?c=upload&a=check&t="+new Date().getTime(),
+                                url: base_path + "index.php?c=upload&a=sharecheck&t="+new Date().getTime(),
                                 params : {fs_name: fs_name, fs_parent:parentid},
                                 method : 'POST',
                                 success: function(response, options){
@@ -360,9 +283,9 @@ Ext.define("Org.fileupload.Panel", {
         }];
 
         this.tbar=[
-        {text:'添加文件',id:"btnAdd",icon:"js/swfupload/image/icons/add.png"},'-',
+        {text:'添加文件',id:"btnAdd1",icon:"js/swfupload/image/icons/add.png"},'-',
         {text:'开始上传',handler:function(){
-                var store = Ext.data.StoreManager.lookup("fileItems");
+                var store = Ext.data.StoreManager.lookup("fileItemshare");
                 this.continuous=true;
                 var bianhao = true;
                 //判断文件编号是否添加
@@ -408,19 +331,19 @@ Ext.define("Org.fileupload.Panel", {
             text : '请空列表',
             handler : function() {
                 this.swfupload.cancelQueue();
-                var store = Ext.data.StoreManager.lookup("fileItems");
+                var store = Ext.data.StoreManager.lookup("fileItemshare");
                 store.removeAll();
                 var stats=this.swfupload.getStats();
-                var label=Ext.getCmp("queue_id");
+                var label=Ext.getCmp("queue_id_share");
                 label.setText(label.text="文件队列:"+stats.files_queued);
                 //清空进度条
-                Ext.getCmp("progressBar").reset();
+                Ext.getCmp("shareprogressBar").reset();
             },
             icon : "js/swfupload/image/icons/remove.png",
             scope:this
         }, '-', {
             xtype : 'label',
-            id:"queue_id",
+            id:"queue_id_share",
             text : '文件队列:0',
             margins : '0 0 0 10'
         },  {
@@ -430,39 +353,39 @@ Ext.define("Org.fileupload.Panel", {
             margins : '0 0 0 40',
             handler : function(){
                 rcd = this.parentNode;
-                var uppanel = Ext.create('Org.dragfileupload.Panel',{
+                var uppanel = Ext.create('Share.dragfileupload.Panel',{
                     width : '100%',
                     title : '上传文件---目录'+rcd.get('text'),
                     items : [
                     {
                         border : false,
                         fileSize : 1024*1000000,//限制文件大小单位是字节
-                        uploadUrl : base_path+'index.php?c=upload',//提交的action路径
+                        uploadUrl : base_path+'index.php?c=upload&a=uploadsharedoc',//提交的action路径
                         flashUrl : js_path+'swfupload/swfupload.swf',//swf文件路径
                         filePostName : 'uploads', //后台接收参数
                         fileTypes : '*.*',//可上传文件类型
                         parentNode : rcd,
-                        postParams : {savePath:rcd.get('fs_fullpath'), fs_id:rcd.get('fs_id')} //http请求附带的参数
+                        postParams : {savePath:rcd.raw.fs_fullpath, fs_id:rcd.raw.fs_id} //http请求附带的参数
                     }
                     ]
                 });
-                Ext.getCmp('displayCenterPanel').remove(Ext.getCmp('displayCenterPanel').items.get(0));
-                Ext.getCmp('displayCenterPanel').add(uppanel).doLayout();
+                Ext.getCmp('sharedocarea').remove(Ext.getCmp('sharedocarea').items.get(0));
+                Ext.getCmp('sharedocarea').add(uppanel).doLayout();
             }
         }
         ];
         this.bbar=[
-        {xtype:"progressbar",id:"progressBar",text:"0%",width:200},
-        {xtype:"label",text:"平均速度：0kb/s",id:"currentSpeed",width:200},'-',
-        {xtype:"label",text:"剩余时间：0s",id:"timeRemaining",width:200}
+        {xtype:"progressbar",id:"shareprogressBar",text:"0%",width:200},
+        {xtype:"label",text:"平均速度：0kb/s",id:"sharecurrentSpeed",width:200},'-',
+        {xtype:"label",text:"剩余时间：0s",id:"sharetimeRemaining",width:200}
         ];
         this.listeners={
             'afterrender':function(){
                 //console.log("渲染完成， 添加swf所需的设置");
-                var em=Ext.get(Ext.query("#btnAdd>em")[0]);
+                var em=Ext.get(Ext.query("#btnAdd1>em")[0]);
                 if(!em){
                     //此处为IE9一下版本的兼容问题的临时解决办法，目前还是不支持IE6
-                    em=Ext.get("btnAdd-btnWrap");
+                    em=Ext.get("btnAdd1-btnWrap");
                 }
                 var placeHolderId = Ext.id();
                 em.setStyle({
@@ -492,9 +415,9 @@ Ext.define("Org.fileupload.Panel", {
     },
     onQueued:function(file){
         var stats=this.getStats();
-        var label=Ext.getCmp("queue_id");
+        var label=Ext.getCmp("queue_id_share");
         label.setText(label.text="文件队列:"+stats.files_queued);
-        var f=Ext.create("Org.fileupload.FileModel", {
+        var f=Ext.create("Share.fileupload.FileModel", {
             id: file.id,
             name : file.name,
             type : file.type,
@@ -506,12 +429,12 @@ Ext.define("Org.fileupload.Panel", {
             filecode: '',
             filedesc: file.name.substring(0, file.name.lastIndexOf('.'))
         });
-        var store = Ext.data.StoreManager.lookup("fileItems");
+        var store = Ext.data.StoreManager.lookup("fileItemshare");
         var oldstorelength = store.getCount();
         store.add(f);
         if(store.getCount()==1){
             Ext.Ajax.request({
-                url: base_path + "index.php?c=upload&a=getfilecode&t="+new Date().getTime(),
+                url: base_path + "index.php?c=upload&a=getsharefilecode&t="+new Date().getTime(),
                 params : {fs_parent:this.customSettings.scope_handler.parentNode.get('fs_id')},
                 method : 'POST',
                 success: function(response, options){
@@ -653,7 +576,7 @@ Ext.define("Org.fileupload.Panel", {
     uploadProgress : function(file, bytesComplete, totalBytes){//处理进度条
         //console.log("完成百分比"+file.percentUploaded+"，当前速度"+file.currentSpeed/8/1024/1024+"MB/s");
         //console.log(SWFUpload.speed.formatBytes(bytesComplete));
-        var ds = Ext.data.StoreManager.lookup("fileItems");
+        var ds = Ext.data.StoreManager.lookup("fileItemshare");
         for(var i=0;i<ds.getCount();i++){
             var record =ds.getAt(i);
             if(record.get('id')==file.id){
@@ -663,10 +586,10 @@ Ext.define("Org.fileupload.Panel", {
             }
         }
         //更新进度条
-        var pb=Ext.getCmp("progressBar");
+        var pb=Ext.getCmp("shareprogressBar");
         pb.updateProgress(file.percentUploaded/100,SWFUpload.speed.formatPercent(file.percentUploaded),true);
         //更新当前速度
-        var speed=Ext.getCmp("currentSpeed");
+        var speed=Ext.getCmp("sharecurrentSpeed");
         var speedNum=Math.ceil(file.averageSpeed/8/1024);
         //console.log(Math.ceil(2.8));
         var unit=speedNum/1024<0?"KB/s":"MB/s";
@@ -674,7 +597,7 @@ Ext.define("Org.fileupload.Panel", {
         speedValue=Math.ceil(speedValue);
         speed.setText("平均速度:"+speedValue+unit);
         //更新剩余时间
-        var timeRemaining=Ext.getCmp("timeRemaining");
+        var timeRemaining=Ext.getCmp("sharetimeRemaining");
         timeRemaining.setText("估计剩余时间:"+SWFUpload.speed.formatTime(file.timeRemaining));
 
     },
@@ -711,7 +634,6 @@ Ext.define("Org.fileupload.Panel", {
                 'leaf': true,
                 'icon': this.customSettings.scope_handler.formatFiletype('.'+serverdata.fs_type, 'url')
             });
-            //console.log(newNode);
             var beforenode=[];
             rcd.eachChild(function(n){
                 if(n.get('fs_isdir')=='1'){
@@ -723,32 +645,26 @@ Ext.define("Org.fileupload.Panel", {
         }
     },
     uploadComplete:function(file){
-        //更新进度条
-        var pb=Ext.getCmp("progressBar");
-        pb.updateProgress(0,'0%',true);
-
-        var store = Ext.data.StoreManager.lookup("fileItems");
+        var store = Ext.data.StoreManager.lookup("fileItemshare");
         model=store.getById(file.id);
         model.set("filestatus",file.filestatus);
         model.commit();
         var stats=this.getStats();
-        var label=Ext.getCmp("queue_id");
+        var label=Ext.getCmp("queue_id_share");
         label.setText(label.text="文件队列:"+stats.files_queued);
-        if(stats.files_queued==0){
-            //refreshtree(this.customSettings.scope_handler.parentNode,1);
-            projectTreePanel.getSelectionModel().select(this.customSettings.scope_handler.parentNode);
-            //this.customSettings.scope_handler.parentNode.collapse();
-        }
+        //if(stats.files_queued==0){
+        //refreshsharetree(this.customSettings.scope_handler.parentNode,1);
+        //}
         return this.customSettings.scope_handler.continuous;
     },
     haspapercheck:function(value,cellmeta,record,rowIndex,columnIndex,store){
         me = this; 
         var file_id = record.get('id');
-        var str= '<div style="text-align:center;"><input type="radio" name="haspapercheck'+file_id+'" id="'+file_id+'_1" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'1\', this);" value="1"';
+        var str= '<div style="text-align:center;"><input type="radio" name="haspapercheck'+file_id+'" id="share'+file_id+'_1" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'1\', this);" value="1"';
         if(record.get('haspaper')=='1'){
             str+=' checked="checked" ';
         }
-        str += ' >有</input> <input type="radio" name="haspapercheck'+file_id+'" id="'+file_id+'_0" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'0\', this);" value="0"';
+        str += ' >有</input> <input type="radio" name="haspapercheck'+file_id+'" id="share'+file_id+'_0" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'0\', this);" value="0"';
         if(record.get('haspaper')=='0'){
             str+=' checked="checked" ';
         }
@@ -758,7 +674,7 @@ Ext.define("Org.fileupload.Panel", {
     hasencryptcheck:function(value,cellmeta,record,rowIndex,columnIndex,store){
         var file_id = record.get('id');
         me = this;
-        var str='<div style="text-align:center;"><input type="checkbox" name="hasencryptcheck" id="hasencryptcheck'+file_id+'" onclick="me.checkvalue(\'hasencrypt\','+rowIndex+', this.checked, this);"';
+        var str='<div style="text-align:center;"><input type="checkbox" name="hasencryptcheck" id="sharehasencryptcheck'+file_id+'" onclick="me.checkvalue(\'hasencrypt\','+rowIndex+', this.checked, this);"';
         if(record.get('hasencrypt')){
             str+=' checked="checked" ';
         }
@@ -768,7 +684,7 @@ Ext.define("Org.fileupload.Panel", {
 
     upload_start_handler: function(file){
         var haspaper, hasencrypt;
-        var store = Ext.data.StoreManager.lookup("fileItems");
+        var store = Ext.data.StoreManager.lookup("fileItemshare");
         for(var i=0;i<store.getCount();i++){
             var record =store.getAt(i);
             if(record.get('id')==file.id){ 
@@ -783,7 +699,7 @@ Ext.define("Org.fileupload.Panel", {
         }
     },
     checkvalue : function(t, rowIndex, v, obj){
-        var store = Ext.data.StoreManager.lookup("fileItems");
+        var store = Ext.data.StoreManager.lookup("fileItemshare");
         var record =store.getAt(rowIndex);
         record.set(t, v);
         record.commit();
@@ -810,7 +726,7 @@ function getauth(){
 /**************/
 /****************拖拽上传 *********************************/
 /**************/
-Ext.define("Org.dragfileupload.Panel", {
+Ext.define("Share.dragfileupload.Panel", {
     extend : "Ext.panel.Panel",
     alias : "widget.dragfileuploadPanel",
     layout:"fit",
@@ -841,91 +757,87 @@ Ext.define("Org.dragfileupload.Panel", {
         this.items = [ {
             listeners:{
                 'itemcontextmenu':function(myself,model,item,index,e,eopt){
-                    e.preventDefault(); 
-                    var selectmodel = myself.getSelectionModel().getSelection();
-                    if(selectmodel.length>1){
-                        var rightClick = Ext.create('Ext.menu.Menu', {
-                            autoDestroy:true,
-                            items : [
-                            {
-                                text : '取消上传',
-                                scope:this.ownerCt,
-                                handler:function(){
-                                    var store = Ext.data.StoreManager.lookup("fileItems");
-                                    for(var i in selectmodel){
-                                        var cur_model = selectmodel[i];
-                                        store.remove(cur_model);
-                                        var label=Ext.getCmp("queue_id");
-                                        label.setText(label.text="文件队列:"+store.getCount());
-                                    }
-                                },
-                                icon:"js/swfupload/image/icons/remove.png"
-                            }],
-                            listeners:{
-                                show:function(myself,o){
-                                    if(model.get("filestatus")!=-1){
-                                        myself.items.getAt(0).setDisabled(true);
-                                    }
-                                    if(model.get("filestatus")==-4){
-                                        myself.items.getAt(1).setDisabled(true);
-                                    }
+                    var rightClick = Ext.create('Ext.menu.Menu', {
+                        autoDestroy:true,
+                        items : [{
+                            scope:this.ownerCt,
+                            text : '开始上传',
+                            handler:function(){
+                                var isok = true;
+                                //判断文件编号是否添加
+                                if(Ext.isEmpty(model.get("filecode"))){
+                                    alert('文件没有填写文件编号！');
+                                    isok = false;
+                                    return;
                                 }
-                            }
-                        });
-                    }else{  //单文件操作
-                        myself.getSelectionModel().select(model); 
-                        var rightClick = Ext.create('Ext.menu.Menu', {
-                            autoDestroy:true,
-                            items : [{
-                                scope:this.ownerCt,
-                                text : '开始上传',
-                                handler:function(){
-                                    var isok = true;
-                                    //判断文件编号是否添加
-                                    if(Ext.isEmpty(model.get("filecode"))){
-                                        alert('文件没有填写文件编号！');
-                                        isok = false;
-                                        return;
-                                    }
-                                    var regex = /[a-zA-Z0-9\-].*?/;
-                                    if(!regex.test(model.get("filecode"))){
-                                        alert('请输入正确格式的文件编号');
-                                        isok = false;
-                                        return; 
-                                    }
-                                    if(Ext.isEmpty(model.get("haspaper"))){
-                                        alert('文件没有填写是否有纸质版！');
-                                        isok = false;
-                                        return;
-                                    }
+                                var regex = /[a-zA-Z0-9\-].*?/;
+                                if(!regex.test(model.get("filecode"))){
+                                    alert('请输入正确格式的文件编号');
+                                    isok = false;
+                                    return; 
+                                }
+                                if(Ext.isEmpty(model.get("haspaper"))){
+                                    alert('文件没有填写是否有纸质版！');
+                                    isok = false;
+                                    return;
+                                }
 
-                                    if(isok){ 
-                                        this.start_upload(model);
-                                        model.set("filestatus",-2);
-                                    }
-                                },
-                                icon:"js/swfupload/image/icons/upload.gif"
-                            }, {
-                                text : '取消上传',
-                                scope:this.ownerCt,
-                                handler:function(){
-                                    var store = Ext.data.StoreManager.lookup("fileItems");
-                                    store.remove(model);
-                                    var label=Ext.getCmp("queue_id");
-                                    label.setText(label.text="文件队列:"+store.getCount());
-                                },
-                                icon:"js/swfupload/image/icons/remove.png"
-                            },{ 
-                                text: '上移', 
-                                iconCls: 'arrow-upon-icon',  
-                                handler: function(){ 
-                                    if(index == 0) { 
-                                        return; 
-                                    } 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
+                                if(isok){ 
+                                    this.start_upload(model);
+                                    model.set("filestatus",-2);
+                                }
+                            },
+                            icon:"js/swfupload/image/icons/upload.gif"
+                        }, {
+                            text : '取消上传',
+                            scope:this.ownerCt,
+                            handler:function(){
+                                var store = Ext.data.StoreManager.lookup("fileItemshare");
+                                store.remove(model);
+                                var label=Ext.getCmp("queue_id_share");
+                                label.setText(label.text="文件队列:"+store.getCount());
+                            },
+                            icon:"js/swfupload/image/icons/remove.png"
+                        },{ 
+                            text: '上移', 
+                            iconCls: 'arrow-upon-icon',  
+                            handler: function(){ 
+                                if(index == 0) { 
+                                    return; 
+                                } 
+                                var store = Ext.data.StoreManager.lookup("fileItemshare");   
+                                var data = store.getAt(index);
+                                var up_data = store.getAt(index-1);
+                                var record=Ext.create("Share.fileupload.FileModel",{
+                                    id: data.get('id'),
+                                    name : data.get('name'),
+                                    type : data.get('type'),
+                                    size : data.get('size'),
+                                    filestatus : data.get('filestatus'),
+                                    percent : data.get('percent'),
+                                    haspaper : data.get('haspaper'),
+                                    hasencrypt : data.get('hasencrypt'),
+                                    filecode: up_data.get('filecode'),
+                                    filedesc: data.get('filedesc'),
+                                    dragfile: data.get('dragfile'),
+                                    percent: data.get('percent')
+                                });
+                                up_data.set('filecode', data.get('filecode'));
+
+                                store.removeAt(index);  
+                                store.insert(index - 1, record);
+                                //this.getView().refresh();        
+                            }, 
+                            scope: this 
+                        },{ 
+                            text: '下移', 
+                            iconCls: 'arrow-downon-icon',  
+                            handler: function(){ 
+                                var store = Ext.data.StoreManager.lookup("fileItemshare");   
+                                if(index < store.getCount() - 1) { 
                                     var data = store.getAt(index);
-                                    var up_data = store.getAt(index-1);
-                                    var record=Ext.create("Org.fileupload.FileModel",{
+                                    var down_data = store.getAt(index+1);
+                                    var record=Ext.create("Share.fileupload.FileModel",{
                                         id: data.get('id'),
                                         name : data.get('name'),
                                         type : data.get('type'),
@@ -934,64 +846,34 @@ Ext.define("Org.dragfileupload.Panel", {
                                         percent : data.get('percent'),
                                         haspaper : data.get('haspaper'),
                                         hasencrypt : data.get('hasencrypt'),
-                                        filecode: up_data.get('filecode'),
+                                        filecode: down_data.get('filecode'),
                                         filedesc: data.get('filedesc'),
                                         dragfile: data.get('dragfile'),
                                         percent: data.get('percent')
                                     });
-                                    up_data.set('filecode', data.get('filecode'));
-
+                                    down_data.set('filecode', data.get('filecode'));
                                     store.removeAt(index);  
-                                    store.insert(index - 1, record);
-                                    //this.getView().refresh();        
-                                }, 
-                                scope: this 
-                            },{ 
-                                text: '下移', 
-                                iconCls: 'arrow-downon-icon',  
-                                handler: function(){ 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
-                                    if(index < store.getCount() - 1) { 
-                                        var data = store.getAt(index);
-                                        var down_data = store.getAt(index+1);
-                                        var record=Ext.create("Org.fileupload.FileModel",{
-                                            id: data.get('id'),
-                                            name : data.get('name'),
-                                            type : data.get('type'),
-                                            size : data.get('size'),
-                                            filestatus : data.get('filestatus'),
-                                            percent : data.get('percent'),
-                                            haspaper : data.get('haspaper'),
-                                            hasencrypt : data.get('hasencrypt'),
-                                            filecode: down_data.get('filecode'),
-                                            filedesc: data.get('filedesc'),
-                                            dragfile: data.get('dragfile'),
-                                            percent: data.get('percent')
-                                        });
-                                        down_data.set('filecode', data.get('filecode'));
-                                        store.removeAt(index);  
-                                        store.insert(index + 1, record); 
-                                        //this.getView().refresh(); 
-                                    }       
-                                }, 
-                                scope: this 
-                            }],
-                            listeners:{
-                                show:function(myself,o){
-                                    if(model.get("filestatus")!=-1){
-                                        myself.items.getAt(0).setDisabled(true);
-                                    }
-                                    if(model.get("filestatus")==-2){
-                                        myself.items.getAt(1).setDisabled(true);
-                                    }
-                                    if(model.get("filestatus")==-4){
-                                        myself.items.getAt(1).setDisabled(true);
-                                    }
+                                    store.insert(index + 1, record); 
+                                    //this.getView().refresh(); 
+                                }       
+                            }, 
+                            scope: this 
+                        }],
+                        listeners:{
+                            show:function(myself,o){
+                                if(model.get("filestatus")!=-1){
+                                    myself.items.getAt(0).setDisabled(true);
+                                }
+                                if(model.get("filestatus")==-2){
+                                    myself.items.getAt(1).setDisabled(true);
+                                }
+                                if(model.get("filestatus")==-4){
+                                    myself.items.getAt(1).setDisabled(true);
                                 }
                             }
-                        });
-                    }
-
+                        }
+                    });
+                    e.preventDefault(); 
                     rightClick.showAt(e.getXY()); 
                     //console.log("鼠标右键点击");
                 },
@@ -1028,7 +910,7 @@ Ext.define("Org.dragfileupload.Panel", {
                     box.addEventListener("drop", function(e){
                         e.preventDefault();
                         var filelist=e.dataTransfer.files; //获取文件列表对象
-                        var store = Ext.data.StoreManager.lookup("fileItems");
+                        var store = Ext.data.StoreManager.lookup("fileItemshare");
                         if(store.getCount()==50){
                             alert('待上传文件列表数量超限，不能选择！');
                             return ;
@@ -1037,7 +919,7 @@ Ext.define("Org.dragfileupload.Panel", {
                             for(var i=0; i<filelist.length; i++){ 
                                 var file = filelist[i];
                                 var t = new Date().getTime();
-                                var f=Ext.create("Org.fileupload.FileModel",{
+                                var f=Ext.create("Share.fileupload.FileModel",{
                                     id: t,
                                     name : file.name,
                                     type : file.name.substring(file.name.lastIndexOf('.')).toLowerCase(),
@@ -1049,7 +931,7 @@ Ext.define("Org.dragfileupload.Panel", {
                                     filecode: '',///myself.ownerCt.autoNumber(),
                                     filedesc: file.name.substring(0, file.name.lastIndexOf('.')),
                                     dragfile: file,
-                                    percent: '<progress value="0" max="100" id="progress_'+t+'"></progress> 0%'
+                                    percent: '<progress value="0" max="100" id="shareprogress_'+t+'"></progress> 0%'
                                 });
                                 store.add(f); 
                                 if(store.getCount()==50){
@@ -1057,7 +939,7 @@ Ext.define("Org.dragfileupload.Panel", {
                                     break;
                                 }                               
                             }
-                            var label=Ext.getCmp("queue_id");
+                            var label=Ext.getCmp("queue_id_share");
                             label.setText(label.text="文件队列:"+store.getCount());
                             if(store.max('filecode')!=''){
                                 var startflag=store.getCount()-filelist.length;
@@ -1068,7 +950,7 @@ Ext.define("Org.dragfileupload.Panel", {
                                 }
                             }else{
                                 Ext.Ajax.request({
-                                    url: base_path + "index.php?c=upload&a=getfilecode&t="+new Date().getTime(),
+                                    url: base_path + "index.php?c=upload&a=getsharefilecode&t="+new Date().getTime(),
                                     params : {fs_parent:myself.ownerCt.parentNode.get('fs_id')},
                                     method : 'POST',
                                     success: function(response, options){
@@ -1097,15 +979,13 @@ Ext.define("Org.dragfileupload.Panel", {
                 }
             },
             xtype : "grid",
-            //enableDragDrop:true,//激活行拖动 
-            //ddGroup: 'gridDD', 
-            //dropConfig: {appendOnly:false},
-            multiSelect: true, 
+            enableDragDrop:true,//激活行拖动 
+            ddGroup: 'gridDD', 
+            dropConfig: {appendOnly:false}, 
             border : false,
-            multiSelect: true,
             store : Ext.create("Ext.data.Store",{
-                model:"Org.fileupload.FileModel",
-                storeId:"fileItems"
+                model:"Share.fileupload.FileModel",
+                storeId:"fileItemshare"
             }),
             columns : [ 
             {
@@ -1180,90 +1060,7 @@ Ext.define("Org.dragfileupload.Panel", {
                 scope:this,
                 hidden:false
             }],
-            viewConfig: {
-                plugins: {
-                    ptype: 'gridviewdragdrop',
-                    dragText: '拖放到此区域'
-                },
-                listeners: {
-                    drop: function(node, data, dropRec, dropPosition) {
-                        var viewstore = data.view.getStore();
-                        var arr=[];
-                        var regex=/^\d+$/;
-                        /*将现有的是数据编号的文件编号进行排序*/
-                        for (var i = 0; i <viewstore.getCount(); i++) {
-                            var model=viewstore.getAt(i);
-                            var fc = model.get('filecode');
-                            if(regex.test(fc)){
-                                arr.push(parseInt(fc));
-                            }
-                        }
-                        arr.sort(compareInt);
-                        /*重新对是数字编号的文件进行赋值*/
-                        for (var i = 0; i <viewstore.getCount(); i++) {
-                            var model=viewstore.getAt(i);
-                            var fc = model.get('filecode');
-                            if(regex.test(fc)){
-                                model.set('filecode', arr.shift());
-                                model.commit();
-                            }
-                        }
-                        function compareInt(int1, int2){
-                            var iNum1 = parseInt(int1);   //强制转换成int 型;
-                            var iNum2 = parseInt(int2);
-                            if(iNum1 < iNum2){
-                                return -1;
-                            }else if(iNum1 > iNum2){
-                                return 1;
-                            }else{
-                                return 0;
-                            }
-                        }
-                    }
-                }
-            },
-            viewConfig: {
-                plugins: {
-                    ptype: 'gridviewdragdrop',
-                    dragText: '拖放到此区域'
-                },
-                listeners: {
-                    drop: function(node, data, dropRec, dropPosition) {
-                        var viewstore = data.view.getStore();
-                        var arr=[];
-                        var regex=/^\d+$/;
-                        /*将现有的是数据编号的文件编号进行排序*/
-                        for (var i = 0; i <viewstore.getCount(); i++) {
-                            var model=viewstore.getAt(i);
-                            var fc = model.get('filecode');
-                            if(regex.test(fc)){
-                                arr.push(parseInt(fc));
-                            }
-                        }
-                        arr.sort(compareInt);
-                        /*重新对是数字编号的文件进行赋值*/
-                        for (var i = 0; i <viewstore.getCount(); i++) {
-                            var model=viewstore.getAt(i);
-                            var fc = model.get('filecode');
-                            if(regex.test(fc)){
-                                model.set('filecode', arr.shift());
-                                model.commit();
-                            }
-                        }
-                        function compareInt(int1, int2){
-                            var iNum1 = parseInt(int1);   //强制转换成int 型;
-                            var iNum2 = parseInt(int2);
-                            if(iNum1 < iNum2){
-                                return -1;
-                            }else if(iNum1 > iNum2){
-                                return 1;
-                            }else{
-                                return 0;
-                            }
-                        }
-                    }
-                }
-            },
+
             plugins: [
             Ext.create('Ext.grid.plugin.CellEditing', {
                 clicksToEdit: 1,
@@ -1274,7 +1071,7 @@ Ext.define("Org.dragfileupload.Panel", {
                             var obj=this.grid.ownerCt;
                             var parentid = obj.initialConfig.items[0].postParams.fs_id;
                             Ext.Ajax.request({
-                                url: base_path + "index.php?c=upload&a=check&t="+new Date().getTime(),
+                                url: base_path + "index.php?c=upload&a=sharecheck&t="+new Date().getTime(),
                                 params : {fs_name: fs_name, fs_parent:parentid},
                                 method : 'POST',
                                 success: function(response, options){
@@ -1305,7 +1102,7 @@ Ext.define("Org.dragfileupload.Panel", {
 
         this.tbar=[
         {text:'开始上传',handler:function(){
-                var store = Ext.data.StoreManager.lookup("fileItems");
+                var store = Ext.data.StoreManager.lookup("fileItemshare");
                 var bianhao = true;
                 //判断文件编号是否添加
                 for (var i = 0; i <store.getCount(); i++) {
@@ -1338,16 +1135,16 @@ Ext.define("Org.dragfileupload.Panel", {
             },scope:this,icon:"js/swfupload/image/icons/upload.gif"},'-', {
             text : '请空列表',
             handler : function() {
-                var store = Ext.data.StoreManager.lookup("fileItems");
+                var store = Ext.data.StoreManager.lookup("fileItemshare");
                 store.removeAll();
-                var label=Ext.getCmp("queue_id");
+                var label=Ext.getCmp("queue_id_share");
                 label.setText(label.text="文件队列:0");
             },
             icon : "js/swfupload/image/icons/remove.png",
             scope:this
         }, '-', {
             xtype : 'label',
-            id:"queue_id",
+            id:"queue_id_share",
             text : '文件队列:0',
             margins : '0 0 0 10'
         }, {
@@ -1357,24 +1154,24 @@ Ext.define("Org.dragfileupload.Panel", {
             margins : '0 0 0 40',
             handler : function(){
                 var rcd = this.parentNode;
-                var  drapuppanel= Ext.create('Org.fileupload.Panel',{
+                var  drapuppanel= Ext.create('Share.fileupload.Panel',{
                     width : '100%',
                     title : '上传文件---目录'+rcd.get('text'),
                     items : [
                     {
                         border : false,
                         fileSize : 1024*1000000,//限制文件大小单位是字节
-                        uploadUrl : base_path+'index.php?c=upload',//提交的action路径
+                        uploadUrl : base_path+'index.php?c=upload&a=uploadsharedoc',//提交的action路径
                         flashUrl : js_path+'swfupload/swfupload.swf',//swf文件路径
                         filePostName : 'uploads', //后台接收参数
                         fileTypes : '*.*',//可上传文件类型
                         parentNode : rcd,
-                        postParams : {savePath:rcd.get('fs_fullpath'), fs_id:rcd.get('fs_id')} //http请求附带的参数
+                        postParams : {savePath:rcd.raw.fs_fullpath, fs_id:rcd.raw.fs_id} //http请求附带的参数
                     }
                     ]
                 });
-                Ext.getCmp('displayCenterPanel').remove(Ext.getCmp('displayCenterPanel').items.get(0));
-                Ext.getCmp('displayCenterPanel').add(drapuppanel).doLayout();
+                Ext.getCmp('sharedocarea').remove(Ext.getCmp('sharedocarea').items.get(0));
+                Ext.getCmp('sharedocarea').add(drapuppanel).doLayout();
             }
         }
         ];
@@ -1457,6 +1254,9 @@ Ext.define("Org.dragfileupload.Panel", {
         }
         return '<img src="'+rs+'">';
     },
+    mimeToFiletype: function(mime){
+        return mimeArr[mime];
+    },
     onFileError : function(file,errorCode,msg){
         var msg="";
         switch(errorCode){
@@ -1492,11 +1292,11 @@ Ext.define("Org.dragfileupload.Panel", {
     haspapercheck:function(value,cellmeta,record,rowIndex,columnIndex,store){
         me = this; 
         var file_id = record.get('id');
-        var str= '<div style="text-align:center;"><input type="radio" name="haspapercheck'+file_id+'" id="'+file_id+'_1" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'1\', this);" value="1"';
+        var str= '<div style="text-align:center;"><input type="radio" name="haspapercheck'+file_id+'" id="share'+file_id+'_1" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'1\', this);" value="1"';
         if(record.get('haspaper')=='1'){
             str+=' checked="checked" ';
         }
-        str += ' >有</input> <input type="radio" name="haspapercheck'+file_id+'" id="'+file_id+'_0" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'0\', this);" value="0"';
+        str += ' >有</input> <input type="radio" name="haspapercheck'+file_id+'" id="share'+file_id+'_0" onclick="me.checkvalue(\'haspaper\','+rowIndex+', \'0\', this);" value="0"';
         if(record.get('haspaper')=='0'){
             str+=' checked="checked" ';
         }
@@ -1506,7 +1306,7 @@ Ext.define("Org.dragfileupload.Panel", {
     hasencryptcheck:function(value,cellmeta,record,rowIndex,columnIndex,store){
         var file_id = record.get('id');
         me = this;
-        var str='<div style="text-align:center;"><input type="checkbox" name="hasencryptcheck" id="hasencryptcheck'+file_id+'" onclick="me.checkvalue(\'hasencrypt\','+rowIndex+', this.checked, this);"';
+        var str='<div style="text-align:center;"><input type="checkbox" name="hasencryptcheck" id="sharehasencryptcheck'+file_id+'" onclick="me.checkvalue(\'hasencrypt\','+rowIndex+', this.checked, this);"';
         if(record.get('hasencrypt')){
             str+=' checked="checked" ';
         }
@@ -1518,10 +1318,10 @@ Ext.define("Org.dragfileupload.Panel", {
         ownerobj = this;
         //var progress = Ext.getCmp("progressBar");// 显示进度信息
         //var progress = $("#progress_"+model.get('id'));// 显示进度信息
-        var progress = document.querySelector("#progress_"+model.get('id'));
+        var progress = document.querySelector("#shareprogress_"+model.get('id'));
         ///*
         var xhr = new XMLHttpRequest(); // 初始化XMLHttpRequest
-        xhr.open('post', '/index.php?c=upload', true);
+        xhr.open('post', '/index.php?c=upload&a=uploadsharedoc', true);
         /*
         xhr.upload.onprogress = function(p) { // 添加数据上传进度，获取实时的上传进度
         return function(e) {
@@ -1540,7 +1340,7 @@ Ext.define("Org.dragfileupload.Panel", {
                 //var percentage = Math.round((e.loaded * 100) / e.total);
                 var percentage = (e.loaded / e.total) * 100;
                 //p.updateProgress(percentage/100,percentage+'%',true);
-                model.set("percent", '<progress value="'+percentage+'" max="100" id="progress_'+model.get('id')+'"></progress> '+Math.ceil(percentage)+'%');
+                model.set("percent", '<progress value="'+percentage+'" max="100" id="shareprogress_'+model.get('id')+'"></progress> '+Math.ceil(percentage)+'%');
                 model.set("filestatus",-2);
             }else {
                 //console.log("Can't determine the size of the file.");
@@ -1550,8 +1350,8 @@ Ext.define("Org.dragfileupload.Panel", {
         xhr.upload.onload = function(p) { // 当上传完之后执行的回调函数
         return function(e) {
         progress.value='100';
-        var store = Ext.data.StoreManager.lookup("fileItems");
-        var label=Ext.getCmp("queue_id");
+        var store = Ext.data.StoreManager.lookup("fileItemshare");
+        var label=Ext.getCmp("queue_id_share");
         label.setText(label.text="文件队列:"+store.getCount());
         if(store.getCount()==0){
         refreshtree(this.parentNode,1);
@@ -1562,9 +1362,9 @@ Ext.define("Org.dragfileupload.Panel", {
         }(progress);
         */
         function updateLoading(event){
-            model.set("percent", '<progress value="100" max="100" id="progress_'+model.get('id')+'"></progress> 100%');
-            var store = Ext.data.StoreManager.lookup("fileItems");
-            var label=Ext.getCmp("queue_id");
+            model.set("percent", '<progress value="100" max="100" id="shareprogress_'+model.get('id')+'"></progress> 100%');
+            var store = Ext.data.StoreManager.lookup("fileItemshare");
+            var label=Ext.getCmp("queue_id_share");
             var i=0;
             for (var index = 0; index <store.getCount(); index++) {
                 if(store.getAt(index).get("filestatus")==-1){
@@ -1572,52 +1372,8 @@ Ext.define("Org.dragfileupload.Panel", {
                 }
             }
             label.setText(label.text="文件队列:"+i);
-            //如果文件队列为0进行操作，修改为插入操作
-            if(serverdata){
-                serverdata = eval('('+serverdata+')');
-                var rcd = this.customSettings.scope_handler.parentNode;
-                if(serverdata.exists=='1'){
-                    rcd.findChild( 'id', serverdata.fs_id).remove(true);
-                }
-                var newNode = rcd.createNode({
-                    'id' : serverdata.fs_id,
-                    'fs_id': serverdata.fs_id,
-                    'fs_name': serverdata.fs_name,
-                    'text': serverdata.fs_code + '（' + serverdata.fs_intro + '）',
-                    'fs_intro': serverdata.fs_intro,
-                    'fs_fullpath': serverdata.fs_fullpath,
-                    'fs_isdir': serverdata.fs_isdir,
-                    'managerok': true,
-                    'fs_code': serverdata.fs_code,
-                    'fs_isproject': 0,
-                    'fs_id_path': serverdata.fs_id_path,
-                    'fs_is_share': serverdata.fs_is_share,
-                    'fs_group': serverdata.fs_group,
-                    'fs_user': serverdata.fs_user,
-                    'fs_parent': serverdata.fs_parent,
-                    'fs_type': serverdata.fs_type,
-                    'fs_create': serverdata.fs_create,
-                    'fs_lastmodify': serverdata.fs_lastmodify,
-                    'fs_size': serverdata.fs_size,
-                    'fs_encrypt': serverdata.fs_encrypt,
-                    'fs_haspaper': serverdata.fs_haspaper,
-                    'fs_hashname': serverdata.fs_hashname,
-                    'leaf': true,
-                    'icon': this.customSettings.scope_handler.formatFiletype('.'+serverdata.fs_type, 'url')
-                });
-                //console.log(newNode);
-                var beforenode=[];
-                rcd.eachChild(function(n){
-                    if(n.get('fs_isdir')=='1'){
-                        beforenode.push(n);
-                    }
-                });
-                var insertberforenode = beforenode.shift();
-                rcd.insertBefore(newNode, insertberforenode);
-            }
             if(i==0){
-                //refreshtree(ownerobj.parentNode, 1);
-                projectTreePanel.getSelectionModel().select(ownerobj.parentNode);
+                refreshsharetree(ownerobj.parentNode, 1);
             }
             model.set("filestatus",-4);
         }
@@ -1631,7 +1387,6 @@ Ext.define("Org.dragfileupload.Panel", {
         //xhr.upload.addEventListener('load', updateLoading, false);
         xhr.upload.addEventListener('loadend', updateLoading, false);
         xhr.upload.addEventListener('error', onErrorHandler, false);
-
 
         var fd = new FormData(); // 这里很关键，初始化一个FormData，并将File文件发送到后台
         fd.append("uploads", model.data.dragfile);
@@ -1647,7 +1402,7 @@ Ext.define("Org.dragfileupload.Panel", {
         //*/
     },
     checkvalue : function(t, rowIndex, v, obj){
-        var store = Ext.data.StoreManager.lookup("fileItems");
+        var store = Ext.data.StoreManager.lookup("fileItemshare");
         var record =store.getAt(rowIndex);
         record.set(t, v);
         record.commit();

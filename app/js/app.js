@@ -4,10 +4,14 @@ Ext.application({
     autoCreateViewport: true,
     appFolder: 'js/app',
     launch:function(){
-          
+        //this.controllers.addListener('add',this.newControllerAdded,this);
     },
+    //newControllerAdded:function(idx, ctrlr, token){
+        //ctrlr.init();
+    //},
     controllers: [
-        'Main',
-        'Project'
+    'Main',
+    'Project',
+    'UploadPanel'
     ]
 });

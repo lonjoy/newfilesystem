@@ -78,5 +78,63 @@ var gfun={
                 return "\"" + obj.toString() + "\"";     
                 break;         
         }   
+    },
+    getauth: function(){
+        var aCookie = document.cookie.split("; ");
+        for (var i=0; i < aCookie.length; i++)
+            {
+            var aCrumb = aCookie[i].split("=");
+            if ('s_auth' == aCrumb[0]) 
+                return unescape(aCrumb[1]);
+        }
+        return ""; 
+    },    
+    formatFiletype: function(suffix){
+        var type = suffix.substr(1);
+        var pic_type_arr = ['jpg', 'jpeg', 'png', 'gif', 'tiff', 'bmp'];    
+        var video_type_arr = ['h264', '3gp', 'asx', 'avi', 'flv', 'mpg', 'mp4', 'mpeg', 'mkv', 'ogv', 'rm', 'rmvb', 'wmv', 'mov', 'divx', 'xvid'];    
+        var audio_type_arr = ['mp3', 'wma', 'wav', 'ogg', 'ra']; 
+        if(type=='pdf'){
+            var rs = 'image/ico/16x16/pdf-icon.png';
+        } else if(Ext.Array.contains(pic_type_arr, type)){
+            var rs = 'image/ico/16x16/picture-icon.png';
+        } else if(Ext.Array.contains(video_type_arr, type)){
+            var rs = 'image/ico/16x16/video-icon.png';
+        } else if(Ext.Array.contains(audio_type_arr, type)){
+            var rs = 'image/ico/16x16/audio-icon.png';
+        } else if(type=='ai'){
+            var rs = 'image/ico/16x16/ai-icon.png';
+        } else if(type=='doc'){
+            var rs = 'image/ico/16x16/doc-icon.png';
+        } else if(type=='docx'){
+            var rs = 'image/ico/16x16/docx-icon.png';
+        } else if(type=='dwg'){
+            var rs = 'image/ico/16x16/dwg-icon.png';
+        } else if(type=='ppt'){
+            var rs = 'image/ico/16x16/ppt-icon.png';
+        } else if(type=='pptx'){
+            var rs = 'image/ico/16x16/pptx-icon.png';
+        } else if(type=='psd'){
+            var rs = 'image/ico/16x16/psd-icon.png';
+        } else if(type=='rar'){
+            var rs = 'image/ico/16x16/rar-icon.png';
+        } else if(type=='swf'){
+            var rs = 'image/ico/16x16/swf-icon.png';
+        } else if(type=='xls'){
+            var rs = 'image/ico/16x16/xls-icon.png';
+        } else if(type=='xlsx'){
+            var rs = 'image/ico/16x16/xlsx-icon.png';
+        } else if(type=='zip'){
+            var rs = 'image/ico/16x16/zip-icon.png';
+        } else if(type=='7z'){
+            var rs = 'image/ico/16x16/7z-icon.png';
+        } else {
+            var rs = 'image/templates.png';
+        }
+        if(arguments[1]=='url'){
+            return rs;
+        }else{
+            return '<img src="'+rs+'">';   
+        }
     }
 };

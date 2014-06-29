@@ -3,13 +3,14 @@ Ext.define('FS.controller.Project',{
     stores: [
     'List',
     'HistoryList',
-    'ParentRecord'
+    'ParentRecord',
+    'FileUpload'
     ],
     views:[
     'project.List',
-    'project.GridMenu',
     'project.PowerMenu',
-    'project.HistoryList'        
+    'project.HistoryList',
+    'swfupload.UploadPanel'        
     ],
     init: function(){
         this.control({
@@ -20,15 +21,15 @@ Ext.define('FS.controller.Project',{
             },
             'powermenu':{
                 click: this.getfunction
+            },
+            'fileuploadPanel': {
+                onQueued: function(file){
+                    alert(222);
+                }
             }
 
         });
         this.powermenu = Ext.widget('powermenu');
-    },
-    gridmenu: function(view,  event){
-        event.preventDefault();
-        event.stopEvent();
-        Ext.widget('gridmenu').showAt(event.getXY());
     },
     //菜单功能
     opendoc: function(view, rcd, item, index, event){
@@ -294,6 +295,22 @@ Ext.define('FS.controller.Project',{
         win.show();
     },
     upload: function(view, rcd, item, index, event){
+        if(typeof rcd=='undefined'){ //if it is gridmenu
+            var parent_record = this.getParentRecordStore().getAt(0);
+        }else{
+            var parent_record=rcd;
+        }
+        var win = Ext.create('Ext.window.Window',{
+            layout:'fit',
+            width:'80%',
+            resizable: false,
+            modal: true,
+            closable : true,
+            items: Ext.widget('fileuploadPanel', {parent_record:parent_record, savePath:parent_record.get('fs_fullpath')})//this.getSwfuploadUploadPanelView()
+        });
+        win.setTitle('上传文件---文件夹'+parent_record.get('text'));
+        win.show();
+        /*
         var uppanel = Ext.create('Org.fileupload.Panel',{
             //var uppanel = Ext.create('Org.dragfileupload.Panel',{
             width : '100%',
@@ -311,6 +328,7 @@ Ext.define('FS.controller.Project',{
             }
             ]
         });
+        */
     },
     refreshtree: function(view, rcd, item, index, event){
         refreshtree(rcd, 1);
