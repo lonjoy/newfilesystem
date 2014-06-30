@@ -17,7 +17,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
             file_types_description : "All Files",  //文件类型描述
             file_upload_limit : "0",  //限定用户一次性最多上传多少个文件，在上传过程中，该数字会累加，如果设置为“0”，则表示没有限制 
             file_queue_limit : "50",//上传队列数量限制，该项通常不需设置，会根据file_upload_limit自动赋值              
-            post_params : this.initialConfig.savePath,
+            post_params : {savePath:this.initialConfig.savePath, fs_id:this.initialConfig.parent_record.get('fs_id')},
             use_query_string : true,
             debug : false,
             button_cursor : SWFUpload.CURSOR.HAND,
@@ -113,7 +113,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                 text : '取消上传',
                                 scope:this.ownerCt,
                                 handler:function(){
-                                    var store = Ext.data.StoreManager.lookup("fileItems");
+                                    var store = this.getComponent('fileuploadgrid').getStore();//Ext.data.StoreManager.lookup("fileItems");
                                     this.swfupload.cancelUpload(model.get("id"),false);
                                     //model.set("filestatus",SWFUpload.FILE_STATUS.CANCELLED);
                                     //model.commit();
@@ -130,7 +130,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                     if(index == 0) { 
                                         return; 
                                     } 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
+                                    var store = this.getComponent('fileuploadgrid').getStore();   
                                     var data = store.getAt(index);
                                     var up_data = store.getAt(index-1);
                                     var record=Ext.create("Org.fileupload.FileModel",{
@@ -204,6 +204,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
             border : false,
             multiSelect: true,
             store : 'FileUpload',
+            height: 100,
             columns : [ 
             {
                 text : '类型',
@@ -612,46 +613,9 @@ Ext.define("FS.view.swfupload.UploadPanel", {
     },
     uploadSuccess : function(file, serverdata){
         if(serverdata){
-            serverdata = eval('('+serverdata+')');
-            var rcd = this.customSettings.scope_handler.parentNode;
-            if(serverdata.exists=='1'){
-                rcd.findChild( 'id', serverdata.fs_id).remove(true);
-            }
-            var newNode = rcd.createNode({
-                'id' : serverdata.fs_id,
-                'fs_id': serverdata.fs_id,
-                'fs_name': serverdata.fs_name,
-                'text': serverdata.fs_code + '（' + serverdata.fs_intro + '）',
-                'fs_intro': serverdata.fs_intro,
-                'fs_fullpath': serverdata.fs_fullpath,
-                'fs_isdir': serverdata.fs_isdir,
-                'managerok': true,
-                'fs_code': serverdata.fs_code,
-                'fs_isproject': 0,
-                'fs_id_path': serverdata.fs_id_path,
-                'fs_is_share': serverdata.fs_is_share,
-                'fs_group': serverdata.fs_group,
-                'fs_user': serverdata.fs_user,
-                'fs_parent': serverdata.fs_parent,
-                'fs_type': serverdata.fs_type,
-                'fs_create': serverdata.fs_create,
-                'fs_lastmodify': serverdata.fs_lastmodify,
-                'fs_size': serverdata.fs_size,
-                'fs_encrypt': serverdata.fs_encrypt,
-                'fs_haspaper': serverdata.fs_haspaper,
-                'fs_hashname': serverdata.fs_hashname,
-                'leaf': true,
-                'icon': gfun.formatFiletype('.'+serverdata.fs_type, 'url')
-            });
-            //console.log(newNode);
-            var beforenode=[];
-            rcd.eachChild(function(n){
-                if(n.get('fs_isdir')=='1'){
-                    beforenode.push(n);
-                }
-            });
-            var insertberforenode = beforenode.shift();
-            rcd.insertBefore(newNode, insertberforenode);
+            //serverdata = eval('('+serverdata+')');
+            //refresh list grid data to show new add file
+            this.customSettings.scope_handler.initialConfig.ListStore.load({params:{fs_id:this.customSettings.scope_handler.parentNode.get('fs_id')}});
         }
     },
     uploadComplete:function(file){
@@ -709,8 +673,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                 this.customSettings.scope_handler.swfupload.addPostParam('filecode', record.get("filecode"));
                 this.customSettings.scope_handler.swfupload.addPostParam('filedesc', record.get("filedesc"));
                 this.customSettings.scope_handler.swfupload.addPostParam('coverfile', record.get("coverfile"));
-                var uauth = gfun.getauth();
-                this.customSettings.scope_handler.swfupload.addPostParam('auth', uauth);
+                this.customSettings.scope_handler.swfupload.addPostParam('auth', gfun.getauth());
             }
         }
     },

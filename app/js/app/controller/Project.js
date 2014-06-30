@@ -21,11 +21,6 @@ Ext.define('FS.controller.Project',{
             },
             'powermenu':{
                 click: this.getfunction
-            },
-            'fileuploadPanel': {
-                onQueued: function(file){
-                    alert(222);
-                }
             }
 
         });
@@ -300,35 +295,28 @@ Ext.define('FS.controller.Project',{
         }else{
             var parent_record=rcd;
         }
+        var fileitem=Ext.widget('fileuploadPanel', {
+                parent_record:parent_record,
+                savePath:parent_record.get('fs_fullpath'),
+                ListStore:this.getListStore() 
+        });
+        var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{
             layout:'fit',
             width:'80%',
             resizable: false,
             modal: true,
             closable : true,
-            items: Ext.widget('fileuploadPanel', {parent_record:parent_record, savePath:parent_record.get('fs_fullpath')})//this.getSwfuploadUploadPanelView()
+            items: fileitem,
+            listeners:{
+                'close':function(panel, eOpts){
+                    fileuploadstore.removeAll();
+                    fileitem.getComponent('fileuploadgrid').getView().refresh();
+                }
+            }
         });
         win.setTitle('上传文件---文件夹'+parent_record.get('text'));
         win.show();
-        /*
-        var uppanel = Ext.create('Org.fileupload.Panel',{
-            //var uppanel = Ext.create('Org.dragfileupload.Panel',{
-            width : '100%',
-            title : '上传文件---文件夹'+rcd.get('text'),
-            items : [
-            {
-                border : false,
-                fileSize : 1024*1000000,//限制文件大小单位是字节
-                uploadUrl : base_path+'index.php?c=upload',//提交的action路径
-                flashUrl : js_path+'swfupload/swfupload.swf',//swf文件路径
-                filePostName : 'uploads', //后台接收参数
-                fileTypes : '*.*',//可上传文件类型
-                parentNode : rcd,
-                postParams : {savePath:rcd.get('fs_fullpath'), fs_id:rcd.get('fs_id')} //http请求附带的参数
-            }
-            ]
-        });
-        */
     },
     refreshtree: function(view, rcd, item, index, event){
         refreshtree(rcd, 1);
