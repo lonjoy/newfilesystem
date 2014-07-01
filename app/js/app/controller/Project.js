@@ -68,6 +68,7 @@ Ext.define('FS.controller.Project',{
         }
     },
     getfunction: function(menu, item, e){
+        if(typeof item=='undefined'){return false;}
         if(item.ename=='open'){
             this.opendoc(this.gridview, this.rcd, this.item, this.rowindex, this.event);
         }else if(item.ename=='copystruct'){
