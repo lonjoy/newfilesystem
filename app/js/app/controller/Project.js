@@ -10,7 +10,8 @@ Ext.define('FS.controller.Project',{
     'project.List',
     'project.PowerMenu',
     'project.HistoryList',
-    'swfupload.UploadPanel'        
+    'swfupload.UploadPanel',
+    'swfupload.DragUploadPanel'        
     ],
     init: function(){
         this.control({
@@ -21,6 +22,18 @@ Ext.define('FS.controller.Project',{
             },
             'powermenu':{
                 click: this.getfunction
+            },
+            'fileuploadPanel button[text="使用拖拽上传模式"]':{
+                click: function(buttonobj,e){
+                    buttonobj.ownerCt.ownerCt.ownerCt.close();
+                    this.dragupload(this.gridview, this.rcd, this.event);
+                }
+            },
+            'dragfileuploadPanel button[text="返回原有上传模式"]':{
+                click: function(buttonobj,e){
+                    buttonobj.ownerCt.ownerCt.ownerCt.close();
+                    this.upload(this.gridview, this.rcd, this.item, this.rowindex, this.event);
+                }
             }
 
         });
@@ -47,9 +60,10 @@ Ext.define('FS.controller.Project',{
             arguments[1].stopEvent();
             this.gridview=arguments[0];
             var obj='gridmenu';
-            this.rcd=undefined;
+            this.rcd=this.getParentRecordStore().getAt(0);
             this.item=undefined;
-            this.event=event;
+            this.rowindex=undefined;
+            this.event=arguments[1];
             this.powermenu.addMenuItem(null,null, obj); //根据是否是文件进行显示
             this.powermenu.showAt(arguments[1].getXY());
         }else{
@@ -305,7 +319,7 @@ Ext.define('FS.controller.Project',{
         var win = Ext.create('Ext.window.Window',{
             layout:'fit',
             width:'80%',
-            resizable: false,
+            resizable: true,
             modal: true,
             closable : true,
             items: fileitem,
@@ -313,6 +327,35 @@ Ext.define('FS.controller.Project',{
                 'close':function(panel, eOpts){
                     fileuploadstore.removeAll();
                     fileitem.getComponent('fileuploadgrid').getView().refresh();
+                }
+            }
+        });
+        win.setTitle('上传文件---文件夹'+parent_record.get('text'));
+        win.show();
+    },    
+    dragupload: function(view, rcd, event){
+        if(typeof rcd=='undefined'){ //if it is gridmenu
+            var parent_record = this.getParentRecordStore().getAt(0);
+        }else{
+            var parent_record=rcd;
+        }
+        var fileitem=Ext.widget('dragfileuploadPanel', {
+                parent_record:parent_record,
+                savePath:parent_record.get('fs_fullpath'),
+                ListStore:this.getListStore() 
+        });
+        var fileuploadstore=this.getFileUploadStore();
+        var win = Ext.create('Ext.window.Window',{
+            layout:'fit',
+            width:'80%',
+            resizable: true,
+            modal: true,
+            closable : true,
+            items: fileitem,
+            listeners:{
+                'close':function(panel, eOpts){
+                    fileuploadstore.removeAll();
+                    fileitem.getComponent('dragfileuploadgrid').getView().refresh();
                 }
             }
         });
