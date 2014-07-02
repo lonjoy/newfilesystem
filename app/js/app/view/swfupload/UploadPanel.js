@@ -50,7 +50,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                 text : '取消上传',
                                 scope:this.ownerCt,
                                 handler:function(){
-                                    var store = Ext.data.StoreManager.lookup("fileItems");
+                                    var store = myself.getStore();
                                     for(var i in selectmodel){
                                         var cur_model = selectmodel[i];
                                         this.swfupload.cancelUpload(cur_model.get("id"),false);
@@ -113,7 +113,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                 text : '取消上传',
                                 scope:this.ownerCt,
                                 handler:function(){
-                                    var store = this.getComponent('fileuploadgrid').getStore();//Ext.data.StoreManager.lookup("fileItems");
+                                    var store = myself.getStore();//Ext.data.StoreManager.lookup("fileItems");
                                     this.swfupload.cancelUpload(model.get("id"),false);
                                     //model.set("filestatus",SWFUpload.FILE_STATUS.CANCELLED);
                                     //model.commit();
@@ -130,10 +130,11 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                     if(index == 0) { 
                                         return; 
                                     } 
-                                    var store = this.getComponent('fileuploadgrid').getStore();   
+                                    var store = myself.getStore();
+                                    console.log(store);   
                                     var data = store.getAt(index);
                                     var up_data = store.getAt(index-1);
-                                    var record=Ext.create("Org.fileupload.FileModel",{
+                                    var record=store.createModel({
                                         id: data.get('id'),
                                         name : data.get('name'),
                                         type : data.get('type'),
@@ -148,7 +149,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                         percent: data.get('percent')
                                     });
                                     up_data.set('filecode', data.get('filecode'));
-
+                                    up_data.commit();
                                     store.removeAt(index);  
                                     store.insert(index - 1, record);
                                     //this.getView().refresh();        
@@ -158,11 +159,11 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                 text: '下移', 
                                 iconCls: 'arrow-downon-icon',  
                                 handler: function(){ 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
+                                    var store = myself.getStore();
                                     if(index < store.getCount() - 1) { 
                                         var data = store.getAt(index);
                                         var down_data = store.getAt(index+1);
-                                        var record=Ext.create("Org.fileupload.FileModel",{
+                                        var record=store.createModel({
                                             id: data.get('id'),
                                             name : data.get('name'),
                                             type : data.get('type'),
@@ -177,6 +178,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                                             percent: data.get('percent')
                                         });
                                         down_data.set('filecode', data.get('filecode'));
+                                        down_data.commit();
                                         store.removeAt(index);  
                                         store.insert(index + 1, record); 
                                         //this.getView().refresh(); 
@@ -204,7 +206,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
             border : false,
             multiSelect: true,
             store : 'FileUpload',
-            height: 100,
+            height: 200,
             columns : [ 
             {
                 text : '类型',
@@ -324,7 +326,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
                         if(ctx.colIdx=='2'){
                             var fs_name =  ctx.value;
                             var obj=this.grid.ownerCt;
-                            var parentid = obj.initialConfig.items[0].postParams.fs_id;
+                            var parentid = obj.initialConfig.parent_record.get('fs_id');
 
                             Ext.Ajax.request({
                                 url: base_path + "index.php?c=upload&a=check&t="+new Date().getTime(),
