@@ -20,6 +20,12 @@ Ext.define('FS.controller.Project',{
                 itemdblclick: this.opendoc,
                 itemcontextmenu: this.powermenufun
             },
+            'projectList pagingtoolbar button': {
+                click: function(obj, event){
+                    //get store getProxy , then proxy has extraParams param to set add param
+                    obj.ownerCt.ownerCt.getStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')}
+                }
+            },
             'powermenu':{
                 click: this.getfunction
             },
@@ -311,9 +317,9 @@ Ext.define('FS.controller.Project',{
             var parent_record=rcd;
         }
         var fileitem=Ext.widget('fileuploadPanel', {
-                parent_record:parent_record,
-                savePath:parent_record.get('fs_fullpath'),
-                ListStore:this.getListStore() 
+            parent_record:parent_record,
+            savePath:parent_record.get('fs_fullpath'),
+            ListStore:this.getListStore() 
         });
         var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{
@@ -340,9 +346,9 @@ Ext.define('FS.controller.Project',{
             var parent_record=rcd;
         }
         var fileitem=Ext.widget('dragfileuploadPanel', {
-                parent_record:parent_record,
-                savePath:parent_record.get('fs_fullpath'),
-                ListStore:this.getListStore() 
+            parent_record:parent_record,
+            savePath:parent_record.get('fs_fullpath'),
+            ListStore:this.getListStore() 
         });
         var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{
