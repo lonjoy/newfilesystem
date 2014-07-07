@@ -24,7 +24,7 @@ define('CACHE_PATH',   APP_PATH.DS.'cache');
 #文件访问服务器地址
 define('DOC_SERVER', APP_PATH);
 define('PROJECT_DOC_PATH', DOC_SERVER.DS. 'project'); //项目文档存放目录
-//define('PROJECT_DOC_URL', 'http://192.168.110.136/project'); //项目文档下载使用的URL
+define('PROJECT_DOC_URL', 'http://filesystem.ikuday.com/project'); //项目文档下载使用的URL
 define('FILE_BACKUP_PATH', APP_PATH.DS.'bak'); //文件备份路径
 define('LOG_PATH', APP_PATH.DS.'log');
 

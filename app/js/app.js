@@ -10,8 +10,6 @@ Ext.application({
         //ctrlr.init();
     //},
     controllers: [
-    'Main',
-    'Project',
-    'UploadPanel'
+    'Main'
     ]
 });

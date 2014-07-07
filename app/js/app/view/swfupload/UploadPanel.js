@@ -2,7 +2,6 @@ Ext.define("FS.view.swfupload.UploadPanel", {
     extend : "Ext.panel.Panel",
     alias : "widget.fileuploadPanel",
     layout:"fit",
-    requires : ['FS.store.ParentRecord'],
     initComponent : function() {
         this.width='100%';
         this.height='100%';

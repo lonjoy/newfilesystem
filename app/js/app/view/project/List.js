@@ -1,6 +1,7 @@
 Ext.define('FS.view.project.List',{
     extend: 'Ext.grid.Panel',
     alias: 'widget.projectList',
+    region:'center',
     store: 'List',
     selModel: 'MULTI',
     tbar:[
@@ -11,8 +12,7 @@ Ext.define('FS.view.project.List',{
     {
         xtype: 'toolbar',
         border: false,
-        items: [
-        {
+        items: [{
             xtype: 'textfield',
             emptyText: '输入搜索关键字...'
         },
@@ -20,8 +20,7 @@ Ext.define('FS.view.project.List',{
             xtype: 'button',
             text: '搜索',
             iconCls:'Zoom'
-        }
-        ]
+        }]
     }
     ],
     initComponent: function(){
@@ -38,6 +37,14 @@ Ext.define('FS.view.project.List',{
         ];
         this.callParent(arguments);
     },
+    /*
+    listeners:{
+        'itemdblclick': function(view, rcd, item, index, event, eOpts){
+            event.stopEvent();
+            alert(33);
+        }
+    },
+    */
     dockedItems: [{
         xtype: 'pagingtoolbar',
         store: 'List',

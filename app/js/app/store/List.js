@@ -2,7 +2,7 @@ Ext.define('FS.store.List',{
     extend: 'Ext.data.Store',
     model: 'FS.model.List',
     autoLoad: false,
-    pageSize: 10,
+    pageSize: 50,
     proxy:{
         type: 'ajax',
         api: {

@@ -1570,12 +1570,12 @@
                     return $rs;
                 }
                 if(!$fs_fullpath){
-                    $file_path = self::splitdocpath(self::getParentpath($fs_id));  
+                    //var_dump($fs_id, self::splitdocpath(self::getParentpath($fs_id)));die;
+                    $file_path = self::splitdocpath(self::getParentpath($fs_id)); 
                 }else{
                     $file_path = self::splitdocpath($fs_fullpath);
                 }
                 $fs_file = PROJECT_DOC_PATH . $file_path.'.'.$fs_type;
-                //var_dump($fs_file);
                 if(!file_exists($fs_file)){
                     $rs['msg'] = '文件不存在或已删除！';
                     $rs['success'] = false;

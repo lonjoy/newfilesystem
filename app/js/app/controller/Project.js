@@ -11,9 +11,15 @@ Ext.define('FS.controller.Project',{
     'project.PowerMenu',
     'project.HistoryList',
     'swfupload.UploadPanel',
-    'swfupload.DragUploadPanel'        
+    'swfupload.DragUploadPanel',        
+    'project.PowerSetting'        
     ],
+    refs : [{
+        ref : 'projectList',
+        selector : 'projectList'
+    }],
     init: function(){
+        alert('init');
         this.control({
             'projectList': {
                 containercontextmenu: this.powermenufun,
@@ -23,7 +29,7 @@ Ext.define('FS.controller.Project',{
             'projectList pagingtoolbar button': {
                 click: function(obj, event){
                     //get store getProxy , then proxy has extraParams param to set add param
-                    obj.ownerCt.ownerCt.getStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')}
+                    obj.ownerCt.ownerCt.getStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')};
                 }
             },
             'powermenu':{
@@ -39,6 +45,12 @@ Ext.define('FS.controller.Project',{
                 click: function(buttonobj,e){
                     buttonobj.ownerCt.ownerCt.ownerCt.close();
                     this.upload(this.gridview, this.rcd, this.item, this.rowindex, this.event);
+                }
+            },
+            'historypanel':{
+                itemcontextmenu:this.historymenu,
+                containercontextmenu: function(obj, e){
+                    e.stopEvent();
                 }
             }
 
@@ -56,7 +68,7 @@ Ext.define('FS.controller.Project',{
             view.ownerCt.getStore().load({params:{fs_id:rcd.get('fs_id')}});
         }
         if(rcd.get('fs_isdir')==0){
-            window.open(base_path + "index.php?c=document&a=openfile&fs_id="+rcd.get('fs_id')+'&t='+rcd.get('fs_type'));
+            window.open(base_path+"index.php?c=document&a=openfile&fs_id="+rcd.get('fs_id')+'&t='+rcd.get('fs_type'));
         }
     },
     //权限菜单
@@ -137,15 +149,30 @@ Ext.define('FS.controller.Project',{
             layout:'fit',
             width:700,
             height: 400,
-            closeAction:'hide',
-            resizable: false,
+            //closeAction:'hide',
+            resizable: true,
             shadow: true,
             modal: true,
             items: panel
         });
-        panel.getView().getStore().load({params:{fs_id:rcd.get('fs_id')}});
+        panel.getView().getStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
+        panel.getView().getStore().load();
         win.setTitle('历史版本');
         win.show();
+    },
+    historymenu:function(view, rcd, item, index, event){
+        event.stopEvent();
+        var gridmenu =Ext.create('Ext.menu.Menu', {});
+        var me=this;
+        gridmenu.add({
+            text: '下载',
+            iconCls: 'icon-doc-download',
+            handler: function(obj,e){
+                obj.up("menu").hide();
+                me.download(view, rcd, item, index, event);
+            }
+        });
+        gridmenu.showAt(event.getXY());
     },
     download: function(view, rcd, item, index, event){
         Ext.Msg.show({  
@@ -184,7 +211,9 @@ Ext.define('FS.controller.Project',{
         });
     },
     powersetting: function(view, rcd, item, index, event){
-        powersettingformPanel(rcd);
+        var powersettingWin=Ext.widget('powersetting', {rcd:rcd});
+        //console.log(powersettingWin);
+        powersettingWin.show();
     },
     del: function(view, rcd, item, index, event){
         Ext.Msg.show({  

@@ -2,7 +2,7 @@ Ext.define('FS.store.HistoryList',{
     extend: 'Ext.data.Store',
     model: 'FS.model.HistoryList',
     autoLoad: false,
-    pageSize: 10,
+    pageSize: 50,
     proxy:{
         type: 'ajax',
         api: {
@@ -10,7 +10,7 @@ Ext.define('FS.store.HistoryList',{
         },
         reader: {
             type: 'json',
-            root: 'data',
+            root: 'rows',
             successProperty: 'success'
         },
         writer: {

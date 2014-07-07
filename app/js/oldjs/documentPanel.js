@@ -777,14 +777,8 @@ function powersettingformPanel(rcd){
                     });
                 },
                 'afterRender' : function(combo) {
-                    //Ext.getCmp('powersetting_workgroup_id').setValue(rcd.raw.fs_group);
-                    Ext.getCmp('powersetting_workgroup_id').setValue(rcd.get('fs_group'));
-                    Ext.getCmp('powersetting_user_id').clearValue();
-                    Ext.getCmp('powersetting_user_id').store.load({
-                        params:{
-                            groupid: rcd.get('fs_group')
-                        }
-                    });
+                    //Ext.getCmp('powersetting_user_id').clearValue();
+                    Ext.getCmp('powersetting_user_id').store.getProxy().extraParams={groupid: rcd.get('fs_group')};
                 }
             }
         }, {
@@ -846,20 +840,6 @@ function powersettingformPanel(rcd){
         }]
     });
 
-    var win = Ext.create('Ext.window.Window',{
-        layout:'fit',
-        width:350,
-        closeAction:'destory',
-        resizable: false,
-        shadow: true,
-        modal: true,
-        closable : true,
-        items: powersettingPanel
-    });
-    powersettingPanel.form.reset();
-    powersettingPanel.isAdd = true;
-    win.setTitle('文件夹权限设置');
-    win.show();
 }
 
 /*COPY 文件夹结构*/

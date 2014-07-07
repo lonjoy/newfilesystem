@@ -115,7 +115,7 @@ Ext.define("FS.view.swfupload.DragUploadPanel", {
                                     var store = myself.getStore();   
                                     var data = store.getAt(index);
                                     var up_data = store.getAt(index-1);
-                                    var record=Ext.create("Org.fileupload.FileModel",{
+                                    var record=store.createModel({
                                         id: data.get('id'),
                                         name : data.get('name'),
                                         type : data.get('type'),
@@ -140,11 +140,11 @@ Ext.define("FS.view.swfupload.DragUploadPanel", {
                                 text: '下移', 
                                 iconCls: 'arrow-downon-icon',  
                                 handler: function(){ 
-                                    var store = Ext.data.StoreManager.lookup("fileItems");   
+                                    var store=myself.getStore();  
                                     if(index < store.getCount() - 1) { 
                                         var data = store.getAt(index);
                                         var down_data = store.getAt(index+1);
-                                        var record=Ext.create("Org.fileupload.FileModel",{
+                                        var record=store.createModel({
                                             id: data.get('id'),
                                             name : data.get('name'),
                                             type : data.get('type'),
@@ -454,7 +454,7 @@ Ext.define("FS.view.swfupload.DragUploadPanel", {
                         if(ctx.colIdx=='2'){
                             var fs_name =  ctx.value;
                             var obj=this.grid.ownerCt;
-                            var parentid = obj.initialConfig.items[0].postParams.fs_id;
+                            var parentid = obj.initialConfig.parent_record.get('fs_id');
                             Ext.Ajax.request({
                                 url: base_path + "index.php?c=upload&a=check&t="+new Date().getTime(),
                                 params : {fs_name: fs_name, fs_parent:parentid},
