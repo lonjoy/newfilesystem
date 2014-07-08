@@ -10,6 +10,9 @@ Ext.application({
         //ctrlr.init();
     //},
     controllers: [
-    'Main'
+    'Main',
+    'Project',
+    'ProjectTree',
+    'ProjectView'
     ]
 });

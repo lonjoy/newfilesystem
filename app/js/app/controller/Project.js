@@ -14,12 +14,7 @@ Ext.define('FS.controller.Project',{
     'swfupload.DragUploadPanel',        
     'project.PowerSetting'        
     ],
-    refs : [{
-        ref : 'projectList',
-        selector : 'projectList'
-    }],
     init: function(){
-        alert('init');
         this.control({
             'projectList': {
                 containercontextmenu: this.powermenufun,
