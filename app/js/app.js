@@ -11,8 +11,8 @@ Ext.application({
     //},
     controllers: [
     'Main',
-    'Project',
-    'ProjectTree',
+    //'Project',
+    //'ProjectTree',
     'ProjectView'
     ]
 });

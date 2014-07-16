@@ -14,7 +14,6 @@ Ext.define('FS.view.project.Tree',{
     layout: 'fit',
     root:{
         text: '中国机械设备工程股份有限公司',
-        id: '1'
     },
     border:0,
     store: 'Tree',

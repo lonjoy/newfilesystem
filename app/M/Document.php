@@ -196,7 +196,7 @@
                 }
             }
 
-            return  $tree_rs;
+            return  array('children'=>$tree_rs);
         }
 
         //排序
