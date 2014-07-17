@@ -20,16 +20,10 @@ Ext.define('FS.controller.ProjectView', {
     refs:[{
         ref: 'projectTree',
         selector: 'projectTreeList'
+    },{
+        ref: 'projectList',
+        selector: 'projectList'
     }],
-    /*
-    views:[       
-    'project.ProjectView'
-    ],
-
-    requires: [
-    'FS.controller.Project',
-    'FS.controller.ProjectTree'
-    ],*/
     init: function(){
         this.control({
             'projectTreeList':{
@@ -109,27 +103,31 @@ Ext.define('FS.controller.ProjectView', {
     },
     beforeitemexpand: function(rcd){
         this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
-        //this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+        this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
     },
     itemclick : function(view, rcd, item, index, event) {
         event.preventDefault();
         event.stopEvent();
         view.toggleOnDblClick=false; //取消双击展开折叠菜单行为
-        if(!rcd.isLoaded()){
-            this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
-            this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
-            this.getTreeStore().load({node:rcd, callback:function(){view.refresh();}});
+        if(rcd.get('fs_isdir')=='1'){
+            if(!rcd.isLoaded()){
+                this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+                this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
+                this.getTreeStore().load({node:rcd, callback:function(){}});
 
-        }else{
-            this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
+            }else{
+                this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
+            }
+            this.getParentRecordStore().removeAll();
+            this.getParentRecordStore().add(rcd);
         }
-        this.getParentRecordStore().removeAll();
-        this.getParentRecordStore().add(rcd);
     },
     itemdblclick : function(view, rcd, item, index, event) {
         event.preventDefault();
         event.stopEvent();
-        this.opendoc(view, rcd, item, index, event);
+        if(rcd.get('fs_isdir')=='0'){
+            this.opendoc(view, rcd, item, index, event);
+        }
     },
     //菜单功能
     opendoc: function(view, rcd, item, index, event){
@@ -291,6 +289,7 @@ Ext.define('FS.controller.ProjectView', {
         powersettingWin.show();
     },
     del: function(view, rcd, item, index, event){
+        var me=this;
         Ext.Msg.show({  
             title:'提示',
             closable: false, 
@@ -313,13 +312,13 @@ Ext.define('FS.controller.ProjectView', {
                             var result = Ext.JSON.decode(response.responseText);
                             if(result.success){
                                 Ext.Msg.alert('提示', result.msg);
-                                view.getStore().remove(rcd);
-                                view.refresh();
-                                return true;
+                                me.getListStore().remove(rcd);
+                                me.getProjectList().getView().refresh();
+                                me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
+                                me.getProjectTree().getView().refresh();
                             }else{
                                 Ext.Msg.alert('提示', result.msg);
                                 view.refresh(); 
-                                return false;
                             }
                         }
                     });
@@ -329,6 +328,7 @@ Ext.define('FS.controller.ProjectView', {
         });
     },
     newdir: function(view, rcd, item, index, event){
+        var me=this;
         if(typeof rcd=='undefined'){ //if it is gridmenu
             var parent_record = this.getParentRecordStore().getAt(0);
         }else{
@@ -392,7 +392,8 @@ Ext.define('FS.controller.ProjectView', {
                             params: adddocumentformPanel.getForm().getValues,
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-                                view.ownerCt.getStore().load({params:{fs_id:parent_record.get('fs_id')}});
+                                me.getListStore().load({params:{fs_id:parent_record.get('fs_id')}});
+                                me.getTreeStore().load({node:rcd, callback:function(){}});
                                 win.close();
                             },
                             failure: function(form, action){
@@ -478,6 +479,7 @@ Ext.define('FS.controller.ProjectView', {
 
     //文件夹编辑
     editdocumentformPanel:function(view, rcd, item, index, event){
+        var me=this;
         var editprojectform = Ext.create('Ext.form.Panel', {
             frame: true,
             bodyStyle: 'padding: 5 5 5 5',
@@ -536,12 +538,26 @@ Ext.define('FS.controller.ProjectView', {
                             params: editprojectform.getForm().getValues(),
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-                                rcd.set('text', action.result.data.document_pathname);
-                                rcd.set('fs_name', action.result.data.document_name);
-                                rcd.set('fs_intro', action.result.data.document_intro);
-                                rcd.set('fs_encrypt', action.result.data.fs_encrypt);
-                                rcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
-                                rcd.commit();
+                                //grid change record
+                                var listrcd=me.getListStore().findRecord('fs_id',rcd.get('fs_id'));
+                                if(listrcd==null){
+                                    me.getListStore().reload();
+                                }else{
+                                    listrcd.set('text', action.result.data.document_pathname);
+                                    listrcd.set('fs_name', action.result.data.document_name);
+                                    listrcd.set('fs_intro', action.result.data.document_intro);
+                                    listrcd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                    listrcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
+                                    listrcd.commit();
+                                }
+                                //tree change record
+                                var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
+                                treercd.set('text', action.result.data.document_pathname+'（'+action.result.data.document_intro+'）');
+                                treercd.set('fs_name', action.result.data.document_name);
+                                treercd.set('fs_intro', action.result.data.document_intro);
+                                treercd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                treercd.set('fs_lastmodify', action.result.data.fs_lastmodify);
+                                treercd.commit();
                                 win.hide(); 
                             },
                             failure: function(form, action){
@@ -569,6 +585,7 @@ Ext.define('FS.controller.ProjectView', {
     },
     //文件编辑
     editfileformPanel: function(view, rcd, item, index, event){
+        var me=this;
         var editprojectform = Ext.create('Ext.form.Panel', {
             frame: true,
             bodyStyle: 'padding: 5 5 5 5',
@@ -644,15 +661,24 @@ Ext.define('FS.controller.ProjectView', {
                             success: function(form, action){
                                 win.hide();
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-
-                                rcd.set('text', action.result.data.document_pathname);
-
-                                rcd.set('fs_name', action.result.data.document_name);
-                                rcd.set('fs_intro', action.result.data.document_intro);
-                                rcd.set('fs_haspaper', action.result.data.fs_haspaper);
-                                rcd.set('fs_encrypt', action.result.data.fs_encrypt);
-                                rcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
-                                rcd.commit();
+                                //grid change record
+                                var listrcd=me.getListStore().findRecord('fs_id',rcd.get('fs_id'));
+                                listrcd.set('text', action.result.data.document_pathname);
+                                listrcd.set('fs_name', action.result.data.document_name);
+                                listrcd.set('fs_intro', action.result.data.document_intro);
+                                listrcd.set('fs_haspaper', action.result.data.fs_haspaper);
+                                listrcd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                listrcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
+                                listrcd.commit();
+                                //tree change record
+                                var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
+                                treercd.set('text', action.result.data.document_pathname+'（'+action.result.data.document_intro+'）');
+                                treercd.set('fs_name', action.result.data.document_name);
+                                treercd.set('fs_intro', action.result.data.document_intro);
+                                treercd.set('fs_haspaper', action.result.data.fs_haspaper);
+                                treercd.set('fs_encrypt', action.result.data.fs_encrypt);
+                                treercd.set('fs_lastmodify', action.result.data.fs_lastmodify);
+                                treercd.commit();
                             },
                             failure: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
