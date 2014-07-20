@@ -10,4 +10,4 @@ Ext.define('FS.store.Tree',{
             root: ''
         }
     }
-});
+})

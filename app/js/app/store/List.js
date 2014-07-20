@@ -22,4 +22,4 @@ Ext.define('FS.store.List',{
             encode: true
         }
     }
-});
+})

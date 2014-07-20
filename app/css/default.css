@@ -182,10 +182,6 @@ left: -6px;
 /*日志文件恢复*/
 .del_row_style{background: yellow;}  
 
-/*操作记录*/
-.go_history{background-image: url("../image/go-left.gif") !important;}
-.go_forward{background-image: url("../image/go-right.gif") !important;}
-
 
 /*邮件操作相关样式*/
 
@@ -211,3 +207,7 @@ body{}
 .icon_history{background-image: url("../image/templates.png") !important;}
 .icon_sys{background-image: url("../image/cog.png") !important;}
 .icon_log{background-image: url("../image/leaf.gif") !important;}
+
+/*操作记录*/
+.go_history{background-image: url("../image/go-left.gif") !important;}
+.go_forward{background-image: url("../image/go-right.gif") !important;}

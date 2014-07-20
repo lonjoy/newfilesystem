@@ -50,7 +50,8 @@
                     }
                 }elseif($login_user_info['u_grade']==98 || $login_user_info['u_grade']==99 ){ #系统监察员| 系统管理员 单独处理， 对加密的文件此用户不可以看到
                     $where .= $fs_id ? '' : ' fs_parent=0 and';
-                    $where .= " fs_encrypt!='1' and";
+                    #$where .= " fs_encrypt!='1' and";
+                    $where .= " (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) and";
                 }elseif($login_user_info['u_grade']==1 || $login_user_info['u_grade']==2){  //组管理员，组领导
                     #2013、10、11 修改 组对应为管理的那个组
                     $where .= $fs_id ? "" : " fs_group='{$login_user_info['u_targetgroup']}' and";
@@ -1789,33 +1790,34 @@
             $fs_id = isset($data['fs_id']) ? intval($data['fs_id']) : '';
             $uid = $login_user_info['u_id'];
             $limit = " limit " . $start . ",".$pagesize;
-            $where = $fs_id ? " and fs_parent='{$fs_id}'" :'';
+            $where = $fs_id ? " fs_parent='{$fs_id}' and" :'';
 
             //查询用户权限
             $tree_rs = array();
             if(!empty($login_user_info)){
                 if($login_user_info['u_grade']==100 || $login_user_info['u_grade']==4 || $login_user_info['u_grade']==3){  //超级管理员|系统监察员|项目部负责人|部门负责人
-                    $where .= $fs_id ? '' : ' and fs_parent=0 ';
+                    $where .= $fs_id ? '' : ' fs_parent=0 and';
                     #20140305 添加项目部负责人|部门负责人不可以查看加密文件
                     if($login_user_info['u_grade']==4 || $login_user_info['u_grade']==3){ 
                         $where .= " (fs_encrypt!='1' or (fs_encrypt='1' and fs_user='{$login_user_info['u_id']}' )) and";
                     }
                 }elseif($login_user_info['u_grade']==98 || $login_user_info['u_grade']==99){ #系统监察员|系统管理员， 对加密的文件此用户不可以看到
-                    $where .= $fs_id ? '' : ' and fs_parent=0 ';
-                    $where .= " and (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) ";
+                    $where .= $fs_id ? '' : ' fs_parent=0 and';
+                    $where .= " (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) and";
                 }elseif($login_user_info['u_grade']==1 || $login_user_info['u_grade']==2){  //组管理员，组领导
                     if($login_user_info['u_grade']==1){  #20130916 添加组管理员不可以查看加密文件
-                        $where .= " and (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) ";
+                        $where .= " (fs_encrypt=0 or (fs_encrypt=1 and fs_user='{$login_user_info['u_id']}' )) and";
                     }
 
                     $where .= $fs_id ? '' : " or fs_group='{$login_user_info['u_targetgroup']}' ";
                 }else{
-                    $where .= " and fs_user='{$login_user_info['u_id']}' ";
+                    $where .= " fs_user='{$login_user_info['u_id']}' and";
                 }
+                $where = substr($where, 0, -3);
                 #获取统计总数、分页使用
-                $sql =  "select count(*) from ".self::$document_table." where 1 " . $where;
+                $sql =  "select count(*) from ".self::$document_table." where " . $where;
                 $count_arr = self::$db->get_col($sql);
-                $sql = "select * from ".self::$document_table." as d left join (select u_id, u_name from ".self::$usergroup_table.")  as u on d.fs_user=u.u_id  where 1 " . $where ;//. " order by  fs_isdir " . $sort .',' . $sortfield .' '. $sort . $limit;
+                $sql = "select * from ".self::$document_table." as d left join (select u_id, u_name from ".self::$usergroup_table.")  as u on d.fs_user=u.u_id  where " . $where ;//. " order by  fs_isdir " . $sort .',' . $sortfield .' '. $sort . $limit;
 
                 //echo $sql;
                 $res_doc = self::$db->get_results($sql);
@@ -2057,7 +2059,6 @@
             $where .= " fs_parent!=0 and";//排除项目文件
             $where .= $fs_id ? " fs_parent='{$fs_id}' and" : '';
 
-
             if($login_user_info['u_grade']==100 || $login_user_info['u_grade']==4 || $login_user_info['u_grade']==3)
             {  
                 //超级管理员|项目部负责人|部门负责人
@@ -2072,18 +2073,16 @@
                 if($login_user_info['u_grade']==1){  #20130916 添加组管理员不可以查看加密文件
                     $where .= " (fs_encrypt!='1' or (fs_encrypt='1' and fs_user='{$login_user_info['u_id']}' )) and";
                 }
-                //$sql = "select *, if(fs_name REGEXP '^[0-9]+$', LPAD(fs_name, 20, '0'), fs_name) as o  from (select * from ".self::$document_table." where 1 ".$groupwhere.") as t2 where 1 ".$where." order by fs_isdir asc, LENGTH(o),o asc";
             }
             else
             {
                 $where .= " fs_user='{$login_user_info['u_id']}' and fs_group='{$login_user_info['u_targetgroup']}' and";
-                //$sql = "select *, if(fs_name REGEXP '^[0-9]+$', LPAD(fs_name, 20, '0'), fs_name) as o from ".self::$document_table." where fs_user='{$login_user_info['u_id']}' ".$where." order by fs_isdir asc, LENGTH(o), o asc";
             }
             #记录搜索查询日志
             $conditions_desc = '查询 '.$condition_str.'';
             #记录系统日志
             M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>$conditions_desc));
-
+            //echo $where;
             $where = substr($where, 0, -3);
             $sql = "select count(*) from ". self::$document_table." where " . $where;
             $count_arr = self::$db->get_col($sql);

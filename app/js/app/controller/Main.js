@@ -7,9 +7,6 @@ Ext.define('FS.controller.Main',{
         'FS.store.menu.GenerateDocTree',
         'FS.store.menu.EmailTree'
     ],
-    requires:[
-        'FS.controller.ProjectView'
-    ],
     init: function(){
         this.control({
             'sidebar > treepanel':{

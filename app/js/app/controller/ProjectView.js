@@ -5,7 +5,8 @@ Ext.define('FS.controller.ProjectView', {
     'Tree',
     'HistoryList',
     'ParentRecord',
-    'FileUpload'
+    'FileUpload',
+    'Navbar'
     ],
     views:[
     'project.List',
@@ -34,27 +35,7 @@ Ext.define('FS.controller.ProjectView', {
                 itemcollapse: this.itemcollapse,
                 //文件夹数右键事件
                 itemcontextmenu : this.powermenufun,
-                beforeitemmove:function(node, oldParent, newParent, index, eOpts){
-                    if(Ext.isEmpty(newParent) || newParent.get('id')=='root' || newParent.raw.fs_isdir=='0'){
-                        Ext.Msg.alert('提示', '目标文件夹错误， 请重现选择');
-                        return false;
-                    }
-                    Ext.Msg.show({  
-                        title:'提示',
-                        closable: false, 
-                        msg:'确定移动'+node.get('text')+' 到 '+newParent.get('text')+'下吗？', 
-                        icon:Ext.MessageBox.QUESTION,
-                        buttons: Ext.Msg.YESNO,
-                        fn: function(btn){
-                            if(btn=='yes'){
-                                dragtreepaneldata(node, oldParent, newParent);
-                            }
-                            return false;
-                        } 
-                    });
-                    return false;
-                }
-
+                beforeitemmove : this.beforeitemmove
             },
             'projectList': {
                 containercontextmenu: this.powermenufun,
@@ -64,7 +45,19 @@ Ext.define('FS.controller.ProjectView', {
             'projectList pagingtoolbar button': {
                 click: function(obj, event){
                     //get store getProxy , then proxy has extraParams param to set add param
-                    obj.ownerCt.ownerCt.getStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')};
+                    if(typeof this.getParentRecordStore().getAt(0)!='undefined'){
+                        this.getListStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')};
+                    }
+                }
+            },
+            'projectList button[iconCls="go_history"]': {
+                click: function(obj, event){
+                    alert('history');
+                }
+            },
+            'projectList button[iconCls="go_forward"]': {
+                click: function(obj, event){
+                    alert('go_forward');
                 }
             },
             'powermenu':{
@@ -87,6 +80,9 @@ Ext.define('FS.controller.ProjectView', {
                 containercontextmenu: function(obj, e){
                     e.stopEvent();
                 }
+            },
+            'powersetting button':{
+                click: function(){}
             }
         });
         this.powermenu = Ext.widget('powermenu');
@@ -99,11 +95,14 @@ Ext.define('FS.controller.ProjectView', {
         }
     },
     itemcollapse : function(rcd){
-
+        this.getProjectTree().getSelectionModel().select(rcd);
     },
     beforeitemexpand: function(rcd){
-        this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
-        this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+        if(!isNaN(rcd.get('fs_id'))){
+            this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
+            this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+            this.getProjectTree().getSelectionModel().select(rcd);
+        }
     },
     itemclick : function(view, rcd, item, index, event) {
         event.preventDefault();
@@ -111,16 +110,73 @@ Ext.define('FS.controller.ProjectView', {
         view.toggleOnDblClick=false; //取消双击展开折叠菜单行为
         if(rcd.get('fs_isdir')=='1'){
             if(!rcd.isLoaded()){
-                this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
                 this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
                 this.getTreeStore().load({node:rcd, callback:function(){}});
+            }
 
+            if(typeof this.getParentRecordStore().getAt(0)!='undefined'){
+                if(this.getParentRecordStore().getAt(0).get('fs_id')!=rcd.get('fs_id')){
+                    this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+                }
             }else{
                 this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
             }
             this.getParentRecordStore().removeAll();
             this.getParentRecordStore().add(rcd);
         }
+        //this.getProjectTree().getView().getSelectionModel().select(rcd);
+    },
+    beforeitemmove:function(node, oldParent, newParent, index, eOpts){
+        var me=this;
+        if(Ext.isEmpty(newParent) || newParent.get('id')=='1'){
+            Ext.Msg.alert('提示', '目标文件夹错误， 请重现选择');
+            return false;
+        }
+        Ext.Msg.show({  
+            title:'提示',
+            closable: false, 
+            msg:'确定移动'+node.get('text')+' 到 '+newParent.get('text')+'下吗？', 
+            icon:Ext.MessageBox.QUESTION,
+            buttons: Ext.Msg.YESNO,
+            fn: function(btn){
+                if(btn=='yes'){
+                    var nodeid = node.get('fs_id');
+                    var oldparentid = oldParent.get('fs_id');
+                    var newparentid = newParent.get('fs_id');
+                    var msgTip = Ext.MessageBox.show({
+                        title:'提示',
+                        width: 250,
+                        msg: '正在移动……'
+                    });
+                    Ext.Ajax.request({
+                        url: base_path + "index.php?c=document&a=movedocument",
+                        params : {nodeid:nodeid, nodehashname:node.get('fs_hashname'), oldparentid:oldparentid, newparentid:newparentid, document_name: node.get('fs_name'), fs_type:node.get('fs_type'), fs_size:node.get('fs_size'), fs_intro:node.get('fs_intro'), fs_isdir:node.get('fs_isdir')},
+                        method : 'POST',
+                        success: function(response, options){
+                            msgTip.hide();
+                            var result = Ext.JSON.decode(response.responseText);
+                            if(result.success){
+                                Ext.Msg.alert('提示', result.msg);
+                                node.remove();
+                                me.getTreeStore().getProxy().extraParams={fs_id:newParent.get('fs_id')};
+                                me.getTreeStore().load({node:newParent});
+                                me.getProjectTree().getView().refresh();
+                                return true;
+                            }else{
+                                Ext.Msg.alert('提示', result.msg); 
+                                return false;
+                            }
+                        },
+                        failure: function(form, action){
+                            Ext.Msg.alert('温馨提示', action.result.msg); 
+                            return false;
+                        } 
+                    });
+                }
+                return false;
+            } 
+        });
+        return false;
     },
     itemdblclick : function(view, rcd, item, index, event) {
         event.preventDefault();
@@ -128,6 +184,7 @@ Ext.define('FS.controller.ProjectView', {
         if(rcd.get('fs_isdir')=='0'){
             this.opendoc(view, rcd, item, index, event);
         }
+        //this.getProjectTree().getSelectionModel().select(rcd);
     },
     //菜单功能
     opendoc: function(view, rcd, item, index, event){
@@ -160,7 +217,9 @@ Ext.define('FS.controller.ProjectView', {
         }else{
             event.preventDefault();
             event.stopEvent();
-            view.getSelectionModel().select(rcd);
+            if(view.getSelectionModel().selected.length==1){
+                view.getSelectionModel().select(rcd);
+            }
             //防止重复创建VIEW
             this.rcd=rcd;
             this.gridview=view;
@@ -289,43 +348,53 @@ Ext.define('FS.controller.ProjectView', {
         powersettingWin.show();
     },
     del: function(view, rcd, item, index, event){
+        var selected_rcd = view.getSelectionModel().selected;
         var me=this;
         Ext.Msg.show({  
             title:'提示',
             closable: false, 
-            msg:'确定删除 '+rcd.get('text'), 
+            msg:selected_rcd.length==1 ? '确定删除 '+rcd.get('text') : '确定进行批量删除这'+selected_rcd.length+'个文件么？', 
             icon:Ext.MessageBox.QUESTION,
             buttons: Ext.Msg.OKCANCEL,
             fn: function(btn){
                 if(btn=='ok'){
-                    var msgTip = Ext.MessageBox.show({
-                        title:'提示',
-                        width: 250,
-                        msg: '正在删除……'
-                    });
-                    Ext.Ajax.request({
-                        url: base_path + "index.php?c=document&a=deldocument",
-                        params : rcd.getData(),
-                        method : 'POST',
-                        success: function(response, options){
-                            msgTip.hide();
-                            var result = Ext.JSON.decode(response.responseText);
-                            if(result.success){
-                                Ext.Msg.alert('提示', result.msg);
-                                me.getListStore().remove(rcd);
-                                me.getProjectList().getView().refresh();
-                                me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
-                                me.getProjectTree().getView().refresh();
-                            }else{
-                                Ext.Msg.alert('提示', result.msg);
-                                view.refresh(); 
-                            }
-                        }
-                    });
+                    me.startdeldocument(selected_rcd, 0);
+                    me.getProjectList().getView().refresh();
+                    me.getProjectTree().getView().refresh();
                 }
                 return false;
             } 
         });
+    },
+    startdeldocument: function(selected_rcd){ //logic has question will 
+        var me=this;
+        var msgTip = Ext.MessageBox.show({
+            title:'提示',
+            width: 250,
+            msg: '正在删除……'
+        });
+        var rcd=selected_rcd.items[0]; //first rcd
+        if(selected_rcd.length>0){
+            Ext.Ajax.request({
+                url: base_path + "index.php?c=document&a=deldocument",
+                params : rcd.getData(),
+                method : 'POST',
+                success: function(response, options){
+                    var result = Ext.JSON.decode(response.responseText);
+                    if(result.success){
+                        Ext.Msg.alert('提示', result.msg);
+                        me.getListStore().remove(rcd);
+                        me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
+                        me.startdeldocument(selected_rcd);
+
+                    }else{
+                        Ext.Msg.alert('提示', result.msg);
+                    }
+                }
+            });
+        }else{
+            msgTip.hide(); 
+        }
     },
     newdir: function(view, rcd, item, index, event){
         var me=this;
@@ -424,7 +493,8 @@ Ext.define('FS.controller.ProjectView', {
         var fileitem=Ext.widget('fileuploadPanel', {
             parent_record:parent_record,
             savePath:parent_record.get('fs_fullpath'),
-            ListStore:this.getListStore() 
+            ListStore:this.getListStore(),
+            TreeStore:this.getTreeStore() 
         });
         var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{
@@ -453,7 +523,8 @@ Ext.define('FS.controller.ProjectView', {
         var fileitem=Ext.widget('dragfileuploadPanel', {
             parent_record:parent_record,
             savePath:parent_record.get('fs_fullpath'),
-            ListStore:this.getListStore() 
+            ListStore:this.getListStore(),
+            TreeStore:this.getTreeStore()
         });
         var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{

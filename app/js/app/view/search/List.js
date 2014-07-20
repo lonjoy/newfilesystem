@@ -1,29 +1,14 @@
-Ext.define('FS.view.project.List',{
+Ext.define('FS.view.search.List',{
     extend: 'Ext.grid.Panel',
-    alias: 'widget.projectList',
+    alias: 'widget.searchList',
     region:'center',
-    store: 'List',
+    store: 'Search',
     selModel: 'MULTI',
+    bodyStyle: 'background:#ffffcc;',
     tbar:[
     {xtype:'button', text: '', iconCls: 'go_history'},
     {xtype:'tbseparator'},
     {xtype:'button', text: '', iconCls: 'go_forward', disabled: true}
-    /*
-    {xtype: 'tbfill' },
-    {
-        xtype: 'toolbar',
-        border: false,
-        items: [{
-            xtype: 'textfield',
-            emptyText: '输入搜索关键字...'
-        },
-        {
-            xtype: 'button',
-            text: '搜索',
-            iconCls:'Zoom'
-        }]
-    }
-    */
     ],
     initComponent: function(){
         this.columns = [
@@ -41,12 +26,8 @@ Ext.define('FS.view.project.List',{
     },
     dockedItems: [{
         xtype: 'pagingtoolbar',
-        store: 'List',
+        store: 'Search',
         dock: 'bottom',
         displayInfo: true
-    }],
-    onRender: function(){
-        this.store.load();
-        this.callParent(arguments);
-    }
+    }]
 })

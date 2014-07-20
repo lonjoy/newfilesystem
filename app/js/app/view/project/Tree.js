@@ -13,7 +13,7 @@ Ext.define('FS.view.project.Tree',{
     multiSelect : true,
     layout: 'fit',
     root:{
-        text: '中国机械设备工程股份有限公司',
+        text: '中国机械设备工程股份有限公司'
     },
     border:0,
     store: 'Tree',
