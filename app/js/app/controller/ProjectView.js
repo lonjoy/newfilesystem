@@ -6,7 +6,8 @@ Ext.define('FS.controller.ProjectView', {
     'HistoryList',
     'ParentRecord',
     'FileUpload',
-    'Navbar'
+    'Navbar',
+    'WorkgroupTree'
     ],
     views:[
     'project.List',
@@ -16,7 +17,8 @@ Ext.define('FS.controller.ProjectView', {
     'swfupload.DragUploadPanel',        
     'project.PowerSetting',
     'project.ProjectView',        
-    'project.Tree'        
+    'project.Tree',
+    'project.ShareDoc'        
     ],
     refs:[{
         ref: 'projectTree',
@@ -24,6 +26,12 @@ Ext.define('FS.controller.ProjectView', {
     },{
         ref: 'projectList',
         selector: 'projectList'
+    },{
+        ref: 'shareDoc',
+        selector: 'sharedoc'
+    },{
+        ref: 'powerMenu',
+        selector: 'powermenu'
     }],
     init: function(){
         this.control({
@@ -82,7 +90,151 @@ Ext.define('FS.controller.ProjectView', {
                 }
             },
             'powersetting button':{
-                click: function(){}
+                click: function(obj, e){
+                    var me=this;
+                    var rcd=obj.ownerCt.ownerCt.rcd;
+                    var win=obj.ownerCt.ownerCt;
+                    powersettingPanel=Ext.getCmp('powersettingform');
+                    if(powersettingPanel.form.isValid()){
+                        powersettingPanel.getForm().submit({
+                            url: base_path+'index.php?c=document&a=adddocpower',
+                            method: 'post',
+                            timeout: 30,
+                            params: powersettingPanel.getForm().getValues(),
+                            success: function(form, action){
+                                var fs_group=Ext.getCmp('powersetting_workgroup_id').getValue();
+                                var fs_user=Ext.getCmp('powersetting_user_id').getValue();
+                                var u_id=Ext.getCmp('powersetting_user_id').getValue();
+                                var u_name=Ext.getCmp('powersetting_user_id').getRawValue();
+                                //grid change record
+                                me.getListStore().reload();
+
+                                //tree change record
+                                var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
+                                treercd.set('fs_group', fs_group);
+                                treercd.set('fs_user', fs_user);
+                                treercd.set('u_id', u_id);
+                                treercd.set('u_name', u_name);
+                                treercd.commit();
+                                Ext.Msg.alert('温馨提示', action.result.msg);
+                                win.close();
+                            },
+                            failure: function(form, action){
+                                Ext.Msg.alert('温馨提示', action.result.msg);
+                            }
+                        });
+                    }
+                }
+            },
+            'sharedoc treepanel':{
+                beforeitemexpand:function(rcd){
+                    var docrcd=this.getShareDoc().rcd;
+                    console.log(docrcd);
+                    this.getWorkgroupTreeStore().setProxy({
+                        type:'ajax', 
+                        url: base_path + "index.php?c=usergroup&a=listgroupuser&type=checkbox&fs_id="+docrcd.get('fs_id')+"&groupid="+rcd.get('u_id'),
+                        reader:'json'
+                    });
+                },
+                checkchange: function(rcd, checked){
+                    if(rcd.get('u_isgroup')=='1'){
+                        rcd.expand();
+                    }
+                    rcd.checked=checked;
+                    if(rcd.hasChildNodes()){
+                        rcd.eachChild(function(child) {
+                            child.set('checked', checked);
+                            child.fireEvent('checkchange', child, checked);
+                        });
+                    }
+                    if(rcd.parentNode.get('id')!='root'){
+                        if(rcd.parentNode.checked==true && checked==false){
+                            rcd.parentNode.set('checked', false);   
+                        }
+                    }
+                }
+            },
+            'sharedoc button':{
+                click: function(obj, e){
+                    var me=this;
+                    var docrcd=this.getShareDoc().rcd;
+                    var treepanel=obj.ownerCt.ownerCt.items.items[0];
+                    var checkedrcd=treepanel.getChecked();
+                    var user_arr=[];
+                    var ischeck =false;
+                    if(checkedrcd.length>0){
+                        for(var i=0; i<checkedrcd.length; i++){
+                            if(checkedrcd[i].get('u_isgroup')=='0'){
+                                ischeck = true;
+                                if(checkedrcd[i].get('u_id')==login_user.u_id){
+                                    Ext.Msg.alert('提示', '请选择非当前用户进行共享！');
+                                    return false;
+                                }
+                                user_arr.push(checkedrcd[i].get('u_id'));
+                            }
+                        }
+                        user_str = user_arr.join(',');
+                    }
+                    if(ischeck){
+                        obj.ownerCt.ownerCt.hide();
+                        Ext.Ajax.request({
+                            url: base_path + "index.php?c=document&a=sharedocument",
+                            params : {uids: user_str, fs_id: docrcd.get('fs_id'), fs_code: docrcd.get('fs_code'), fs_parent:docrcd.get('fs_parent')},
+                            method : 'POST',
+                            timeout: 600000,
+                            success: function(response, options){
+                                var result = Ext.JSON.decode(response.responseText);
+                                if(result.success){
+                                    //grid change record
+                                    var listrcd=me.getListStore().reload();
+                                    //tree change record
+                                    var treercd=me.getTreeStore().getNodeById(docrcd.get('fs_id'));
+                                    treercd.set('fs_is_share', 1);
+                                    treercd.commit();
+                                    Ext.Msg.alert('提示', result.msg);
+                                    return true;
+                                }else{
+                                    Ext.Msg.alert('提示', result.msg); 
+                                    return false;
+                                }
+                            },
+                            failure: function(resp,opts) {
+                                Ext.Msg.alert('提示', '操作失败！  ');   
+                            }      
+                        });
+                    }else{
+                        var msgTip = new Ext.LoadMask(Ext.getBody(),{  
+                            msg:'正在处理，请稍候...',  
+                            removeMask : true                     
+                        });  
+                        msgTip.show();
+                        Ext.Ajax.request({
+                            url: base_path + "index.php?c=document&a=removesharesetting",
+                            params : docrcd.raw,
+                            method : 'POST',
+                            timeout: 600000,
+                            success: function(response, options){
+                                msgTip.hide();
+                                var result = Ext.JSON.decode(response.responseText); 
+                                if(result.success){
+                                    //grid change record
+                                    var listrcd=me.getListStore().reload();
+                                    //tree change record
+                                    var treercd=me.getTreeStore().getNodeById(docrcd.get('fs_id'));
+                                    treercd.set('fs_is_share', 0);
+                                    treercd.commit();
+                                    Ext.Msg.alert('提示', result.msg);
+                                }else{
+                                    Ext.Msg.alert('提示', result.msg); 
+                                }
+                            },
+                            failure: function(resp,opts) {
+                                msgTip.hide();
+                                Ext.Msg.alert('提示', '操作失败！  ');   
+                            }      
+                        });
+                    }
+                }
             }
         });
         this.powermenu = Ext.widget('powermenu');
@@ -212,7 +364,7 @@ Ext.define('FS.controller.ProjectView', {
             this.item=undefined;
             this.rowindex=undefined;
             this.event=arguments[1];
-            this.powermenu.addMenuItem(null,null, obj); //根据是否是文件进行显示
+            this.powermenu.addMenuItem(null,null, obj, this.rcd); //根据是否是文件进行显示
             this.powermenu.showAt(arguments[1].getXY());
         }else{
             event.preventDefault();
@@ -227,7 +379,7 @@ Ext.define('FS.controller.ProjectView', {
             this.rowindex=index;
             this.event=event;
             var obj='powermenu';
-            this.powermenu.addMenuItem(rcd.get('fs_isdir'),rcd.get('fs_parent'), obj); //根据是否是文件进行显示
+            this.powermenu.addMenuItem(rcd.get('fs_isdir'),rcd.get('fs_parent'), obj, this.rcd); //根据是否是文件进行显示
             this.powermenu.showAt(event.getXY());
         }
     },
@@ -269,9 +421,24 @@ Ext.define('FS.controller.ProjectView', {
             this.editfileformPanel(view, rcd, item, index, event); 
         }
     },
+
+    /*设置共享*/
     addshare: function(view, rcd, item, index, event){
-        sharedoc_setting(rcd);
+        var panel=Ext.widget('sharedoc', {rcd:rcd}); //Ext.create('widget.sharedoc', {rcd:rcd});
+
+        this.getWorkgroupTreeStore().setProxy({
+            type: 'ajax',
+            url: base_path + "index.php?c=usergroup&a=listworkgroup&type=checkbox",
+            reader: {
+                type: 'json',
+                root: ''
+            }
+        });
+        this.getWorkgroupTreeStore().load();
+        panel.show();
     },
+
+    /*取消共享*/
     cannelshare: function(view, rcd, item, index, event){
         sharedoc_delsetting(rcd);
     },
@@ -344,7 +511,6 @@ Ext.define('FS.controller.ProjectView', {
     },
     powersetting: function(view, rcd, item, index, event){
         var powersettingWin=Ext.widget('powersetting', {rcd:rcd});
-        //console.log(powersettingWin);
         powersettingWin.show();
     },
     del: function(view, rcd, item, index, event){

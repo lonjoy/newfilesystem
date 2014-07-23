@@ -44,7 +44,7 @@
             if(!empty($login_user_info)){
                 if($login_user_info['u_grade']==100 || $login_user_info['u_grade']==4 || $login_user_info['u_grade']==3){  //超级管理员|项目部负责人|部门负责人
                     $where .= $fs_id ? '' : ' fs_parent=0 and';
-                     #20140305 添加项目部负责人|部门负责人不可以查看加密文件
+                    #20140305 添加项目部负责人|部门负责人不可以查看加密文件
                     if($login_user_info['u_grade']==4 || $login_user_info['u_grade']==3){ 
                         $where .= " (fs_encrypt!='1' or (fs_encrypt='1' and fs_user='{$login_user_info['u_id']}' )) and";
                     }
@@ -312,7 +312,7 @@
                 }else{
                     $where .= " fs_user='{$user_info['u_id']}' and";
                 }
-                
+
                 #不可以查看加密文件
                 if($login_user_info['u_grade']==4 || $login_user_info['u_grade']==3 || $login_user_info['u_grade']==98 || $login_user_info['u_grade']==99 || $login_user_info['u_grade']==1){ 
                     $where .= " fs_encrypt!='1' and";
@@ -528,16 +528,16 @@
                 }
                 return $rs;
             }else{
-                $rs['msg'] = '创建文件件夹失败';
+                $rs['msg'] = '创建文件夹失败';
                 $rs['success'] = false;
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'创建文件件夹失败'));
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'创建文件夹失败'));
                 return $rs;
             }
         }
 
 
         /**
-        * 对文件件夹进行编辑
+        * 对文件夹进行编辑
         * 
         * @param mixed $data
         * @return string
@@ -561,17 +561,17 @@
             }
             if(empty($document_name)){
                 $rs['success'] = false;
-                $rs['msg'] = '请输入文件件夹编号';
+                $rs['msg'] = '请输入文件夹编号';
                 return $rs;
             }
             if(empty($document_intro)){
                 $rs['success'] = false;
-                $rs['msg'] = '请输入文件件夹说明';
+                $rs['msg'] = '请输入文件夹说明';
                 return $rs;
             }
             if(!$document_id){
                 $rs['success'] = false;
-                $rs['msg'] = '请选择需要编辑的文件件夹';
+                $rs['msg'] = '请选择需要编辑的文件夹';
                 return $rs;
             }
             if(!$login_user_info['u_id']){
@@ -587,11 +587,15 @@
                 $rs['msg'] = $document_name.'已经存在！';
                 return $rs;
             }
-
-            $hashname = $ret['data']['fs_hashname']; #当前文件件夹hashname, 记录日志使用
+            if($ret['flag']==2){
+                $rs['success'] = false;
+                $rs['msg'] = '“'.$document_name.'”文件编号不符合规则！';
+                return $rs;
+            }
+            $hashname = $ret['data']['fs_hashname']; #当前文件夹hashname, 记录日志使用
 
             $old_fs_code = $ret['data']['fs_code'];
-            #获取上级文件件夹的fs_code
+            #获取上级文件夹的fs_code
             $sql = "select * from " . self::$document_table . " where fs_id='{$document_parentid}' and fs_isproject='0'";
             $row_parent = self::$db->get_row($sql);
             if(!empty($row_parent)){
@@ -612,7 +616,7 @@
             WHERE fs_id='$document_id'";
             $res = self::$db->query($sql);
             if($res){
-                #当前移动文件件夹更新成功后需要对文件件夹下的所有子文件件夹的fs_code, fs_encrypt进行处理
+                #当前移动文件夹更新成功后需要对文件夹下的所有子文件夹的fs_code, fs_encrypt进行处理
                 self::dealwithmovefscode($document_id, $new_fs_code, $ret['data']['fs_id_path'], $ret['data']['fs_is_share'], $encrypt);
                 $rs['msg'] = '操作成功';
                 $rs['data'] = array('document_name'=>$document_name,'document_pathname'=>$new_fs_code, 'document_intro'=>$document_intro, 'fs_encrypt'=>$encrypt, 'fs_lastmodify'=>$edittime);
@@ -621,13 +625,13 @@
                 $doclog = array('fs_id'=>$document_id, 'fs_name'=>$document_name, 'fs_intro'=>$document_intro, 'fs_size'=>0, 'fs_type'=>'', 'fs_hashname'=>$hashname,'log_user'=>$login_user_info['u_id'], 'log_type'=>2, 'log_lastname'=>$document_name);
                 M_Log::doclog($doclog);
                 #记录系统操作日志
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'修改文件件夹编号 '.$old_fs_code.' 为 '.$new_fs_code.' 文件件夹名称由 '.$document_oldintro.' 修改为 '.$document_intro.' 操作成功'));
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'修改文件夹编号 '.$old_fs_code.' 为 '.$new_fs_code.' 文件夹名称由 '.$document_oldintro.' 修改为 '.$document_intro.' 操作成功'));
                 return $rs;
             } else {
                 $rs['msg'] = '操作失败';
                 $rs['success'] = false;
                 #记录系统操作日志
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'修改文件件夹编号 '.$old_fs_code.' 为 '.$new_fs_code.' 文件件夹名称由 '.$document_oldintro.' 修改为 '.$document_intro.' 操作失败'));
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'修改文件夹编号 '.$old_fs_code.' 为 '.$new_fs_code.' 文件夹名称由 '.$document_oldintro.' 修改为 '.$document_intro.' 操作失败'));
                 return $rs;
             }
         }        
@@ -689,7 +693,7 @@
             }
             $edittime = date('Y-m-d H:i:s');
             $old_fs_code = $ret['data']['fs_code'];
-            #获取上级文件件夹的fs_code
+            #获取上级文件夹的fs_code
             $sql = "select fs_code from " . self::$document_table . " where fs_id='{$file_parentid}'";
             $row_parent = self::$db->get_col($sql);
             $new_fs_code = '';
@@ -729,7 +733,7 @@
         }
         /***************************************************************************************************/
         /**
-        * 添加项目文件件夹
+        * 添加项目文件夹
         * 
         * @param mixed $data
         * @param mixed $login_user_info
@@ -761,7 +765,7 @@
                 $rs['success'] = false;
                 $rs['msg'] = '项目已存在！';
                 #记录系统操作日志
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'创建同名项目'.$project_name.'文件件夹失败'));
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'创建同名项目'.$project_name.'文件夹失败'));
                 return $rs;
             }
 
@@ -771,7 +775,7 @@
                 $project_intro = addslashes($project_intro);
                 $createtime = date('Y-m-d H:i:s');
                 $hashname = parent::hashname($project_name);
-                /**开始创建项目文件件夹**/
+                /**开始创建项目文件夹**/
                 $rsfile = ZF_Libs_IOFile::mkdir(PROJECT_DOC_PATH . DS . $hashname);
                 if($rsfile){
                     $sql = "INSERT INTO ".self::$document_table." 
@@ -790,7 +794,7 @@
                     if($res){
                         $rs['msg'] = '添加项目'.$project_name. '成功';
                         $rs['success'] = true;
-                        #记录文件件夹操作日志
+                        #记录文件夹操作日志
                         $log_fs_id = self::$db->last_insert_id();
                         #记录文件操作日志
                         $doclog = array('fs_id'=>$log_fs_id, 'fs_name'=>$project_name, 'fs_intro'=>$project_intro, 'fs_size'=>0, 'fs_type'=>0, 'fs_hashname'=>$hashname,'log_user'=>$login_user_info['u_id'], 'log_type'=>0, 'log_lastname'=>$project_name);
@@ -804,11 +808,11 @@
                         M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'添加项目'.$project_name. '失败'));
                     }
                 }else{
-                    $rs['msg'] = '创建文件件夹失败';
+                    $rs['msg'] = '创建文件夹失败';
                     $rs['success'] = false;
 
                     #记录系统操作日志
-                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'创建项目文件件夹失败'));
+                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'创建项目文件夹失败'));
                 }
             }
             return $rs;
@@ -816,7 +820,7 @@
 
 
         /**
-        * 递归获取物理文件件夹路径
+        * 递归获取物理文件夹路径
         * 
         * @param mixed $node_id
         */
@@ -867,7 +871,7 @@
         }        
 
         /**
-        * 递归获取ID拼接的路径， 用于文件件夹树的展开（用名称fs_name会出现文件和文件夹同名的时候会报错）
+        * 递归获取ID拼接的路径， 用于文件夹树的展开（用名称fs_name会出现文件和文件夹同名的时候会报错）
         * 
         * @param mixed $node_id
         */
@@ -914,7 +918,7 @@
         }
 
         /**
-        * 分配文件件夹权限
+        * 分配文件夹权限
         * 
         * @param mixed $data
         */
@@ -944,16 +948,16 @@
                             $rs['success'] = true;
                             $rs['msg'] = '权限分配成功！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>$project_doc_name.' 文件件夹权限分配成功'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>$project_doc_name.' 文件夹权限分配成功'));
                         } else{
                             $rs['success'] = false;
                             $rs['msg'] = '权限分配失败！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>$project_doc_name.' 文件件夹权限分配失败'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>$project_doc_name.' 文件夹权限分配失败'));
                         }
                     }else{
                         $rs['success'] = false;
-                        $rs['msg'] = '请选择文件件夹';
+                        $rs['msg'] = '请选择文件夹';
                     }
                 }else{
                     $rs['success'] = false;
@@ -1066,7 +1070,7 @@
                         //$doclog = array();
                         //M_Log::doclog($doclog);
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件件夹下 操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件夹下 操作失败'));    
                         return $rs;
                     } else {
                         $fs_code = $log_newfilepath . '-' . $oldfile_res['fs_name'];
@@ -1086,26 +1090,26 @@
                             $doclog = array('fs_id'=>$nodeid, 'fs_name'=>$document_name, 'fs_hashname'=>$newhashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>3, 'log_lastname'=>$document_name, 'fs_code'=>$log_oldfilepath, 'fs_parent'=>$newparentid);
                             M_Log::doclog($doclog);
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件件夹下 操作成功'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件夹下 操作成功'));
                             return $rs;
                         }else{
                             $rs['success'] = false;
                             $rs['msg'] = '操作失败！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件件夹下 操作失败'));    
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件夹下 操作失败'));    
                             return $rs;
                         }
 
                     }
                 }
-            } elseif($fs_isdir==1) { //拖动文件件夹
-                #判断文件件夹是否存在
+            } elseif($fs_isdir==1) { //拖动文件夹
+                #判断文件夹是否存在
                 $checkresult = self::checkSamedoc($document_name, $newparentid, $nodeid, 1);  
                 if($checkresult['flag']==1){
                     $rs['success'] = false;
-                    $rs['msg'] = '文件件夹已经存在！';
+                    $rs['msg'] = '文件夹已经存在！';
                     return $rs;
-                }else{ #开始移动文件件夹下的文件, （文件的HASH值暂不做处理，只改变当前文件件夹的HASH值)
+                }else{ #开始移动文件夹下的文件, （文件的HASH值暂不做处理，只改变当前文件夹的HASH值)
                     #记录移动操作日志
                     #旧路径 fs_code
                     //$log_oldfilepath = substr(self::getFilenamepath($nodeid), 1);
@@ -1135,12 +1139,12 @@
                         //$doclog = array();
                         //M_Log::doclog($doclog);
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件件夹下 操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件夹下 操作失败'));    
                         return $rs;
                     } else {
-                        #移动文件件夹的fs_code
+                        #移动文件夹的fs_code
                         $fs_code = $log_newfilepath . '-' . $oldfile_res['fs_name'];
-                        $fs_id_path = $newfile_res['fs_id_path'] . '-' . $nodeid; //展开文件件夹树需要的字段数据
+                        $fs_id_path = $newfile_res['fs_id_path'] . '-' . $nodeid; //展开文件夹树需要的字段数据
                         $sql = "UPDATE " . self::$document_table . " SET 
                         fs_parent = '{$newparentid}',
                         fs_hashname= '{$newhashname}', 
@@ -1150,7 +1154,7 @@
                         WHERE fs_id='{$nodeid}'";
                         $updateres = self::$db->query($sql);
                         if($updateres){
-                            #当前移动文件件夹更新成功后需要对文件件夹下的所有子文件件夹的fs_code进行处理
+                            #当前移动文件夹更新成功后需要对文件夹下的所有子文件夹的fs_code进行处理
                             self::dealwithmovefscode($nodeid, $fs_code, $fs_id_path, $newfile_res['fs_is_share'], $newfile_res['fs_encrypt']);
                             $rs['success'] = true;
                             $rs['msg'] = '操作成功！';
@@ -1158,13 +1162,13 @@
                             $doclog = array('fs_id'=>$nodeid, 'fs_name'=>$document_name, 'fs_hashname'=>$newhashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>3, 'log_lastname'=>$document_name, 'fs_code'=>$log_oldfilepath, 'fs_parent'=>$newparentid);
                             M_Log::doclog($doclog);
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件件夹下 操作成功'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件夹下 操作成功'));
                             return $rs;
                         }else{
                             $rs['success'] = false;
                             $rs['msg'] = '操作失败！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件件夹下 操作失败'));    
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 文件夹下 操作失败'));    
                             return $rs;
                         }
 
@@ -1239,7 +1243,7 @@
                     $rs['success'] = true;
                     return $rs;
                 } else {
-                    //进行删除文件件夹操作
+                    //进行删除文件夹操作
                     $fs_fullpath = PROJECT_DOC_PATH . self::splitdocpath($fs_fullpath);
                     #删除记录之前获取filecode
                     $sql = "select * from " . self::$document_table . " where fs_id='{$fs_id}' ";
@@ -1252,7 +1256,7 @@
                     //删除物理文件
                     if(!ZF_Libs_IOFile::rm($fs_fullpath)){
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . '(无此文件) 操作失败'));
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件夹 '. $filecode . '(无此文件) 操作失败'));
                     }
 
                     //删除数据库记录
@@ -1264,13 +1268,13 @@
                         $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
                         M_Log::doclog($doclog);
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作成功'));
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件夹 '. $filecode . ' 操作成功'));
                         return $rs;
                     } else{
                         $rs['msg'] = '操作失败！';
                         $rs['success'] = false;
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作失败'));
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件夹 '. $filecode . ' 操作失败'));
                         return $rs;  
                     }
 
@@ -1291,13 +1295,13 @@
                         $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
                         M_Log::doclog($doclog);
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 操作成功'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 操作成功'));    
                         return $rs;
                     } else{
                         $rs['success'] = false;
                         $rs['msg'] = '操作失败！';
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 数据库操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 数据库操作失败'));    
                         return $rs;
                     }
                 }else{
@@ -1305,7 +1309,7 @@
                     $rs['success'] = false;
                     $rs['msg'] = '操作失败！';
                     #记录系统操作日志
-                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname  . '（'.$fs_intro.'） 物理操作失败'));    
+                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname  . '（'.$fs_intro.'） 物理操作失败'));    
                     return $rs;
                     */
                     $sql = "delete from ".self::$document_table." where fs_id='{$fs_id}'";
@@ -1349,7 +1353,7 @@
                     }
                     self::circledeldocument($data, $login_user_info);
                 } else {
-                    //进行删除文件件夹操作
+                    //进行删除文件夹操作
                     $fs_fullpath = PROJECT_DOC_PATH . self::splitdocpath($fs_fullpath);
                     #删除记录之前获取filecode
                     $sql = "select * from " . self::$document_table . " where fs_id='{$fs_id}' ";
@@ -1367,14 +1371,14 @@
                             $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
                             M_Log::doclog($doclog);
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作成功'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件夹 '. $filecode . ' 操作成功'));
                         } else{
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作失败'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件夹 '. $filecode . ' 操作失败'));
                         }
                     }else {
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件件夹 '. $filecode . ' 操作失败'));
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'删除文件夹 '. $filecode . ' 操作失败'));
                     }
 
                 }
@@ -1394,19 +1398,19 @@
                         $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
                         M_Log::doclog($doclog);
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 操作成功'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 操作成功'));    
                     } else{
                         $rs['success'] = false;
                         $rs['msg'] = '操作失败！';
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 数据库操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 数据库操作失败'));    
                     }
                 }else{
                     /*
                     $rs['success'] = false;
                     $rs['msg'] = '操作失败！';
                     #记录系统操作日志
-                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname  . '（'.$fs_intro.'） 物理操作失败')); 
+                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname  . '（'.$fs_intro.'） 物理操作失败')); 
                     */
                     $sql = "delete from ".self::$document_table." where fs_id='{$fs_id}'";
                     if(self::$db->query($sql)){
@@ -1416,12 +1420,12 @@
                         $doclog = array('fs_id'=>$fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>4, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parentid);
                         M_Log::doclog($doclog);
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 操作成功'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 操作成功'));    
                     } else{
                         $rs['success'] = false;
                         $rs['msg'] = '操作失败！';
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 数据库操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'在文件夹 '.$fs_parentpath.' 中删除文件 '. $file_textname . '（'.$fs_intro.'） 数据库操作失败'));    
                     }   
                 }
             }
@@ -1438,7 +1442,7 @@
         public static function recoverdocument($data, $login_user_info){
             self::init();
             $fs_parent = !empty($data['fs_parent']) ? intval($data['fs_parent']) : '';
-            #获取删除的源文件文件件夹
+            #获取删除的源文件文件夹
             $fs_hashname = $data['fs_hashname']; #原文件的HASH码
             $fs_date = date('Ymd', strtotime($data['log_optdate']));
             $fs_type = $data['fs_type'];
@@ -1452,20 +1456,20 @@
             $file = FILE_BACKUP_PATH.DS.$fs_date.DS.$fs_hashname.'.'.$fs_type;
             $ppath = substr(self::getFilenamepath($fs_parent), 1);
             $filecode = $ppath . '-' . $fs_name;
-            #项目的父级文件件夹为0， 项目是不可能删除的，所以此处不考虑父级为0的情况
+            #项目的父级文件夹为0， 项目是不可能删除的，所以此处不考虑父级为0的情况
             if($fs_parent){
-                #判断原来的父级文件件夹是否还存在
+                #判断原来的父级文件夹是否还存在
                 $sql = "select * from ".self::$document_table." where fs_id='{$fs_parent}'";
                 $parentrs = self::$db->get_row($sql);
                 if($parentrs){
-                    #如果原来父级文件件夹还存在， 获取父级文件件夹的物理路径, 将文件恢复到此文件件夹下
+                    #如果原来父级文件夹还存在， 获取父级文件夹的物理路径, 将文件恢复到此文件夹下
                     $parent_fullpath = PROJECT_DOC_PATH . self::splitdocpath(self::getParentpath($fs_parent));
                     $fs_new_hashname = parent::hashname($parent_fullpath . DS.$fs_hashname.'.'.$fs_type);
                     $recover_file = $parent_fullpath . DS.$fs_new_hashname.'.'.$fs_type;
                     $oprs = ZF_Libs_IOFile::copyFile($file, $recover_file);
                     if($oprs){
                         $time = date('Y-m-d H:i:s');
-                        #文件移动成功，开始对数据库进行操作(1、原始内容无法完全恢复，纸版和加密状态，组和用户有恢复到某个文件件夹的属性决定)
+                        #文件移动成功，开始对数据库进行操作(1、原始内容无法完全恢复，纸版和加密状态，组和用户有恢复到某个文件夹的属性决定)
                         $sql = "insert into " . self::$document_table . " set 
                         fs_parent='{$fs_parent}', 
                         fs_isdir='0', 
@@ -1486,35 +1490,35 @@
                             $doclog = array('fs_id'=>$log_fs_id, 'fs_name'=>$fs_name, 'fs_hashname'=>$fs_new_hashname, 'fs_intro'=>$fs_intro, 'fs_size'=>$fs_size, 'fs_type'=>$fs_type, 'log_user'=>$login_user_info['u_id'], 'log_type'=>0, 'log_lastname'=>$fs_name, 'fs_code'=>$filecode, 'fs_parent'=>$fs_parent);
                             M_Log::doclog($doclog);
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$filecode.'（'.$fs_intro.'）'.' 到目标文件件夹 '.$ppath.' 操作成功'));    
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$filecode.'（'.$fs_intro.'）'.' 到目标文件夹 '.$ppath.' 操作成功'));    
                             return $rs;     
                         }else{
                             $rs['success'] = false;
                             $rs['msg'] = '操作失败！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$filecode.'（'.$fs_intro.'）'.' 到目标文件件夹 '.$ppath.' 操作失败'));    
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$filecode.'（'.$fs_intro.'）'.' 到目标文件夹 '.$ppath.' 操作失败'));    
                             return $rs;  
                         }
                     }else{
                         $rs['success'] = false;
                         $rs['msg'] = '操作失败！';
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$fs_name.'（'.$fs_intro.'）'.' 到目标文件件夹 '.$ppath.' 操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$fs_name.'（'.$fs_intro.'）'.' 到目标文件夹 '.$ppath.' 操作失败'));    
                         return $rs;  
                     }
                 }else{
                     $rs['success'] = false;
-                    $rs['msg'] = '原文件件夹不存在！';
+                    $rs['msg'] = '原文件夹不存在！';
                     #记录系统操作日志
-                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$fs_name.'（'.$fs_intro.'）'.' 到目标文件件夹 '.$ppath.' 操作失败'));    
+                    M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$fs_name.'（'.$fs_intro.'）'.' 到目标文件夹 '.$ppath.' 操作失败'));    
                     return $rs;
                     //return self::docmenttree($data, $login_user_info);  
                 }
             }else{
                 $rs['success'] = false;
-                $rs['msg'] = '原文件件夹不存在！';
+                $rs['msg'] = '原文件夹不存在！';
                 #记录系统操作日志
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$fs_name.'（'.$fs_intro.'）'.' 到目标文件件夹 '.$ppath.' 操作失败'));    
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'恢复文件 '.$fs_name.'（'.$fs_intro.'）'.' 到目标文件夹 '.$ppath.' 操作失败'));    
                 return $rs;
                 //return self::docmenttree($data, $login_user_info);
             }
@@ -1711,7 +1715,7 @@
             }            
             if(!$fs_parent){
                 $rs['success'] = false;
-                $rs['msag'] = '父级文件件夹不存在';
+                $rs['msag'] = '父级文件夹不存在';
                 $rs['flag'] = 2;
                 $rs['data'] = '';
                 return $rs;
@@ -1721,14 +1725,14 @@
             $fs_parent = $fs_parent;
             $fs_name_regex = '/[a-zA-Z0-9\-].*?/';
             if(!$fs_name || !preg_match($fs_name_regex, $fs_name)){
-                $rs['msg'] = '文件编号错误';
+                $rs['msg'] = '文件编号不符合规则';
                 $rs['success'] = false;
                 $rs['flag'] = 2;
                 $rs['data'] = '';
                 return $rs;
             }
             if(!$fs_parent){
-                $rs['msg'] = '请选择文件件夹';
+                $rs['msg'] = '请选择文件夹';
                 $rs['success'] = false;
                 $rs['flag'] = 2;
                 $rs['data'] = '';
@@ -1823,7 +1827,7 @@
                 $res_doc = self::$db->get_results($sql);
                 $res_doc = false === $res_doc ? array() : $res_doc;
 
-                //列出共享文件件夹
+                //列出共享文件夹
                 if($login_user_info['u_grade']==0){
                     $user_share_folder = array();
                     #获取用户所有共享的文件夹
@@ -1831,7 +1835,7 @@
                     $allshare_tmp = self::$db->get_col($sql);
                     $all_share = $allshare_tmp ? $allshare_tmp : array();
 
-                    #判断当前传入的fs_id对应的文件件夹是否为共享文件件夹、
+                    #判断当前传入的fs_id对应的文件夹是否为共享文件夹、
                     if($fs_id){
                         $sql = "select * from fs_tree where fs_id='{$fs_id}'";
                         $current_node = self::$db->get_row($sql);
@@ -1897,7 +1901,7 @@
                             $type = strtolower($value['fs_type']);
                             $value['icon'] = self::getIconByType($type);
                         }
-                        //设置共享文件件夹图标
+                        //设置共享文件夹图标
                         if($value['fs_is_share'] && $value['fs_isdir']=='1' && $value['fs_user']!=$login_user_info['u_id'] && $login_user_info['u_grade']=='0'){
                             $value['icon'] = 'image/new_share_folder.png';
                         }
@@ -1905,7 +1909,7 @@
                         $value['fs_fullpath'] = $fs_fullpath;
                         $value['leaf'] = $value['fs_isdir']==1?false:true;
                         #修复BUG
-                        /*系统管理员分给组文件管理员的文件件夹只有系统管理员可以修改，组文件管理员分给组员的文件件夹只有组管理员和系统管理员可以修改，下面自己建的文件件夹就自己可以随便修改了，修改只能修改自己建的，不是自己建的就没有权限修改*/ 
+                        /*系统管理员分给组文件管理员的文件夹只有系统管理员可以修改，组文件管理员分给组员的文件夹只有组管理员和系统管理员可以修改，下面自己建的文件夹就自己可以随便修改了，修改只能修改自己建的，不是自己建的就没有权限修改*/ 
                         $value['managerok'] = true;
                     }
 
@@ -2008,7 +2012,7 @@
             $pagesize = isset($data['limit']) ? intval($data['limit']) : 50;
             $start = isset($data['start']) ? (intval($data['start'])<0?0:intval($data['start'])) : 0;
             $page = isset($data['page'])?intval($data['page']):1;
-            $fs_id = isset($data['fs_id']) ? intval($data['fs_id']) : ''; //父级文件件夹ID或文件ID， 文件打开方式已修改为在线打开
+            $fs_id = isset($data['fs_id']) ? intval($data['fs_id']) : ''; //父级文件夹ID或文件ID， 文件打开方式已修改为在线打开
             $limit = " limit " . $start . ",".$pagesize;
 
             $sortobj = isset($data['sort'])? json_decode($data['sort']) : array((object)array('property'=>'text', 'direction'=>'ASC'));
@@ -2020,7 +2024,7 @@
             $where = '';
             $rs = array();
 
-            $condition_str = $fs_mode=='-1'?'全部':($fs_mode=='1'?'文件件夹':'文件');
+            $condition_str = $fs_mode=='-1'?'全部':($fs_mode=='1'?'文件夹':'文件');
             if($fs_mode!='-1'){
                 $where .= " fs_isdir='{$fs_mode}' and";
             }
@@ -2251,7 +2255,7 @@
 
 
         /**
-        * 查找文件件夹下最大的编号
+        * 查找文件夹下最大的编号
         * 
         * @param mixed $data
         */
@@ -2361,7 +2365,7 @@
 
 
         /**
-        * 复制文件件夹结构
+        * 复制文件夹结构
         * 
         * @param mixed $data
         * @param mixed $login_user_info
@@ -2378,7 +2382,7 @@
             $checkresult = self::checkSamedoc($document_name, $document_parentid, 0, 1);  
             if($checkresult['flag']==1){
                 $rs['success'] = false;
-                $rs['msg'] = $document_name.'文件件夹已经存在！';
+                $rs['msg'] = $document_name.'文件夹已经存在！';
                 return $rs;
             }
             $verify = M_Usergroup::verify($login_user_info, 'copydocumentstruct', $document_parentid);
@@ -2390,17 +2394,17 @@
             $rs = array('success'=>false, 'msg'=>'系统错误');
             if(!$document_name){
                 $rs['success'] = false;
-                $rs['msg'] = '请添写文件件夹编号';
+                $rs['msg'] = '请添写文件夹编号';
                 return $rs;
             }
             if(!$document_intro){
                 $rs['success'] = false;
-                $rs['msg'] = '请添写文件件夹描述';
+                $rs['msg'] = '请添写文件夹描述';
                 return $rs;
             }
             if(!$document_parentid){
                 $rs['success'] = false;
-                $rs['msg'] = '请选择父级文件件夹';
+                $rs['msg'] = '请选择父级文件夹';
                 return $rs;
             }
             if(empty($login_user_info)){
@@ -2409,15 +2413,15 @@
                 return $rs;  
             }
 
-            /**开始创建文件件夹 此文件件夹需要循环创建和复制文件件夹相同的文件件夹结构**/
-            #确定要COPY的文件件夹结构
+            /**开始创建文件夹 此文件夹需要循环创建和复制文件夹相同的文件夹结构**/
+            #确定要COPY的文件夹结构
             $current_doc_struct = self::getdocstruct($current_doc_id);
             if($current_doc_struct){
                 self::adddocument(array('project_doc_name'=>$document_name, 'project_doc_parentid'=>$document_parentid, 'project_doc_intro'=>$document_intro), $login_user_info);
                 #查找新创建的文件夹的信息
                 $sql = "select * from ".self::$document_table ." where fs_parent='{$document_parentid}' and fs_name='{$document_name}' ";
                 $row = self::$db->get_row($sql);
-                #循环COPY的文件件夹结构进行文件件夹创建
+                #循环COPY的文件夹结构进行文件夹创建
                 self::createCopystruct($current_doc_struct, $row['fs_id'], $login_user_info);
                 $rs = array('success'=>true, 'msg'=>'操作成功！');
                 return $rs;
@@ -2428,7 +2432,7 @@
         }
 
         /**
-        *  根据文件件夹ID获取文件件夹结构
+        *  根据文件夹ID获取文件夹结构
         * 
         * @param int $fs_id
         * @return object
@@ -2450,7 +2454,7 @@
         }
 
         /**
-        * 创建copy的文件件夹
+        * 创建copy的文件夹
         * 
         * @param mixed $data
         * @param mixed $parent_id
@@ -2476,7 +2480,7 @@
 
 
         /**
-        * 根据ID获取当前文件件夹的面包屑
+        * 根据ID获取当前文件夹的面包屑
         * 
         * @param mixed $data
         * @param mixed $login_user_info
@@ -2595,7 +2599,7 @@
                         echo $thislevel  . "<br>";
                         $sql = "update fs_tree set fs_level='{$thislevel}' where fs_id='{$val['fs_id']}'";
                         self::$db->query($sql);
-                        
+
                     }
                 }
             }
@@ -2603,18 +2607,18 @@
 
 
         /**
-        * 项目文件移动至共享文件件夹
+        * 项目文件移动至共享文件夹
         * 
         */
         public static function movetoshare($data, $login_user_info) {
             self::init();
             set_time_limit(0);
-            $treepathvalue = isset($data['targetpathvalue']) ? $data['targetpathvalue'] : ''; //目标父级文件件夹fs_code
-            $newparentid = $treepathid = isset($data['targetpathid']) ? $data['targetpathid'] : '';  //目标父级文件件夹ID
-            #判断目标文件件夹是否是登陆用户可以操作的
+            $treepathvalue = isset($data['targetpathvalue']) ? $data['targetpathvalue'] : ''; //目标父级文件夹fs_code
+            $newparentid = $treepathid = isset($data['targetpathid']) ? $data['targetpathid'] : '';  //目标父级文件夹ID
+            #判断目标文件夹是否是登陆用户可以操作的
             $haspower = M_Sharedocument::checksharedocpower($newparentid, $login_user_info);
             if(false===$haspower){
-                $rs['msg'] = '无权限操作此文件件夹！';
+                $rs['msg'] = '无权限操作此文件夹！';
                 $rs['success'] = false;
                 return $rs;
             }
@@ -2631,7 +2635,7 @@
             $fs_haspaper = !empty($data['fs_haspaper']) ? intval($data['fs_haspaper']) : 0;
 
             if(!$treepathvalue){
-                $rs['msg'] = '请选择目标文件件夹！';
+                $rs['msg'] = '请选择目标文件夹！';
                 $rs['success'] = false;
                 return $rs;
             }
@@ -2674,7 +2678,7 @@
                         $rs['msg'] = '操作失败！';
 
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件件夹下 操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件夹下 操作失败'));    
                         return $rs;
                     } else {
                         $fs_code = $log_newfilepath . '-' . $oldfile_res['fs_name'];
@@ -2698,26 +2702,26 @@
                             $rs['success'] = true;
                             $rs['msg'] = '操作成功！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件件夹下 操作成功'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件夹下 操作成功'));
                             return $rs;
                         }else{
                             $rs['success'] = false;
                             $rs['msg'] = '操作失败！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件件夹下 操作失败'));    
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件夹下 操作失败'));    
                             return $rs;
                         }
 
                     }
                 }
-            } elseif($fs_isdir==1) { //拖动文件件夹
-                #判断文件件夹是否存在
+            } elseif($fs_isdir==1) { //拖动文件夹
+                #判断文件夹是否存在
                 $checkresult = M_Sharedocument::checkSamedoc($fs_name, $newparentid, $nodeid, 1);  
                 if($checkresult['flag']==1){
                     $rs['success'] = false;
-                    $rs['msg'] = '文件件夹已经存在！';
+                    $rs['msg'] = '文件夹已经存在！';
                     return $rs;
-                }else{ #开始移动文件件夹下的文件, （文件的HASH值暂不做处理，只改变当前文件件夹的HASH值)
+                }else{ #开始移动文件夹下的文件, （文件的HASH值暂不做处理，只改变当前文件夹的HASH值)
                     #旧路径 fs_code
                     $sql = "select * from " . self::$document_table . " where fs_id='{$nodeid}'";
                     $oldfile_res = self::$db->get_row($sql);
@@ -2742,10 +2746,10 @@
                         $rs['success'] = false;
                         $rs['msg'] = '操作失败的！';
                         #记录系统操作日志
-                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件件夹下 操作失败'));    
+                        M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件夹下 操作失败'));    
                         return $rs;
                     } else {
-                        #移动文件件夹的fs_code
+                        #移动文件夹的fs_code
                         $fs_code = $log_newfilepath . '-' . $oldfile_res['fs_name'];
                         #入库操作
                         $createtime = date('Y-m-d H:i:s');
@@ -2765,7 +2769,7 @@
                         $updateres = self::$db->query($sql);
                         if($updateres){
                             $curparentid = self::$db->last_insert_id();
-                            #更新新文件件夹的fs_id_path 
+                            #更新新文件夹的fs_id_path 
                             if(!empty($newfile_res['fs_id_path'])){
                                 $fs_id_path = $newfile_res['fs_id_path'] . '-' . $curparentid; 
                             }else{
@@ -2774,7 +2778,7 @@
                             $sql = "update " . self::$share_document_table . " set fs_id_path='{$fs_id_path}' where fs_id='{$curparentid}'";
                             self::$db->query($sql);   
 
-                            #当前移动文件件夹更新成功后需要对文件件夹下的所有子文件件夹进行处理
+                            #当前移动文件夹更新成功后需要对文件夹下的所有子文件夹进行处理
                             $dir = opendir($nodepath);
                             while(false !== ($file = readdir($dir))) {
                                 if (($file != '.') && ($file != '..')) {
@@ -2802,13 +2806,13 @@
                             $rs['msg'] = '操作成功！';
 
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件件夹下 操作成功'));
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件夹下 操作成功'));
                             return $rs;
                         }else{
                             $rs['success'] = false;
                             $rs['msg'] = '操作失败！';
                             #记录系统操作日志
-                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件件夹下 操作失败'));    
+                            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'文件夹 ' . $log_oldfilepath . '(' . $fs_intro . ') 移动至 '.$log_newfilepath.' 公共文件夹下 操作失败'));    
                             return $rs;
                         }
                     }
@@ -2844,54 +2848,66 @@
                 $rs['success'] = false;
                 return $rs;
             }
-            if(!$fs_code){
-                $fs_code = substr(M_Document::getFilenamepath($fs_id), 1); 
+            //判断是否是文件夹的拥有者
+            $sql = "select * from " . self::$document_table . " where fs_id={$fs_id} and fs_user={$login_user_info['u_id']}";
+            $r = self::$db->get_row($sql);
+            if(!empty($r)){
+                if(!$fs_code){
+                    $fs_code = substr(M_Document::getFilenamepath($fs_id), 1); 
+                }
+                $u_id_arr = explode(',', $u_id_str);
+                if(!empty($u_id_arr)){
+                    #删除此文件夹之前的共享数据， 重新进行设置
+                    $sql = "delete from " . self::$user_share_document . " where fs_id='{$fs_id}'";
+                    $row = self::$db->query($sql);
+                    foreach($u_id_arr as $u_id){
+                        //$sql = "select * from " . self::$user_share_document . " where u_id='{$u_id}' and fs_id='{$fs_id}' limit 1";
+                        $sql = "insert into " . self::$user_share_document . " set u_id='{$u_id}', fs_id='{$fs_id}', fs_code='{$fs_code}', fs_parent='{$fs_parent}' ";
+                        self::$db->query($sql);
+                    } 
+                    //更新树形表中的共享状态  
+                }
+                #递归设置当前文件夹下的内容为共享内容
+                self::treesharesetting($fs_id, $login_user_info['u_id']);
+                $rs['success'] = true;
+                $rs['msg'] = '操作成功！';
+                #记录系统操作日志
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'设置共享文件夹 ' . $fs_code . '  操作成功'));
+                return $rs;
+            }else{
+                $rs['success'] = false;
+                $rs['msg'] = '你不是此文件夹的拥有者！';
+                #记录系统操作日志
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'设置共享文件夹 ' . $fs_code . '  操作失败！'));
+                return $rs;
             }
-            $u_id_arr = explode(',', $u_id_str);
-            if(!empty($u_id_arr)){
-                #删除此文件夹之前的共享数据， 重新进行设置
-                $sql = "delete from " . self::$user_share_document . " where fs_id='{$fs_id}'";
-                $row = self::$db->query($sql);
-                foreach($u_id_arr as $u_id){
-                    //$sql = "select * from " . self::$user_share_document . " where u_id='{$u_id}' and fs_id='{$fs_id}' limit 1";
-                    $sql = "insert into " . self::$user_share_document . " set u_id='{$u_id}', fs_id='{$fs_id}', fs_code='{$fs_code}', fs_parent='{$fs_parent}' ";
-                    self::$db->query($sql);
-                }   
-            }
-            #递归设置当前文件夹下的内容为共享内容
-            self::treesharesetting($fs_id, $login_user_info['u_id']);
-            $rs['success'] = true;
-            $rs['msg'] = '操作成功！';
-            #记录系统操作日志
-            M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'设置共享文件件夹 ' . $fs_code . '  操作成功'));
-            return $rs;
         }
 
         /**
-        * 添加文件件夹树的共享标志位
+        * 添加文件夹树的共享标志位（2014可能有问题他）
         * 
         * @param mixed $fs_id
         * @param mixed $u_id
         */
         private static function treesharesetting($fs_id, $u_id){
             self::init();
-            $sql = "update " . self::$document_table . " set fs_is_share='1' where fs_id='{$fs_id}' and fs_user='{$u_id}'";
+            $sql = "update " . self::$document_table . " set fs_is_share=1 where fs_id={$fs_id} and fs_user={$u_id}";
             self::$db->query($sql);
-            $sql = "select * from ". self::$document_table ." where fs_parent='{$fs_id}' ";
+            $sql = "select * from ". self::$document_table ." where fs_parent={$fs_id} ";
             $rs = self::$db->get_results($sql);
             if($rs){
                 foreach($rs as $v){
                     if($v['fs_isdir']=='1'){
                         self::treesharesetting($v['fs_id'], $u_id);
                     }else{
-                        $sql = "update ".self::$document_table . " set fs_is_share='1' where fs_id='{$v['fs_id']}' and fs_user='{$u_id}'";
+                        $sql = "update ".self::$document_table . " set fs_is_share=1 where fs_id={$v['fs_id']} and fs_user={$u_id}";
                         self::$db->query($sql);
                     }
                 }
             }
         }
         /**
-        * 删除文件件夹树的共享标志位
+        * 删除文件夹树的共享标志位
         * 
         * @param mixed $fs_id
         * @param mixed $u_id
@@ -2921,7 +2937,7 @@
             $fs_code = isset($data['fs_code']) ? addslashes($data['fs_code']) :''; 
             if(!$fs_id){
                 $rs['success'] = false;
-                $rs['msg'] = '请选择文件件夹！';
+                $rs['msg'] = '请选择文件夹！';
                 return $rs;
             }
             $verify = M_Usergroup::verify($login_user_info, 'sharesetting', $fs_id);
@@ -2939,18 +2955,18 @@
                 #对文档表中文件的共享标志位进行设置
                 self::treeshareremove($fs_id, $login_user_info['u_id']);
                 #记录系统操作日志
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'取消文件件夹 ' . $fs_code . '共享设置  操作成功'));
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'取消文件夹 ' . $fs_code . '共享设置  操作成功'));
             }else{
                 $rs['success'] = false;
                 $rs['msg'] = '操作失败！';
                 #记录系统操作日志
-                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'取消文件件夹 ' . $fs_code . '共享设置  操作失败'));
+                M_Log::systemlog(array('login_user_name'=>$login_user_info['u_name'], 'login_user_email'=>$login_user_info['u_email'], 'desc'=>'取消文件夹 ' . $fs_code . '共享设置  操作失败'));
             }
             return $rs;
         }
 
         /**
-        * 生成文件件夹使用
+        * 生成文件夹使用
         * 
         * @param mixed $data
         * @param mixed $login_user_info
@@ -2962,7 +2978,7 @@
             $fs_user = isset($data['fs_user']) ? $data['fs_user'] : '-1';
             if(!$fs_name && $fs_group=='-1' && $fs_user=='-1' && $login_user_info['u_grade']<98){
                 $rs['success'] = false;
-                $rs['msg'] = '请选择生成文件件夹的条件';
+                $rs['msg'] = '请选择生成文件夹的条件';
                 return $rs;
             }
 
@@ -3011,7 +3027,7 @@
             }else{
                 $sql = "select {$fields} from " . self::$document_table . " where fs_parent!='0' and fs_isdir=1";
             }
-            
+
             $res_doc = self::$db->get_results($sql);
             $tree_rs = array();
             $depth = 1;
@@ -3060,7 +3076,7 @@
                         }
                         $value['fs_code'] = $fs_textname;
 
-                        #获取所有子文件件夹及文件
+                        #获取所有子文件夹及文件
                         if($value['fs_isdir']==1){
                             $value['children'] = self::getAlldocstruct($value['fs_id'], $data);
                         }
@@ -3075,7 +3091,7 @@
         }
 
         /**
-        * 创建copy的文件件夹
+        * 创建copy的文件夹
         * 
         * @param mixed $data
         * @param mixed $parent_id

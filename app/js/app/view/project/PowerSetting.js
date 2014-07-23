@@ -115,33 +115,7 @@ Ext.define('FS.view.project.PowerSetting',{
             }]
         }];
         this.buttons=[{
-            text: '修改',
-            handler: function(){
-                var rcd=this.ownerCt.ownerCt.rcd;
-                var win=this.ownerCt.ownerCt;
-                powersettingPanel=Ext.getCmp('powersettingform');
-                if(powersettingPanel.form.isValid()){
-                    powersettingPanel.getForm().submit({
-                        url: base_path+'index.php?c=document&a=adddocpower',
-                        method: 'post',
-                        timeout: 30,
-                        params: powersettingPanel.getForm().getValues(),
-                        success: function(form, action){
-                            //修改本地grid的store
-                            rcd.set('fs_group', Ext.getCmp('powersetting_workgroup_id').getValue());
-                            rcd.set('fs_user', Ext.getCmp('powersetting_user_id').getValue());
-                            rcd.set('u_id', Ext.getCmp('powersetting_user_id').getValue());
-                            rcd.set('u_name', Ext.getCmp('powersetting_user_id').getRawValue());
-                            rcd.commit();
-                            Ext.Msg.alert('温馨提示', action.result.msg);
-                            win.close();
-                        },
-                        failure: function(form, action){
-                            Ext.Msg.alert('温馨提示', action.result.msg);
-                        }
-                    });
-                }
-            }
+            text: '修改'
         }];
         this.callParent(arguments);
     }
