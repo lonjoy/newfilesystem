@@ -6,16 +6,15 @@ Ext.define('FS.view.project.ShareDoc',{
     width:400,
     height: 400,
     autoScroll: true,
-    closeAction:'destory',
+    closeAction:'destroy',
     resizable: true,
     shadow: true,
     modal: true,
     closable: true,
     initComponent: function(){
-        this.rcd=this.initialConfig.rcd;
         this.items=[{
             xtype: 'treepanel',
-            rootVisible: false,
+            rootVisible: true,
             singleExpand: false,
             width:'100%',
             autoScroll:true,
@@ -26,6 +25,10 @@ Ext.define('FS.view.project.ShareDoc',{
         this.buttons=[{
             text: '确认'
         }];
+        this.callParent(arguments);
+    },
+    onRender: function(){
+        this.items.getAt(0).setRootNode({text: '人员名单',expanded: true});
         this.callParent(arguments);
     }
 })
