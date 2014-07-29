@@ -10,7 +10,14 @@ Ext.define('FS.view.layout.Main',{
                 title: '首页',
                 layout: 'fit',
                 html:'xxxxx'
-            }]
+            }],
+            listeners:{
+                'remove': function(obj, component, eOpts){
+                    if(component.initialConfig.items.xtype=='email'){
+                        Ext.getCmp('checkemailform').close(); 
+                    }
+                }
+            }
         });
         this.callParent(arguments);
     }

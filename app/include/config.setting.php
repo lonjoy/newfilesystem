@@ -46,7 +46,7 @@ $_cookiearr = array(
 );
 /* get cookie */
 //@extract($_COOKIE);
-
+require APP_PATH."/include/global.function.php";
 #APP
 define('EMAIL_SERVER', 'pop.mail.cntv.cn');
 define('EMAIL_RESPONSE', '+OK');

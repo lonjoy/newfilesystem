@@ -12,7 +12,8 @@ Ext.application({
     controllers: [
     'Main',
     'Search',
-    //'ProjectTree',
-    'ProjectView'
+    'Log',
+    'ProjectView',
+    'Email'
     ]
 });

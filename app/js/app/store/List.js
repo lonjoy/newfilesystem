@@ -6,10 +6,7 @@ Ext.define('FS.store.List',{
     proxy:{
         type: 'ajax',
         api: {
-            read: 'index.php?c=document&a=listdocumentgrid',
-            update: 'index.php?c=document&a=listdocument',
-            create: 'index.php?c=document&a=listdocument',
-            destroy: 'index.php?c=document&a=listdocument'
+            read: 'index.php?c=document&a=listdocumentgrid'
         },
         reader: {
             type: 'json',
