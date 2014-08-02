@@ -48,7 +48,7 @@ $_cookiearr = array(
 //@extract($_COOKIE);
 require APP_PATH."/include/global.function.php";
 #APP
-define('EMAIL_SERVER', 'pop.mail.cntv.cn');
+define('EMAIL_SERVER', 'pop.126.com');
 define('EMAIL_RESPONSE', '+OK');
 
 #

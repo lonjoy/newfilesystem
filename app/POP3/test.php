@@ -15,7 +15,7 @@ $mgs_id=3; //测试用3号邮件带附件
 $user=$_GET['user'];
 $pass=$_GET['pass'];
 //$host='mail.cmec.com';
-$host='pop.staff.cntv.cn'; #测试用
+$host='pop.126.com'; #测试用
 $port="110";
 //-----------------------config------------------------------
 

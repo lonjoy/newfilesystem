@@ -32,9 +32,9 @@ class EncodingConverter
 		
 		$retval = iconv($in_enc, $out_enc, $str);
 		
-		restore_error_handler();
 		if ($this->hasError()) {
-			Logger::log($this->getLastErrorMsg());
+            //error_log($this->getLastErrorMsg(),3, 'xx');
+			//Logger::log($this->getLastErrorMsg());
 			if ($return_original_on_error) {
 				// If an error occurs, return the original string
 				return $str;

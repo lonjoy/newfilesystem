@@ -136,5 +136,29 @@ var gfun={
         }else{
             return '<img src="'+rs+'">';   
         }
+    },
+    getusergrade:function(val){
+        val=val.toString();
+        pstr='';
+        var p=val.split(',');
+        for(var j=0;j<p.length;j++){
+            if(p[j]==0){
+                pstr+='普通组员,' 
+            }else if(p[j]==1){
+                pstr+='组文件管理员,' 
+            }else if(p[j]==2){
+                pstr+='工作组领导,'
+            }else if(p[j]==3){
+                pstr+='部门负责人,'
+            }else if(p[j]==4){
+                pstr+='项目部负责人,'
+            }else if(p[j]==99){
+                pstr+='系统管理员,'
+            } else if(p[j]==98){
+                pstr+='系统监察员,'
+            } 
+        }
+
+        return pstr;
     }
 };

@@ -4,7 +4,7 @@ Ext.define('FS.store.WorkgroupTree',{
     autoLoad: false,
     proxy:{
         type: 'ajax',
-        url: base_path + "index.php?c=usergroup&a=listworkgroup&type=checkbox",
+        url: base_path + "index.php?c=usergroup&a=listworkgroup",//&type=checkbox
         reader: {
             type: 'json',
             root: ''

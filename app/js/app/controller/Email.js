@@ -1,15 +1,17 @@
 Ext.define('FS.controller.Email', {
     extend: 'Ext.app.Controller',
 
-    stores:['Email'],
+    stores:['Email','Emailp', 'Tree'],
     views:[       
     'email.Email',
-    'email.CheckForm'
+    'email.CheckForm',
+    'email.StoreDocument'
     ],
     init: function(){
         this.control({
             'email':{
-                render: this.emailRender
+                render: this.emailRender,
+                itemcontextmenu: this.emailcontentmenu
             },
             'checkemailform button[id="userpasswordvaluebtn"]':{
                 click: this.submitcheckform  
@@ -46,6 +48,8 @@ Ext.define('FS.controller.Email', {
                 if(response.responseText){
                     var result = Ext.JSON.decode(response.responseText); 
                     if(result.success){
+                        me.getEmailpStore().removeAll();
+                        me.getEmailpStore().add({p:me.getCheckemailform().items.getAt(0).getValues().userpasswordvalue});
                         me.getEmailStore().getProxy().extraParams={maillistnum:me.getCheckemailform().items.getAt(0).getValues().maillistnum};
                         me.getEmailStore().load();
                         me.checkformpanel.hide();
@@ -61,5 +65,26 @@ Ext.define('FS.controller.Email', {
                 Ext.Msg.alert('提示', '操作失败！  ');   
             }      
         });
+    },
+    emailcontentmenu:function(view, rcd, item, index, event){
+        event.stopEvent();
+        var me=this;
+        Ext.create('Ext.menu.Menu', {
+            float: true,
+            items:[{
+                text: '收邮件',
+                iconCls: 'icon_email',
+                handler: function(obj, event){
+                    me.showprojectdoc(rcd);
+                }
+            }]
+        }).showAt(event.getXY());
+    },
+    showprojectdoc:function(rcd){
+        //rcd.set('p', this.getEmailpStore().getAt(0).get('p'));
+        //var param=rcd.raw;
+        //param.p=this.getEmailpStore().getAt(0).get('p');
+        var win=Ext.widget("storedocument", {rcd:rcd, store:this.getTreeStore()});;
+        win.show();
     }
 })

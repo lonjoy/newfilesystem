@@ -59,7 +59,7 @@
             $rst = true;
             if (!file_exists($path)){
                 self::mkdir(dirname($path));
-                $rst = @mkdir($path, 0777);
+                $rst = @mkdir($path, 0777, true);
             }
             return $rst;
         }

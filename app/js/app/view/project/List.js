@@ -8,22 +8,6 @@ Ext.define('FS.view.project.List',{
     {xtype:'button', text: '', iconCls: 'go_history'},
     {xtype:'tbseparator'},
     {xtype:'button', text: '', iconCls: 'go_forward', disabled: true}
-    /*
-    {xtype: 'tbfill' },
-    {
-        xtype: 'toolbar',
-        border: false,
-        items: [{
-            xtype: 'textfield',
-            emptyText: '输入搜索关键字...'
-        },
-        {
-            xtype: 'button',
-            text: '搜索',
-            iconCls:'Zoom'
-        }]
-    }
-    */
     ],
     initComponent: function(){
         this.columns = [

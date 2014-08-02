@@ -19,7 +19,7 @@ class M_Email extends M_Model
     static $log_table = 'fs_log';
     /*** 初始化操作 */
     public static function init(){
-        self::$db = parent::init();     
+        self::$db = parent::init();    
     }
 
     /**
@@ -42,57 +42,26 @@ class M_Email extends M_Model
             $rs['success'] = false;
             return $rs;
         }
-        #开始下载EMAIL文件
-        global $base_path;
-        $oldmailpath = APP_PATH . '/POP3/tmp/' . $useremail . DS . $emailmsgid;
 
-        $url = $base_path . 'POP3/test.php?op=save&id='.$emailmsgid.'&user='.$useremail.'&pass='.$password;
-        /*
-        if(function_exists('curl_init')){
-        $ch = curl_init ();
-        curl_setopt ( $ch, CURLOPT_URL, $url );
-        curl_setopt ( $ch, CURLOPT_HEADER, 0 );
-        curl_setopt ( $ch, CURLOPT_TIMEOUT, $timeOut );
-        curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-        $content = curl_exec ( $ch );
-        curl_close($ch);
-        }else
-        */
-        #判断附件已经下载过，如果已经下载则直接进行文件移动操作，否则，下载移动
-        if(!is_dir($oldmailpath) || ZF_Libs_IOFile::judge_empty_dir($oldmailpath)){
-            $opts = array( 
-            'http' => array( 
-            'method'=>"GET", 
-            'header'=>"Content-Type: text/html; charset=utf-8" 
-            ) 
-            ); 
-            $timeOut = 360;
-            $context = stream_context_create($opts); 
-            if(function_exists('curl_init')){
-                $ch = curl_init ();
-                curl_setopt ( $ch, CURLOPT_URL, $url );
-                curl_setopt ( $ch, CURLOPT_HEADER, 0 );
-                curl_setopt ( $ch, CURLOPT_TIMEOUT, $timeOut );
-                curl_setopt ( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-                $content = curl_exec ( $ch );
-                curl_close($ch);
-            }elseif(function_exists('file_get_contents')){
-                $content = @file_get_contents($url);
-            }else{
-                $rs['msg'] = '请检查环境配置！';
-                $rs['success'] = false;
-                return $rs;
+
+        $oldmailpath = ROOT_PATH . 'tmp'.DS.'filesystem'.DS.$login_user_info['u_id'].DS.$emailmsgid.DS;
+        $filename = md5($emailmsgid.'==='.$login_user_info['u_id']).'.eml';
+        $tmpfile = $oldmailpath . $filename;
+
+        $content = '';
+        if(is_file($tmpfile)){
+            $content = @file_get_contents($tmpfile);
+
+            self::parseMail($content, $decoded, $parsedMail, $warnings);
+            if(!empty($parsedMail["Attachments"])){
+                foreach($parsedMail["Attachments"] as $val){
+                    $filename = $val['FileName'];
+                    $filetype = substr($filename, strrpos($filename, '.')+1);
+                    @file_put_contents($oldmailpath.md5($filename).'.'.$filetype, $val['Data']);
+                }
             }
-        }else{
-            $content = json_encode(array('status'=>'ok'));
-        }
-
-        if(false!==$content){
-            $res = json_decode($content);
-            if(!empty($res->status) && $res->status == 'ok'){
-                #下载成功在父级目录（$emailtreepathid）中建立子目录 【目录编号为自动编号， 目录名为邮件标题】
-                #1、获取自动编号目录ID
-                //$maxid = intval(M_Document::getMaxfilecode(array('fs_parent'=>$emailtreepathid))) + 1;
+            
+            if($content){
                 $sql = "select * from " . self::$document_table . " where fs_name='email{$emailmsgid}' and fs_parent='{$emailtreepathid}' limit 1";
                 $record = self::$db->get_col($sql);
                 if(!$record){
@@ -145,14 +114,10 @@ class M_Email extends M_Model
                                 $rs['msg'] = '原文件目录不存在';
                                 $rs['success'] = false;
                                 return $rs;
-                            } 
-                            if (!file_exists($aimDir)) { 
-                                $rs['msg'] = '目标文件目录不存在';
-                                $rs['success'] = false;
-                                return $rs; 
-                            } 
+                            }
                             $dirHandle = opendir($oldDir); 
                             while (false !== ($file = readdir($dirHandle))) {
+                                //echo pathinfo($file);die;
                                 if ($file == '.' || $file == '..') { 
                                     continue; 
                                 }
@@ -164,16 +129,13 @@ class M_Email extends M_Model
                                     if($filetype == 'eml'){
                                         $fileintro = $emailsubject;
                                     }else{
-                                        $fileinfo = trim(self::decode_mime_string($file));
-                                        $info  =  pathinfo ($fileinfo); 
+                                        $info  =  pathinfo ($file);
                                         $fileintro = $info['filename'];
-                                        $filetype = $info['extension'];
                                     }
 
                                     $aimFile = $aimDir . $filehashname . '.' . $filetype;
                                     if(copy($oldDir . $file, $aimFile)){
                                         #操作成功， 进行插入数据库文件操作
-
                                         $last_arr = M_Document::getMaxfilecode(array('fs_parent'=>$parent_insertid));
                                         $maxfileid = $last_arr['data']+1;
                                         $time = date('Y-m-d H:i:s');
@@ -211,11 +173,10 @@ class M_Email extends M_Model
                             closedir($dirHandle);
                             return $rs;
                         }else{
-                            $rs['msg'] = '插入数据库操作失败！';
+                            $rs['msg'] = '创建目录失败！';
                             $rs['success'] = false;
                             return $rs;
                         }
-
                     }else{
                         $rs['msg'] = '创建目录失败！';
                         $rs['success'] = false;
@@ -226,13 +187,7 @@ class M_Email extends M_Model
                     $rs['success'] = false;
                     return $rs;
                 }
-
-            }else{
-                $rs['msg'] = '用户名密码错误！';
-                $rs['success'] = false;
-                return $rs;
             }
-
         }else{
             $rs['msg'] = '附件下载失败！';
             $rs['success'] = false;
@@ -545,15 +500,14 @@ class M_Email extends M_Model
         //require_once APP_PATH.'/Libs/PEAR/Net/IMAP.php';
         $pop3 = new Net_POP3();
         $received = 0;
-        $mail_server = 'pop.126.com';//EMAIL_SERVER;
         // Connect to mail server
-        $pop3->connect($mail_server);
-        $account['u_email'] = 'qqf1223@126.com';
+        $pop3->connect(EMAIL_SERVER);
+        $account['u_email'] = $account['u_email']; //'qqf1223@126.com';
 
         if (PEAR::isError($ret=$pop3->login($account['u_email'], $account['emailpwd'], 'USER'))) {
             //$ret->getMessage(); //-ERR Unable to log on
             $result['success'] = false;
-            $result['msg'] = '用户名或密码输入错误,请重新输入！';
+            $result['msg'] = '密码输入错误,请重新输入！';
             exit(json_encode($result));
         }
 
@@ -589,7 +543,7 @@ class M_Email extends M_Model
                 $uid = $summary[$idx]['uidl'];
                 try {//save data
                     error_log($idx."\r\n",  3, 'xxx');
-                    $stop_checking = self::SaveMail($content, $account, $uid);
+                    $stop_checking = self::SaveMail($content, $account, $uid, 0, '', null, $idx+1);
                     $received++;
                     if ($stop_checking) break;
                 } catch (Exception $e) {
@@ -609,7 +563,7 @@ class M_Email extends M_Model
         $limit = intval($data['maillistnum']);
         self::init();
         // Get all variables from request
-        $sql = "select * from (select * from ". self::$mail_content_table . " where user_id={$login_user_info['u_id']} order by received_date desc limit $limit) as c left join ".self::$mail_datas_table . " as d on d.id=c.object_id";
+        $sql = "select *,c.conversation_id as msg_id from (select * from ". self::$mail_content_table . " where user_id={$login_user_info['u_id']} order by received_date desc limit $limit) as c left join ".self::$mail_datas_table . " as d on d.id=c.object_id";
         $result = self::$db->get_results($sql);
         return $result;
     }
@@ -629,7 +583,7 @@ class M_Email extends M_Model
     }
 
 
-    public static function SaveMail($content, $account, $uidl, $state = 0, $imap_folder_name = '', $read = null) {
+    public static function SaveMail($content, $account, $uidl, $state = 0, $imap_folder_name = '', $read = null, $msg_id=0) {
         try {
             self::init();
             $saveData = array();
@@ -733,7 +687,7 @@ class M_Email extends M_Model
                 }
                 $utf8_from = utf8_safe($utf8_from);
                 $from_name = $utf8_from;
-                $saveData['content']['from_name'] = $utf8_from;
+                $saveData['content']['from_name'] = mysql_escape_string($utf8_from);
                 //$mail->setFromName($utf8_from);
             }
 
@@ -749,11 +703,11 @@ class M_Email extends M_Model
                     $utf8_subject = utf8_encode($subject_aux);
                 }
                 $utf8_subject = utf8_safe($utf8_subject);
-                $saveData['data']['subject'] = $utf8_subject; 
+                $saveData['data']['subject'] = mysql_escape_string($utf8_subject); 
                 //$mail->setSubject($utf8_subject);
             } else {
                 $utf8_subject = utf8_safe($subject_aux);
-                $saveData['data']['subject'] = $utf8_subject; 
+                $saveData['data']['subject'] = mysql_escape_string($utf8_subject); 
                 //$mail->setSubject($utf8_subject);
             }
 
@@ -885,90 +839,13 @@ class M_Email extends M_Model
                         // other alternative parts (like images) are not saved in database.
                 }
             }
-            /*
-            $repository_id = self::SaveContentToFilesystem($mail->getUid(), $content);
-            $mail->setContentFileId($repository_id);
-            */
+
+            $repository_id = self::SaveContentToFilesystem($account['u_id'], $msg_id, $content);
+            $saveData['content']['content_file_id'] = $repository_id;
+            $saveData['content']['conversation_id'] = $msg_id;
+
             // Conversation
-            /*
-            //check if exists a conversation for this mail
-            if ($in_reply_to_id != "" && $message_id != "") {
-            $conv_mail = MailContents::findOne(array("conditions" => "`account_id`=".$account->getId()." AND (`message_id` = '$in_reply_to_id' OR `in_reply_to_id` = '$message_id')"));
 
-            //check if this mail is in two diferent conversations and fixit
-            if($conv_mail){
-            $other_conv_mail = MailContents::findOne(array("conditions" => "`account_id`=".$account->getId()." AND `conversation_id` != ".$conv_mail->getConversationId()." AND (`message_id` = '$in_reply_to_id' OR `in_reply_to_id` = '$message_id')"));
-            if($other_conv_mail){
-            $other_conv = MailContents::findAll(array("conditions" => "`account_id`=".$account->getId()." AND `conversation_id` = ".$other_conv_mail->getConversationId()));
-            if($other_conv){
-            foreach ($other_conv as $mail_con) {
-            $mail_con->setConversationId($conv_mail->getConversationId());
-            $mail_con->save();
-            }
-            }
-            }                    
-            }
-
-            } elseif ($in_reply_to_id != ""){
-            $conv_mail = MailContents::findOne(array("conditions" => "`account_id`=".$account->getId()." AND `message_id` = '$in_reply_to_id'"));
-            } elseif ($message_id != ""){
-            $conv_mail = MailContents::findOne(array("conditions" => "`account_id`=".$account->getId()." AND `in_reply_to_id` = '$message_id'"));
-            } 
-
-            if ($conv_mail instanceof MailContent) {
-            $conv_id = $conv_mail->getConversationId();
-            }else{
-            $conv_id = MailContents::getNextConversationId($account->getId());
-            }
-
-            $mail->setConversationId($conv_id);
-            */
-            //$mail->save();
-
-            /*
-            // CLASSIFY RECEIVED MAIL WITH THE CONVERSATION
-            $classified_with_conversation = false;
-            $member_ids = array();
-            if (user_config_option('classify_mail_with_conversation', null, $account->getContactId()) && isset($conv_mail) && $conv_mail instanceof MailContent) {
-            $member_ids = array_merge($member_ids, $conv_mail->getMemberIds());
-            $classified_with_conversation = true;
-            }
-
-            // CLASSIFY MAILS IF THE ACCOUNT HAS A DIMENSION MEMBER AND NOT CLASSIFIED WITH CONVERSATION
-            $account_owner = Contacts::findById($account->getContactId());
-            if ($account->getMemberId() != 0 && !$classified_with_conversation) {
-            $member = $account->getMember() ;
-            if ($member && $member instanceof Member ) {
-            $member_ids[] = $member->getId();
-            }
-            }
-
-            if (count($member_ids) > 0) {
-            $members = Members::instance()->findAll(array('conditions' => 'id IN ('.implode(',', $member_ids).')'));
-            $mail->addToMembers($members, true);
-
-            $mail_controller = new MailController();
-            $mail_controller->do_classify_mail($mail, $member_ids, null, false);
-            }
-
-            $user = Contacts::findById($account->getContactId());
-            if ($user instanceof Contact) {
-            $mail->subscribeUser($user);
-            }
-
-            $mail->addToSharingTable();
-            $mail->orderConversation();
-
-            //if email is from an imap account copy the state (read/unread) from the server
-            if(!is_null($read)){
-            $mail->setIsRead($account->getContactId(), $read);
-            }
-            // to apply email rules
-            $null = null;
-            Hook::fire('after_mail_download', $mail, $null);
-
-            DB::commit();
-            */
             //insert to database table
             $content_str = $data_str = ''; 
             if(!empty($saveData)){
@@ -997,17 +874,7 @@ class M_Email extends M_Model
                 }
             }
         } catch(Exception $e) {
-            $ret = null;
-            Hook::fire('on_save_mail_error', array('content' => $content, 'account' => $account, 'exception' => $e), $ret);
-
-            Logger::log($e->__toString());
-            DB::rollback();
-            if (FileRepository::isInRepository($repository_id)) {
-                FileRepository::deleteFile($repository_id);
-            }
-            if (strpos($e->getMessage(), "Query failed with message 'Got a packet bigger than 'max_allowed_packet' bytes'") === false) {
-                throw $e;
-            }
+            $e->getMessage() . "Query failed with message 'Got a packet bigger than 'max_allowed_packet' bytes'";
         }
         unset($parsedMail);
         //error_log(var_export($saveData, true)."\r\n", 3, 'xxx' );
@@ -1077,7 +944,7 @@ class M_Email extends M_Model
         return $res;
     }
 
-    private function mailRecordExists($user_id=0, $uidl=''){
+    public static function mailRecordExists($user_id=0, $uidl=''){
         self::init();
         $sql = "select * from ".self::$mail_content_table." where user_id={$user_id} and uid='{$uidl}'";
         $rs = self::$db->get_row($sql);
@@ -1088,7 +955,7 @@ class M_Email extends M_Model
         }
     }
 
-    private function getFromAddressFromContent($content) {
+    public static function getFromAddressFromContent($content) {
         $address = array(array('name' => '', 'address' => ''));
         if (strpos($content, 'From') !== false) {
             $ini = strpos($content, 'From');
@@ -1100,6 +967,25 @@ class M_Email extends M_Model
             }
         }
         return $address;
+    }
+
+
+    public static function SaveContentToFilesystem($uid, $msg_id, $content) {
+        $tmp = ROOT_PATH . DS.'tmp'.DS.'filesystem'.DS.$uid.DS.$msg_id.DS;
+        $filename = md5($msg_id.'==='.$uid);
+        $tmpfile = $tmp . $filename.'.eml';
+        if(!is_dir($tmp)){
+            ZF_Libs_IOFile::mkdir($tmp);
+        }
+        $handle = fopen($tmpfile, "wb");
+        fputs($handle, $content);
+        fclose($handle);
+
+        $repository_id = $filename;
+
+        //unlink($tmp);
+
+        return $repository_id;
     }
 }
 

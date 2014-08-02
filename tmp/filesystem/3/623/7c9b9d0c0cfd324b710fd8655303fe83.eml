@@ -1,0 +1,211 @@
+Received: from mail15.sendcloud.org (unknown [101.227.180.7])
+	by mx8 (Coremail) with SMTP id JsmowACHo4nxO9dTMWt4AA--.6391S2;
+	Tue, 29 Jul 2014 14:15:14 +0800 (CST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sendcloud.org; i=@sendcloud.org; 
+ q=dns/txt; s=mail; t=1406614513; h=Sender : Date : To : From : Reply-To 
+ : Subject : Message-ID : MIME-Version : Content-Type : Date : From : 
+ Subject; bh=Ng7psa3ZUGQDmbmqijkSgFvZVRMZ6u7qRXXhr77U/rU=; 
+ b=A0Qjesg/aJGXiNYPAiTEqb1jGVWwJjuBkMSERWB9aASZhfaPcUx56xhiZKSPoCxbitHSLi
+ 6WeF074yuf0sWWb2TXUddNSKAUiHJ/QlvlRNrURaC1k+MYG2HuveDIQQUI1IFNpf+nAGG2tp
+ 7PO3X5LLUNo1YvCZAa6IZBttOTK1I=
+Sender:b39b0306-16e7-11e4-b380-00163e62bc6d@mail03.sendcloud.org
+Received:from lclabs.sinaapp.com ([10.10.127.107]) by SendCloud Inbound Server (Haraka/2.2.4) with ESMTPA id F6262E76-1C45-4328-A20C-2777B6BA9CA8.1 envelope-from <service@group.neitui.me> (authenticated bits=0); Tue, 29 Jul 2014 14:15:13 +0800
+Date:Tue, 29 Jul 2014 14:15:13 +0800
+Return-Path:<service@group.neitui.me>
+To:qqf1223@126.com
+From:=?UTF-8?B?5YaF5o6o572R?= <service@group.neitui.me>
+Reply-To:=?UTF-8?B?5YaF5o6o572R?= <service@receive.neituime.com>
+Subject:=?UTF-8?B?5pyA5aWH6JGp77yB5pyA57uZ5Yqb77yB5LqS6IGU572R5YWs5Y+456aP5Yip?==?UTF-8?B?5aSn5pud5YWJ?=
+Message-ID:<328bf40b370707963130e24483be125a@lclabs.sinaapp.com>
+X-Priority:3
+X-Mailer:PHPMailer 5.2.6 (https://github.com/PHPMailer/PHPMailer/)
+MIME-Version:1.0
+Content-Type:multipart/alternative; boundary="b1_328bf40b370707963130e24483be125a"
+X-SENDCLOUD-UUID:1406614513339_0_10462_5244.sc-10_10_127_21-inbound0$qqf1223@126.com
+X-SENDCLOUD-LOG:1406614513339_0_10462_5244.sc-10_10_127_21-inbound0$qqf1223@126.com#qqf1223@126.com#53728#419#0
+X-SMTPAPI:
+X-CM-TRANSID:JsmowACHo4nxO9dTMWt4AA--.6391S2
+Authentication-Results: mx8; spf=pass smtp.mail=b39b0306-16e7-11e4-b38
+	0-00163e62bc6d@mail03.sendcloud.org; dkim=pass header.i=@sendcloud.org
+X-Coremail-Antispam: 1Uf129KBjvdXoWrZr43CFykGw4fJrykGr45Wrg_yoWfWFc_tr
+	9xJ3s3Gayvgw40q3y3W3sakw1UJayYkFWrGrykXwsayr15Xa1kCFn7ua42ga1vva1rJF4Y
+	q348W34rJw1rAjkaLaAFLSUrUUUbvb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8DDG5UUUUU==
+
+
+--b1_328bf40b370707963130e24483be125a
+Content-Type:text/plain; charset="UTF-8"
+Content-Transfer-Encoding:8bit
+
+退订邮件
+              
+              
+                 内推网，一个接地气的招聘社区。欢迎你加入。
+              
+            
+        
+      
+      
+        
+              如今，在日趋同质化的薪酬面前，互联网创业型公司的各种奇葩和给力的福利成为了他们吸引人才的杀手锏！      如果你所在的公司的福利至今还停留在五险一金，绩效考核，弹性工作制等这些基础的福利上，内推君只能说一句：你们公司一点都不酷！！！      今天就让内推君带你去看看别人家不一样的酷炫福利。      详情戳→→http://www.neitui.me/theme/bonus.html      看完这些福利是不是让你即刻就想收拾行囊奔向这些公司？来吧，一切都已为你准备就绪！      今天起至31日，内推君为您精选以上12家公司的60个热招职位，所有职位只要你敢投，招聘者就敢在4小时内给予反馈。让你极速入职开始享受这些福利！      赶紧投简历，把别人家的福利变成自己滴→→http://www.neitui.me/theme/bonus.html
+        
+      
+      
+        
+            
+              
+                内推 - 接地气的招聘社区 - www.neitui.me微信ID：neituiMe  - 随时随地 刷职位，发简历！ 
+                
+              
+            
+          
+      
+    
+  
+   
+
+<br/><br/><img style="display: none" src="http://scp.sohu.com/track/open.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImNhdGVnb3J5X2lkIjogNTM3MjgsICJ1c2VyX2lkIjogNDE5LCAibGFiZWwiOiAwfQ%3D%3D">
+
+--b1_328bf40b370707963130e24483be125a
+Content-Type:text/html; charset="UTF-8"
+Content-Transfer-Encoding:8bit
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>内推网</title>
+<style type="text/css">
+ body {
+	padding:40px 0px;
+	font-family:'微软雅黑', '黑体';
+	background-color: #f4f4f4;
+}
+ table {
+	margin:0px;
+	padding:0px;
+}
+ td {
+	padding:0px;
+}
+ a {
+	text-decoration: none;
+	color:#06c;
+}
+ img {
+	border:0px;
+}
+ .pLeft15 {
+	padding-left:15px;
+}
+ .Button {
+	padding:10px 25px;
+	background:#06c;
+	color:#ffffff;
+	font-size:14px;
+}
+ .Button a {
+	color:#ffffff;
+}
+ .mRight20 {
+	margin-right:20px;
+}
+ .outermostTable {
+	width:600px;
+	background-color: #fff;
+	border:1px solid #e4e4e4;
+	margin:0px auto;
+}
+ .templateTitle {
+	font-size:16px;
+	width:548px;
+	color:#666;
+	border-bottom:1px solid #cecece;
+}
+ .tableBottom {
+	height:90px;
+	padding:0px;
+	background-color:#E7E7E7;
+	border:1px solid #e4e4e4;
+}
+ .bottomTitle {
+	margin:0px auto;
+	width: 600px;
+	font-size:12px;
+	color:#808080;
+}
+ .templeteContent {
+	padding:20px 26px 15px;
+}
+ .templeteBottomFont {
+	height:36px;
+	font-size:12px;
+	line-height:20px;
+	color:#999999;
+}
+ .TextBottom {
+	vertical-align:bottom;
+}
+ .pTop30 {
+	padding-top: 30px;
+}
+ .TextBottom {
+	vertical-align:bottom;
+}
+ .pTop20 {
+	padding-top: 20px;
+}
+ .pBottom30 {
+	padding-bottom: 30px;
+}
+
+</style>
+</head>
+<body>
+<center>  
+  <table cellspacing="0" cellpadding="0" class="outermostTable">
+    <tbody>
+      <tr>
+        <td align="center"><table width="100%" cellpadding="0" cellspacing="0" class="templateTitle">
+            <tbody>
+              <tr>
+                <td rowspan="2" align="left" style="padding:26px 0px 20px;"><a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvP3RyYWNlPWdzcnoiLCAiY2F0ZWdvcnlfaWQiOiA1MzcyOCwgInVzZXJfaWQiOiA0MTksICJsYWJlbCI6IDB9" target="_blank" ><img src="http://www.neitui.me/module/mail/images/default.gif"></a></td>
+                <td height="33" align="right" class="TextBottom" style="text-align:right"><a style="font-size:12px; margin-right:10px" href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvaW5kZXgucGhwP25hbWU9bWFpbCZoYW5kbGU9dW5zdWJzY3JpYmUmbWFpbD1jWEZtTVRJeU0wQXhNall1WTI5dCZ0cmFjZT1nc3J6IiwgImNhdGVnb3J5X2lkIjogNTM3MjgsICJ1c2VyX2lkIjogNDE5LCAibGFiZWwiOiAwfQ%3D%3D" target="_blank" >退订邮件</a></td>
+              </tr>
+              <tr>
+                <td align="right" style="padding:20px 0px 20px 0px; " class="TextBottom">&nbsp;内推网，一个接地气的招聘社区。欢迎你加入。</td>
+              </tr>
+            </tbody>
+        </table></td>
+      </tr>
+      <tr>
+        <td align="left" class="templeteContent">
+        <p> &nbsp; &nbsp; &nbsp;如今，在日趋同质化的薪酬面前，互联网创业型公司的各种奇葩和给力的福利成为了他们吸引人才的杀手锏！</p><p> &nbsp; &nbsp; &nbsp;如果你所在的公司的福利至今还停留在五险一金，绩效考核，弹性工作制等这些基础的福利上，内推君只能说一句：你们公司一点都不酷！！！</p><p> &nbsp; &nbsp; &nbsp;今天就让内推君带你去看看别人家不一样的酷炫福利。</p><p> &nbsp; &nbsp; &nbsp;详情戳→→<a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvaW5kZXgucGhwP25hbWU9dGhlbWUmYW1wO2hhbmRsZT1ib251cyZhbXA7dHJhY2U9bmVpdHVpZWRtIiwgImNhdGVnb3J5X2lkIjogNTM3MjgsICJ1c2VyX2lkIjogNDE5LCAibGFiZWwiOiAwfQ%3D%3D" target="_self" style="color:#ff0000;text-decoration:underline;" ><span style="color:#ff0000;">http://www.neitui.me/theme/bonus.html</span></a></p><p style="text-align:center"><a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvdGhlbWUvYm9udXMuaHRtbCIsICJjYXRlZ29yeV9pZCI6IDUzNzI4LCAidXNlcl9pZCI6IDQxOSwgImxhYmVsIjogMH0%3D" target="_self" ><img src="http://ww1.sinaimg.cn/bmiddle/6d15a528gw1eitge6u7oyj20hs1ma44m.jpg" width="440" height="1442" /></a></p><p
+style="text-align:center"><a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvdGhlbWUvYm9udXMuaHRtbCIsICJjYXRlZ29yeV9pZCI6IDUzNzI4LCAidXNlcl9pZCI6IDQxOSwgImxhYmVsIjogMH0%3D" target="_self" ><img src="http://ww1.sinaimg.cn/bmiddle/6d15a528gw1eitgs4mknbj20hs1m9tgc.jpg" width="440" height="1441" /></a></p><p> &nbsp; &nbsp; &nbsp;看完这些福利是不是让你即刻就想收拾行囊奔向这些公司？来吧，一切都已为你准备就绪！</p><p> &nbsp; &nbsp; &nbsp;今天起至31日，内推君为您精选以上12家公司的60个热招职位，所有职位只要你敢投，招聘者就敢在4小时内给予反馈。让你极速入职开始享受这些福利！</p><p> &nbsp; &nbsp; &nbsp;赶紧投简历，把别人家的福利变成自己滴→→<a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvdGhlbWUvYm9udXMuaHRtbCIsICJjYXRlZ29yeV9pZCI6IDUzNzI4LCAidXNlcl9pZCI6IDQxOSwgImxhYmVsIjogMH0%3D" target="_self" style="color:#ff0000;text-decoration:underline;" ><span style="color:#ff0000;">http://www.neitui.me/theme/bonus.html</span></a></p><p><br /></p>
+        </td>
+      </tr>
+      <tr>
+        <td class="tableBottom"><table width="100%" cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td align="left" valign="middle" style="padding-left:26px; padding-top:10px; font-size:13px; line-height:20px;"><a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvP3RyYWNlPWdzcnoiLCAiY2F0ZWdvcnlfaWQiOiA1MzcyOCwgInVzZXJfaWQiOiA0MTksICJsYWJlbCI6IDB9" style="color:#999;text-decoration:none" >内推 - 接地气的招聘社区 - www.neitui.me<br/>微信ID：neituiMe  - 随时随地 刷职位，发简历！</a>&nbsp;</td>
+                <td valign="bottom" align="right" style="padding-right:26px;"><a  href="http://scp.sohu.com/track/click.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImxpbmsiOiAiaHR0cDovL3d3dy5uZWl0dWkubWUvP3RyYWNlPWdzcnoiLCAiY2F0ZWdvcnlfaWQiOiA1MzcyOCwgInVzZXJfaWQiOiA0MTksICJsYWJlbCI6IDB9" target="_blank" ><img src="http://www.neitui.me/module/mail/images/logo_email_footer.png"></a></td>
+              </tr>
+            </tbody>
+          </table></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="padding-top:20px;">&nbsp;</p>
+</center>
+</body>
+</html>
+
+
+
+<br/><br/><img style="display: none" src="http://scp.sohu.com/track/open.do?p=eyJlbWFpbF9pZCI6ICIxNDA2NjE0NTEzMzM5XzBfMTA0NjJfNTI0NC5zYy0xMF8xMF8xMjdfMjEtaW5ib3VuZDAkcXFmMTIyM0AxMjYuY29tIiwgImNhdGVnb3J5X2lkIjogNTM3MjgsICJ1c2VyX2lkIjogNDE5LCAibGFiZWwiOiAwfQ%3D%3D">
+
+--b1_328bf40b370707963130e24483be125a--
+
+

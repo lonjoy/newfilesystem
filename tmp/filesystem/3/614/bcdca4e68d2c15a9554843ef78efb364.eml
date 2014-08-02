@@ -1,0 +1,1324 @@
+Received: from asi-elng80.splio.com (unknown [91.190.173.80])
+	by edm1 (Coremail) with SMTP id E8mowEAJKES92sxTBNR7Bw--.8360S4;
+	Mon, 21 Jul 2014 17:17:52 +0800 (CST)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=splio; d=news.elong.com;
+ h=Message-ID:List-Unsubscribe:List-ID:MIME-Version:From:To:Subject:Content-Type:Content-Transfer-Encoding:Date; i=noreply@news.elong.com;
+ bh=9eBN37O4ldhoYz8DHVrwh1Wkg6c=;
+ b=vbllw1GlfBPUstycBkr8yZxTlGLRdgOGk2tW6niUp+aFFAABBDzBAIul53ebc0XTpDLOXtDVfw03
+   kZ6i+QfnSG4D1iUOLK58BJurIJZE3bu6GIpCv8bboAtm5V1ITwwXTr3TS5qLoohR3WnxQHj929b7
+   X9O9FOozb4/DrRFfup8=
+Received: by asi-elng80.splio.com id hpjdak18svgi for <qqf1223@126.com>; Mon, 21 Jul 2014 11:17:26 +0200 (envelope-from <noreply@news.elong.com>)
+X-CSA-complaints: whitelist-complaints@eco.de
+Message-ID: <6RDovic8A-cXFmMTIyM0AxMjYuY29t@news1.elong.com>
+X-CampaignID: 6RDovic8A
+List-Unsubscribe: <http://news.elong.com/aabo/6RDovic8A/126.com/q%27qf1223.html>, <mailto:un-6RDovic8A-126.com=qqf1223@spl03.net>
+List-ID: v3elong2
+Feedback-ID: 6RDovic8A:v3elong2:splio
+Precedence: bulk
+MIME-Version: 1.0
+From: "=?UTF-8?B?6Im66b6Z5peF6KGM572R?=" <noreply@news.elong.com>
+To: <qqf1223@126.com>
+Subject: =?UTF-8?B?N+aciOeOsOmHkei0puaIt+WPiua2iOi0ueWIuOaciOe7k+WNlS3mhJ/mganlm57ppojotaAxMDAw5YWD5raI6LS55Yi46Iez5oKo6LSm5oi377yB?=
+Content-Type: text/html;
+    charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 21 Jul 2014 11:17:30 +0200
+X-CM-TRANSID:E8mowEAJKES92sxTBNR7Bw--.8360S4
+Authentication-Results: edm1; spf=pass smtp.mail=noreply@news.elong.co
+	m; dkim=pass header.i=@news.elong.com
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Xw1UKryUKw47Gw1fJF48Crg_yoW8Jr1kpa
+	n2qw1DWayxt3Z5ur13A3srtrZ7uwnxK3Wjgw4rGFyF9a1Fq3W7u34DX3sxZwn5uF4fXay5
+	Ary7AFWqgF1xtr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JjBeHkUUUUU=
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name=3D"handheldfriendly" content=3D"true" />
+<meta name=3D"viewport" content=3D"width=3Ddevice-width; initial-scale=3D1.=
+0; minimum-scale=3D1.0;maximum-scale=3D1.0;user-scalable=3Dno" />
+<title>=E7=8E=B0=E9=87=91=E8=B4=A6=E6=88=B7=E5=92=8C=E6=B6=88=E8=B4=B9=E5=
+=88=B8=E6=9C=88=E7=BB=93=E5=8D=95</title>
+<style type=3D"text/css">
+body {
+ width: 100%;
+ background-color: #ffffff;
+ margin: 0;
+ padding: 0;
+ -webkit-font-smoothing: antialiased;
+}
+table {
+ border-collapse: collapse;
+ mso-table-lspace: 0pt;
+ mso-table-rspace: 0pt;
+}
+#noview{
+ display:none!important;}
+.texthidden{
+     width:180px;
+  height:1.5em;
+     overflow:hidden;
+     text-overflow:ellipsis;
+     white-space:nowrap;}
+ @media only screen and (max-width: 420px) {
+/* Common */
+body[=
+yahoo]=
+ .width110 {
+ width: 100%!important;
+}
+body[=
+yahoo]=
+ .width100 {
+ width: 96%!important;
+}
+body[=
+yahoo]=
+ .width40 {
+ width: 20%!important;
+}
+body[=
+yahoo]=
+ .pic90 {
+ width: 100px!important;
+ height: 68px!important;
+}
+body[=
+yahoo]=
+ .pic80 {
+ width: 120px!important;
+ height: 34px!important;
+}
+body[=
+yahoo]=
+ .pic60 {
+ width: 70px!important;
+}
+
+body[=
+yahoo]=
+ .autoMargin {
+ margin: 0 auto!important;
+}
+body[=
+yahoo]=
+ .autoHeight {
+ height: 0 auto!important;
+}
+body[=
+yahoo]=
+ .center {
+ padding: 0 5px 0 5px!important;
+}
+body[=
+yahoo]=
+ .marginBottom10 {
+ margin-bottom: 10px!important
+}
+body[=
+yahoo]=
+ .nomobile {
+ display: none!important;
+ text-align: center!important
+}
+body[=
+yahoo]=
+ .autoPadding {
+ padding: 0 0!important;
+}
+/* Detail */
+body[=
+yahoo]=
+ .mobileNumber {
+ font-size: 2em!important;
+ text-align:center!important;
+}
+body[=
+yahoo]=
+ .bordertop {
+ border-top:#d5d5d5 1px solid!important;
+}
+body[=
+yahoo]=
+ .borderright0 {
+ border-right:0px!important;
+}
+
+body[=
+yahoo]=
+ .autoPadding5{
+ padding:5px!important;
+ }
+body[=
+yahoo]=
+ .hight35{
+ height:40px!important;
+ }
+body[=
+yahoo]=
+ .hight25{
+ height:30px!important;
+ }
+body[=
+yahoo]=
+ .hight5{
+ height:5px!important;
+ }
+body[=
+yahoo]=
+ .bordertopwhile{
+ border-top:#fff 1px dashed!important;
+ }
+body[=
+yahoo]=
+ .hightauto{
+ height:auto!important;
+ width:100%!important;
+ } 
+body[=
+yahoo]=
+ .mobileview{
+ display:block!important;
+ } 
+body[=
+yahoo]=
+ .width25{
+ width:25px!important;
+ } 
+body[=
+yahoo]=
+ .textright{
+ text-align:right!important;
+ } 
+body[=
+yahoo]=
+ .width80{
+ width:40%!important;
+ }
+ 
+}
+</style>
+</head>
+<body leftmargin=3D"0" topmargin=3D"0" marginwidth=3D"0" marginheight=3D"0"=
+ yahoo=3D"fix"><img src=3D"http://news.elong.com/ouv2/6RDovic8A/=
+4742367=
+/=
+4246694577.=
+gif=
+=
+" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=3D"display:block;" /=
+>
+
+ <table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" ali=
+gn=3D"center" bgcolor=3D"#FFFFFF">
+  <tr>
+    <td align=3D"center" style=3D"font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=
+=E9=BB=91'"><table width=3D"700" border=3D"0" align=3D"center" cellpadding=
+=3D"0" cellspacing=3D"0"  class=3D"nomobile">
+        <tr>
+          <td width=3D"39%" align=3D"left" valign=3D"top" style=3D"line-hei=
+ght:22px;color:#666; font-size:12px;">
+         =E5=A6=82=E6=9E=9C=E9=82=AE=E4=BB=B6=E6=97=A0=E6=B3=95=E6=AD=A3=E5=
+=B8=B8=E6=98=BE=E7=A4=BA=EF=BC=8C=E8=AF=B7<a href=3D"http://news.elong.com/=
+l2/6RDovic8A0/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#ff6600; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91'; text-decoration:underline;">=E7=82=B9=E5=87=BB=E8=BF=99=E9=87=8C>>=
+</a>
+</td>
+         
+          <td width=3D"61%" align=3D"left" valign=3D"top"   style=3D"font-s=
+ize:14px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91' ">
+
+<a href=3D"http://news.elong.com/l2/6RDovic8A1/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#FF0000; text-decoration:underline;">=E9=80=80=E8=AE=
+=A2=E9=82=AE=E4=BB=B6</a>&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com=
+/l2/6RDovic8A2/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#FF0000; text-decoration:underline;">=E6=8A=95=E8=AF=
+=89=E9=82=AE=E4=BB=B6</a>
+</td>
+        </tr>
+        <tr valign=3D"middle">
+          <td colspan=3D"3" align=3D"left"   style=3D"font-size:12px; font-=
+family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91' ">=E6=82=A8=E4=B9=8B=E6=89=80=
+=E4=BB=A5=E6=94=B6=E5=88=B0=E8=BF=99=E5=B0=81=E9=82=AE=E4=BB=B6=EF=BC=8C=E6=
+=98=AF=E5=9B=A0=E4=B8=BA=E6=82=A8=E6=9B=BE=E7=BB=8F=E6=B3=A8=E5=86=8C=E4=B8=
+=BA=E8=89=BA=E9=BE=99=E4=BC=9A=E5=91=98            
+          =EF=BC=8C=E8=AF=B7=E5=B0=86<span style=3D"color:#666; ">&nbsp;nor=
+eply@news.elong.com&nbsp;</span>=E6=B7=BB=E5=8A=A0=E8=BF=9B=E6=82=A8=E7=9A=
+=84=E9=80=9A=E8=AE=AF=E5=BD=95</td>
+        </tr>
+  </table></td></tr></table>
+<table width=3D"100%" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" alig=
+n=3D"center" >
+  <tr>
+    <td align=3D"center" bgcolor=3D"#FFFFFF">
+      <table width=3D"100%" border=3D"0" align=3D"center" cellpadding=3D"0"=
+ cellspacing=3D"0" class=3D"width110 autoMargin autoHeight" >
+        <tr>
+          <td align=3D"center"><table width=3D"700" border=3D"0" align=3D"c=
+enter" cellpadding=3D"0" cellspacing=3D"0" class=3D"width100 autoMargin aut=
+oHeight">
+              <tr align=3D"center">
+                <td height=3D"60" align=3D"left" valign=3D"middle"><table w=
+idth=3D"362" height=3D"41" border=3D"0" align=3D"left" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"width100 autoMargin autoHeight">
+                    <tr>
+                      <td height=3D"60" rowspan=3D"3" align=3D"left" valign=
+=3D"middle" class=3D"width100 autoMargin autoHeight"><a href=3D"http://new=
+s.elong.com/l2/6RDovic8A3/=
+4742367=
+/=
+4246694577.=
+html"><img class=3D"hightauto"  src=3D"http://www.elong.com/promotion/web/e=
+dm/images/140512/banner_01.jpg" border=3D"0" style=3D"display:block;" ></a>=
+</td>
+                    </tr>
+                  </table>
+                  <table border=3D"0" align=3D"right" cellpadding=3D"0" cel=
+lspacing=3D"0" class=3D"width110 autoMargin autoHeight center">
+                    <tr>
+                    <td align=3D"center" valign=3D"middle" class=3D"width11=
+0 autoMargin autoHeight center"><span class=3D"width110 autoMargin autoHeig=
+ht center"><font style=3D"font-size: 21px; font-weight: 700; color: #ff6600=
+; font-family: Arial;" class=3D"mobileNumber">400-995-8765</font></span></t=
+d>
+                      <td width=3D"135" height=3D"53" align=3D"right" valig=
+n=3D"bottom" ><a href=3D"http://news.elong.com/l2/6RDovic8A4/=
+4742367=
+/=
+4246694577.=
+html"><img border=3D"0" style=3D"display:block;" src=3D"http://www.elong.co=
+m/promotion/web/edm/images/140512/banner1_09.jpg"  class=3D"nomobile"></a><=
+/td>
+                      
+                    </tr>
+                  </table></td>
+              </tr>
+          </table></td>
+        </tr>
+        <tr align=3D"center" class=3D"nomobile">
+          <td height=3D"35" bgcolor=3D"#006ad6" ><table width=3D"700" borde=
+r=3D"0" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" style=3D"color=
+:#fff; font-size:14px;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91'"=
+>
+              <tr>
+                <td align=3D"left"><a href=3D"http://news.elong.com/l2/6RDo=
+vic8A5/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E8=89=BA=E9=BE=99=E9=A6=96=E9=A1=B5</a>&nbsp;&nb=
+sp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2=
+/6RDovic8A6/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E9=85=92=E5=BA=97=E9=A2=84=E8=AE=A2</a>&nbsp;&nb=
+sp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2=
+/6RDovic8A7/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E9=85=92=E5=BA=97=E5=9B=A2=E8=B4=AD</a>&nbsp;&nb=
+sp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2=
+/6RDovic8A8/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E5=9B=BD=E9=99=85=E9=85=92=E5=BA=97</a>&nbsp;&nb=
+sp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2=
+/6RDovic8A9/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E5=85=AC=E5=AF=93</a>&nbsp;&nbsp;&nbsp;&nbsp;|&n=
+bsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2/6RDovic8A10/=
+=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E9=99=90=E6=97=B6=E6=8A=A2=E8=B4=AD</a>&nbsp;&nb=
+sp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2=
+/6RDovic8A11/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E6=9C=BA=E7=A5=A8=E9=A2=84=E8=AE=A2</a>&nbsp;&nb=
+sp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2=
+/6RDovic8A12/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#fff;font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91=
+'; text-decoration:none;">=E7=81=AB=E8=BD=A6=E7=A5=A8</a></td>
+              </tr>
+            </table>
+        </tr>
+      
+      </table>
+</td></tr>
+  <tr>
+    <td align=3D"center" bgcolor=3D"#FFFFFF">
+
+
+
+
+
+      <table width=3D"100%" border=3D"0" align=3D"center" cellpadding=3D"0"=
+ cellspacing=3D"0"    class=3D"width100 autoMargin autoHeight bordertop"=
+>
+  <td height=3D"90"  align=3D"center" valign=3D"middle" bgcolor=3D"#eeeeee"=
+  ><table width=3D"700" border=3D"0" align=3D"center" cellpadding=3D"0" cel=
+lspacing=3D"0"   class=3D"width100 autoMargin autoHeight ">
+<tr>
+  <td  align=3D"left" valign=3D"middle"  style=3D"font-size:15px; color:#00=
+0; font-weight:700; font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; line-=
+height:22px"  class=3D"autoPadding5" ><font style=3D"color:#7b7b7b; font-fa=
+mily:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; font-weight:400">=E5=B0=8A=E6=95=
+=AC=E7=9A=84<a href=3D"http://news.elong.com/l2/6RDovic8A13/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#ff8800;text-decoration:none;font-weight:700; font-siz=
+e:15px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; " > =
+=
+qqf1223@126.com=
+=
+</a>=E6=82=A8=E5=A5=BD=EF=BC=81</font>
+            <br>
+            <font style=3D"color:#7b7b7b; font-family:=E5=BE=AE=E8=BD=AF=E9=
+=9B=85=E9=BB=91; font-weight:400">=E4=BB=A5=E4=B8=8B=E6=98=AF=E6=82=A8=E8=
+=89=BA=E9=BE=99=E5=8D=A1&nbsp;<a href=3D"http://news.elong.com/l2/6RDovic8A=
+14/=
+4742367=
+/=
+4246694577.=
+html" style=3D"color:#ff6600;text-decoration:none;font-size:15px; font-weig=
+ht:700; " >=
+190000000011693939=
+</a>&nbsp;=E7=9A=84=E5=AF=B9=E8=B4=A6=E5=8D=95</font></td>
+  <td width=3D"264"  align=3D"right" valign=3D"middle"  class=3D"nomobile w=
+idth110 autoMargin autoHeight center " ><table width=3D"264" border=3D"0" a=
+lign=3D"right" cellpadding=3D"0" cellspacing=3D"0">
+    <tr>
+      <td align=3D"right" valign=3D"bottom" ><img src=3D"http://www.elong.c=
+om/promotion/web/edm/images/140512/banner10_13.jpg" width=3D"187" height=3D=
+"50"  class=3D"nomobile" style=3D"display:block;" border=3D"0"></a>
+      </td>
+      <td rowspan=3D"2" align=3D"right" valign=3D"bottom" ><img src=3D"http=
+://www.elong.com/promotion/web/edm/images/140512/banner1_12.jpg" width=3D"7=
+7" height=3D"83"  class=3D"nomobile" style=3D"display:block;" border=3D"0">=
+</a></td>
+    </tr>
+    <tr>
+      <td align=3D"right" valign=3D"top"><span style=3D" font-size:16px;fon=
+t-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#cacaca;">2014=E5=B9=
+=B47=E6=9C=88</span></td>
+      </tr>
+  </table></td>
+</tr>
+
+
+</table></td>
+
+<tr>
+  <td height=3D"10" align=3D"center" valign=3D"middle" style=3D"border-top:=
+#d9d9d9 1px solid;"></td>
+</tr>
+<tr>
+  <td height=3D"40" align=3D"center" valign=3D"middle" > <table width=3D"70=
+0" border=3D"0" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" class=
+=3D"width100 autoMargin autoHeight marginBottom10 center" >
+        <tr bgcolor=3D"#FFFFFF">
+          <td align=3D"center" valign=3D"middle" ><table width=3D"100%" bor=
+der=3D"0"align=3D"left" cellpadding=3D"0" bgcolor=3D"#FFFFFF" cellspacing=
+=3D"0"  class=3D"width110 center borderright0">
+              <tr>
+                <td align=3D"left" bgcolor=3D"#fff8bd"><table width=3D"100%=
+" border=3D"0" align=3D"left" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+font-size:14px; color:#666666;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=
+=91;">
+                    <tr>
+                      <td height=3D"50" colspan=3D"3" align=3D"left" valign=
+=3D"middle" bgcolor=3D"#ffd4da" class=3D"hight35"><table width=3D"100%" bor=
+der=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"50%" align=3D"left"><span class=3D"hight35" ><img src=3D"h=
+ttp://www.elong.com/promotion/web/edm/images/140512/banner_03.jpg" width=3D=
+"115" height=3D"32" border=3D"0" style=3D"display:block;"/></span></td=
+>
+    <td width=3D"50%" align=3D"right" ><a href=3D"http://news.elong.com/l2/=
+6RDovic8A15/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:14px; font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91; text-decoration:none;color:#f26275;">=E8=AF=A6=E7=BB=86=E4=BB=8B=E7=
+=BB=8D&nbsp;&nbsp;&nbsp;&nbsp;</a></span></td>
+  </tr>
+</table></td>
+                    </tr>
+                   
+                </table></td>
+              </tr>
+            </table>
+            </td>
+        </tr>
+        
+        <tr>
+          
+        </tr>
+        <tr bgcolor=3D"#FFFFFF">
+          <td height=3D"160" align=3D"center" valign=3D"middle" bgcolor=3D"=
+#FFF0F2" ><table width=3D"345" border=3D"0"align=3D"left" cellpadding=3D"0"=
+ bgcolor=3D"#FFFFFF" cellspacing=3D"0"  class=3D"width110 center borderrigh=
+t0">
+              <tr valign=3D"middle" bgcolor=3D"#fff0f2">
+                <td align=3D"left"><table width=3D"100%" border=3D"0" align=
+=3D"left" cellpadding=3D"0" cellspacing=3D"0" style=3D"font-size:14px; colo=
+r:#666666;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91;">
+                    
+                    <tr>
+                      <td rowspan=3D"3" align=3D"left" valign=3D"middle" cl=
+ass=3D"hight25"><img src=3D"http://www.elong.com/promotion/web/edm/images/1=
+40512/banner00_03.jpg"  style=3D" border:0px;"/></td>
+                      <td height=3D"60" align=3D"left" class=3D"hight25">&n=
+bsp;&nbsp;=E6=88=AA=E6=AD=A2=E6=97=A5=E6=9C=9F:</td>
+    <td height=3D"60" align=3D"right" style=3D"font-size:14px; color:#000;"=
+>2014-07-09&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"40" align=3D"left" style=3D"border-top:=
+#fcc6cd 1px solid;">&nbsp;&nbsp;=E8=B4=A6=E6=88=B7=E4=BD=99=E9=A2=9D:</td=
+>
+                      <td align=3D"right" style=3D"font-size:24px; border-t=
+op:#fcc6cd 1px solid; font-family:'=E9=BB=91=E4=BD=93'; color:#=
+666=
+">=
+0=
+=E5=85=83&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"60" style=3D"border-top:#fcc6cd 1px sol=
+id;"></td>
+                      <td height=3D"40" align=3D"right" valign=3D"middle"  =
+class=3D"hight5" style=3D" font-size:14px;font-family:=E5=BE=AE=E8=BD=AF=E9=
+=9B=85=E9=BB=91; color:#ff6600; border-top:#fcc6cd 1px solid;"><a href=3D"h=
+ttp://news.elong.com/l2/6RDovic8A16/=
+4742367=
+/=
+4246694577.=
+html" style=3D" font-size:13px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91; color:#ff6600;">=E6=9F=A5=E7=9C=8B=E6=98=8E=E7=BB=86&gt;&gt; </a>&n=
+bsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                </table></td>
+              </tr>
+            </table>
+            <table width=3D"345" border=3D"0" align=3D"right"  cellpadding=
+=3D"0" cellspacing=3D"0" bgcolor=3D"#FFFFFF" class=3D"width110 autoMargin a=
+utoHeight center bordertop">
+              <tr bgcolor=3D"#fff0f2">
+                <td colspan=3D"3" align=3D"right" class=3D"nomobile"  valig=
+n=3D"middle" bgcolor=3D"#fff0f2"><table width=3D"100%" border=3D"0" align=
+=3D"left" cellpadding=3D"0" cellspacing=3D"0" style=3D"font-size:14px;font-=
+family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;">
+                    
+                    <tr>
+                      <td width=3D"20" rowspan=3D"4" align=3D"right" valign=
+=3D"middle" class=3D"hight25"><img src=3D"http://www.elong.com/promotion/we=
+b/edm/images/140512/banner000_05.jpg"  style=3D" border:0px;"/></td>
+                      <td height=3D"60" colspan=3D"3" align=3D"left" style=
+=3D"font-size:20px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:=
+#6a6a6a;" class=3D"hight25"><a href=3D"http://news.elong.com/l2/6RDovic8A17=
+/=
+4742367=
+/=
+4246694577.=
+html" style=3D"text-decoration:none;color:#6a6a6a;">&nbsp;&nbsp;=E5=A6=82=
+=E4=BD=95=E4=BD=BF=E7=94=A8=E7=8E=B0=E9=87=91=E8=B4=A6=E6=88=B7</a></span><=
+/td>
+    </tr>
+                    <tr>
+                      <td  align=3D"left"></td>
+                     <td height=3D"30" align=3D"left" style=3D"font-size:14=
+px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;" >=C2=
+=B7 =E5=8F=AF=E6=94=AF=E4=BB=98=E6=9C=BA=E7=A5=A8=E7=A5=A8=E6=AC=BE</td=
+>
+                     <td align=3D"left"  style=3D"font-size:14px;font-famil=
+y:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;">=C2=B7 =E5=8F=AF=E6=
+=94=AF=E4=BB=98=E9=A2=84=E4=BB=98=E8=B4=B9=E9=85=92=E5=BA=97=E6=88=BF=E8=B4=
+=B9</td>
+                    </tr>
+                    <tr>
+                      <td width=3D"15" height=3D"40">  </td>
+                      <td width=3D"150" height=3D"30" align=3D"left"  style=
+=3D"font-size:14px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:=
+#6a6a6a;">=C2=B7 =E5=8F=AF=E6=8F=90=E5=8F=96=E7=8E=B0=E9=87=91</td>
+                      <td width=3D"200" align=3D"left" style=3D"font-size:1=
+4px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;" >&nbs=
+p;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"40"></td>
+                      <td height=3D"20" align=3D"left" >&nbsp;</td>
+                      <td align=3D"left" >&nbsp;</td>
+                    </tr>
+                    </table></td>
+              </tr>
+          </table></td>
+        </tr>
+        <tr>
+          <td height=3D"8" ></td>
+        </tr>
+  </table></td>
+</tr>
+<tr>
+  <td align=3D"center" valign=3D"middle" >
+  <table width=3D"700" border=3D"0" align=3D"center" cellpadding=3D"0" cell=
+spacing=3D"0" class=3D"width100 autoMargin autoHeight marginBottom10 center=
+" >
+        <tr bgcolor=3D"#FFFFFF">
+          <td align=3D"center" valign=3D"middle" ><table width=3D"100%" bor=
+der=3D"0"align=3D"left" cellpadding=3D"0" bgcolor=3D"#FFFFFF" cellspacing=
+=3D"0"  class=3D"width110 center borderright0">
+              <tr>
+                <td align=3D"left" bgcolor=3D"#48a2f5"><table width=3D"100%=
+" border=3D"0" align=3D"left" cellpadding=3D"0" cellspacing=3D"0" style=3D"=
+font-size:14px; color:#666666;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=
+=91;">
+                    <tr>
+                      <td height=3D"50" colspan=3D"3" align=3D"left" valign=
+=3D"middle" bgcolor=3D"#c2e4ff" class=3D"hight35"><table width=3D"100%" bor=
+der=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"50%" align=3D"left"><span class=3D"hight35" ><img src=3D"h=
+ttp://www.elong.com/promotion/web/edm/images/140512/banner_02.jpg" width=3D=
+"98" height=3D"32" border=3D"0" style=3D"display:block;"/></span></td=
+>
+    <td width=3D"50%" align=3D"right"  ><a href=3D"http://news.elong.com/l2=
+/6RDovic8A18/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:14px; font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91; text-decoration:none;color:#48a2f5;">=E8=AF=A6=E7=BB=86=E4=BB=8B=E7=
+=BB=8D&nbsp;&nbsp;&nbsp;&nbsp;</a></span></td>
+  </tr>
+</table></td>
+                    </tr>
+                   
+                </table></td>
+              </tr>
+            </table>
+            </td>
+        </tr>
+        
+        <tr>
+          
+        </tr>
+        <tr bgcolor=3D"#ebf6ff">
+          <td height=3D"160" align=3D"center" valign=3D"middle" bgcolor=3D"=
+#ebf6ff" ><table width=3D"345" border=3D"0"align=3D"left" cellpadding=3D"0"=
+ bgcolor=3D"#FFFFFF" cellspacing=3D"0"  class=3D"width110 center borderrigh=
+t0">
+              <tr valign=3D"middle" bgcolor=3D"#ebf6ff">
+                <td align=3D"left"><table width=3D"100%" border=3D"0" align=
+=3D"left" cellpadding=3D"0" cellspacing=3D"0" style=3D"font-size:14px;font-=
+family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#666666;">
+                    
+                    <tr>
+                      <td rowspan=3D"3" align=3D"left" valign=3D"middle" cl=
+ass=3D"hight25"><img src=3D"http://www.elong.com/promotion/web/edm/images/1=
+40512/banner00_05.jpg"  style=3D" border:0px;"/></td>
+                      <td height=3D"60" align=3D"left"  class=3D"hight25">&=
+nbsp;&nbsp;=E6=88=AA=E6=AD=A2=E6=97=A5=E6=9C=9F:</td>
+    <td height=3D"40" align=3D"right" style=3D"font-size:14px; color:#000;"=
+>2014-07-05&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"40"  style=3D"border-top:#c2e4ff 1px so=
+lid;"align=3D"left">&nbsp;&nbsp;=E8=B4=A6=E6=88=B7=E4=BD=99=E9=A2=9D:</td=
+>
+                     <td align=3D"right" style=3D"font-size:24px; border-to=
+p:#c2e4ff 1px solid; font-family:'=E9=BB=91=E4=BD=93'; color:#=
+666=
+">=
+0=
+=E5=85=83&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height=3D"60" style=3D"border-top:#c2e4ff 1px sol=
+id;"></td>
+                      <td height=3D"40"  class=3D"hight5" align=3D"right" s=
+tyle=3D" font-size:14px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; b=
+order-top:#c2e4ff 1px solid; color:#ff6600;" ><a href=3D"http://news.elong.=
+com/l2/6RDovic8A19/=
+4742367=
+/=
+4246694577.=
+html" style=3D" font-size:13px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91; color:#ff6600;">=E6=9F=A5=E7=9C=8B=E6=98=8E=E7=BB=86&gt;&gt; </a>&n=
+bsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                </table></td>
+              </tr>
+            </table>
+            <table width=3D"345" border=3D"0" align=3D"right"  cellpadding=
+=3D"0" cellspacing=3D"0" bgcolor=3D"#FFFFFF" class=3D"width110 autoMargin a=
+utoHeight center bordertop">
+              <tr bgcolor=3D"#fff0f2">
+                <td colspan=3D"3" align=3D"right" class=3D"nomobile"  valig=
+n=3D"middle" bgcolor=3D"#ebf6ff"><table width=3D"100%" border=3D"0" align=
+=3D"left" cellpadding=3D"0" cellspacing=3D"0" style=3D"font-size:14px;font-=
+family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;">
+                    
+                    <tr>
+                      <td width=3D"20" rowspan=3D"4" align=3D"right" valign=
+=3D"middle" class=3D"hight25"><img src=3D"http://www.elong.com/promotion/we=
+b/edm/images/140512/banner000_06.jpg"  style=3D" border:0px;"/></td>
+                      <td height=3D"60" colspan=3D"2" align=3D"left" style=
+=3D"font-size:20px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:=
+#6a6a6a;" class=3D"hight25"><a href=3D"http://news.elong.com/l2/6RDovic8A20=
+/=
+4742367=
+/=
+4246694577.=
+html" style=3D" text-decoration:none;color:#6a6a6a;">&nbsp;&nbsp;=E5=BF=AB=
+=E9=80=9F=E8=8E=B7=E5=8F=96=E6=B6=88=E8=B4=B9=E5=88=B8</a></span></td=
+>
+    </tr>
+                    <tr>
+                      <td  align=3D"left"></td>
+                     <td height=3D"30" align=3D"left" style=3D"font-size:14=
+px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;" >=C2=
+=B7 =E7=BD=91=E4=B8=8A=E8=AE=A2=E9=85=92=E5=BA=97=EF=BC=9A=E6=AF=8F=E9=97=
+=B4=E5=A4=9C=E5=8F=AF=E8=8E=B7=E8=B5=A0100=E5=85=83=E6=B6=88=E8=B4=B9=E5=88=
+=B8</td>
+                     </tr>
+                    <tr>
+                      <td width=3D"15" height=3D"40" >  </td>
+                      <td height=3D"30" align=3D"left" style=3D"font-size:1=
+4px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;" >=C2=
+=B7 =E7=BD=91=E4=B8=8A=E8=AE=A2=E6=9C=BA=E7=A5=A8=EF=BC=9A=E6=AF=8F=E8=AE=
+=A2=E5=8D=95=E5=8F=AF=E8=8E=B7=E8=B5=A0100=E5=85=83=E6=B6=88=E8=B4=B9=E5=88=
+=B8</td>
+                      </tr>
+                    <tr>
+                      <td height=3D"40"></td>
+                      <td height=3D"20" align=3D"left" style=3D"font-size:1=
+4px;font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91; color:#6a6a6a;" >=C2=
+=B7 =E9=85=92=E5=BA=97=E7=82=B9=E8=AF=84=EF=BC=9A=E6=AF=8F=E6=9D=A1=E5=8F=
+=AF=E8=8E=B7=E8=B5=A0100=E5=85=83=E6=B6=88=E8=B4=B9=E5=88=B8</td>
+                      </tr>
+                    </table></td>
+              </tr>
+          </table></td>
+        </tr>
+        <tr>
+          <td height=3D"15" align=3D"center" valign=3D"bottom" class=3D"nom=
+obile" bgcolor=3D"#ebf6ff"><img src=3D"http://www.elong.com/promotion/web/e=
+dm/images/140512/15_05.jpg" height=3D"6" border=3D"0"   style=3D"display:bl=
+ock;" width=3D"100%"></td>
+        </tr>
+  </table>
+  </td>
+</tr>
+
+</table>
+
+      <table width=3D"700" border=3D"0"  bgcolor=3D"#ebf6ff" align=3D"cente=
+r" cellpadding=3D"0" cellspacing=3D"0" class=3D"width100 autoMargin autoHei=
+ght marginBottom10 center" >
+        <tr>
+          <td valign=3D"middle" ><table width=3D"440" border=3D"0" align=3D=
+"left" cellpadding=3D"0" cellspacing=3D"0"  class=3D"width110 autoMargin au=
+toHeight center" >
+              <tr>
+                <td width=3D"20" valign=3D"middle">&nbsp;</td>
+               <td width=3D"46" valign=3D"middle" class=3D"nomobile"><img s=
+rc=3D"http://www.elong.com/promotion/web/edm/images/140512/banner1_01.jpg" =
+width=3D"63" height=3D"28" border=3D"0" style=3D"display:block;" /></td=
+>
+                <td height=3D"45" valign=3D"middle"><img src=3D"http://www.=
+elong.com/promotion/web/edm/images/140512/banner1_02.jpg" width=3D"131" hei=
+ght=3D"28" border=3D"0" style=3D"display:block;" /></td>
+                <td width=3D"20" valign=3D"middle">&nbsp;</td>
+                <td width=3D"200" align=3D"left" valign=3D"middle" style=3D=
+"font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91'; font-weight:100; color=
+:#48a2f5; font-size:12px" class=3D"textright"><a href=3D"http://news.elong.=
+com/l2/6RDovic8A21/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:13px; color:#48a2f5; text-decoration:none" target=
+=3D_blank>=
+=E5=8C=97=E4=BA=AC=
+</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2/6RDovic8A2=
+2/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:13px; color:#48a2f5; text-decoration:none" target=
+=3D_blank>=
+=E4=B8=8A=E6=B5=B7=
+</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href=3D"http://news.elong.com/l2/6RDovic8A2=
+3/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:13px; color:#48a2f5; text-decoration:none" target=
+=3D_blank></a>&nbsp;</td>
+              </tr>
+            </table>
+            <table width=3D"252" border=3D"0" align=3D"right" cellpadding=
+=3D"0" cellspacing=3D"0"  class=3D"width110 autoMargin autoHeight center bo=
+rdertopwhile" >
+              <tr>
+                <td width=3D"252" height=3D"50" align=3D"center" valign=3D"=
+middle"><a href=3D"http://news.elong.com/l2/6RDovic8A24/=
+4742367=
+/=
+4246694577.=
+html" ><img src=3D"http://www.elong.com/promotion/web/edm/images/140512/ban=
+ner1_03.jpg" width=3D"226" height=3D"28" border=3D"0" style=3D"display:bloc=
+k;" /></a></td>
+              </tr>
+            </table></td>
+        </tr>
+      </table>
+      
+      
+      <table width=3D"700" border=3D"0" align=3D"center" cellpadding=3D"0" =
+cellspacing=3D"0" bgcolor=3D"#ebf6ff"  class=3D"width100 autoMargin autoHei=
+ght" >
+        <tr>
+          <td width=3D"30" align=3D"center" valign=3D"middle"  class=3D"wid=
+th25">
+          
+<table width=3D"30"  border=3D"0" align=3D"left" cellpadding=3D"0" cellspac=
+ing=3D"0"class=3D"width25">
+            <tr></tr>
+            <tr>
+              <td align=3D"center" valign=3D"middle" height=3D"80" bgcolor=
+=3D"#ffad89" width=3D"10px"><div style=3D"width:20px; margin:4px" align=3D"=
+center" class=3D"autoMargin"><a href=3D"http://news.elong.com/l2/6RDovic8A2=
+5/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:13px; color:#fff; font-family:'=E5=BE=AE=E8=BD=AF=
+=E9=9B=85=E9=BB=91'; text-decoration:none;" target=3D_blank>=
+=E5=8C=97=E4=BA=AC=
+</a></div></td>
+            </tr>
+          </table>         
+          </td>
+
+          <td width=3D"335" height=3D"145" align=3D"center" valign=3D"middl=
+e"  class=3D"width100 autoMargin autoHeight"><table width=3D"92%" border=3D=
+"0" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" style=3D"font-fami=
+ly:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91'"  class=3D"width110 autoMargin au=
+toHeight">
+<tr>
+<td width=3D"50%" rowspan=3D"5" align=3D"center" valign=3D"middle" class=3D=
+"width40"><a href=3D"http://news.elong.com/l2/6RDovic8A26/=
+4742367=
+/=
+4246694577.=
+html"><img src=3D"=
+http://www.elongstatic.com/imageapp/hotels/hotelimages/0101/10101520/17_24d35be5-7baa-4942-93a0-965d2261a792.jpg=
+"width=3D"160" height=3D"110" class=3D"pic90" border=3D"0"   /></a>
+</td>
+<td width=3D"6%" height=3D"140" rowspan=3D"5" class=3D"nomobile"></td=
+>
+<td width=3D"44%" height=3D"22" align=3D"left" ><A href=3D"http://news.elon=
+g.com/l2/6RDovic8A27/=
+4742367=
+/=
+4246694577.=
+html" style=3D" font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';font-siz=
+e:15px; color:#006ad6; text-decoration:none;">=
+=E9=80=9F8=E9=85=92=E5=BA=97=E5=B0=8F=E6=B1=A4=E5=B1=B1=E5=BA=97=
+</A></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left"><A href=3D"http://news.elong.com/l2/6RDovi=
+c8A28/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; color:#aaaaaa; font-family:'=E5=BE=AE=E8=BD=
+=AF=E9=9B=85=E9=BB=91';text-decoration:none;">=
+=E6=98=8C=E5=B9=B3=E5=9F=8E=E5=8C=BA=E3=80=81=E5=B0=8F=E6=B1=A4=E5=B1=B1=E2=80=A6=
+</A></td>
+</tr>
+<tr>
+<td height=3D"25" align=3D"left"><table width=3D"100%" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"75" height=3D"" align=3D"left"><a href=3D"http://news.elon=
+g.com/l2/6RDovic8A29/=
+4742367=
+/=
+4246694577.=
+html" style=3D"text-decoration:none" ><font style=3D"font-size:26px; font-f=
+amily:'Arial'; color:#ff6600; font-weight:700;"><span style=3D"font-size:12=
+px;color:#aaaaaa;">&yen;</span>=
+168=
+</font></a></td>
+    <td width=3D"70" align=3D"left" valign=3D"middle" style=3D"line-height:=
+13px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';"><span style=3D"b=
+order: 1px solid #ff9900;background:#ff9900;color: #ffffff;display:inline-b=
+lock; margin-left: 3px; font-size:12px; font-weight:normal;padding: 1px 2px=
+; line-height:15px;">=E8=BF=94</span><span style=3D"border: 1px solid #ff99=
+00;color: #ff9900;display:inline-block; font-size:12px; font-weight:normal;=
+padding: 1px 3px; line-height:15px;">=
+40=
+=E5=85=83</span></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left" valign=3D"top" ><A href=3D"http://news.elo=
+ng.com/l2/6RDovic8A30/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91';color:#ff6600; text-decoration:none;">=
+=E6=8E=A8=E8=8D=90=EF=BC=9A=E8=BF=94=E7=8E=B0=E9=AB=98=E8=BE=BE=
+24=
+%=
+=
+=
+=
+</A></td>
+</tr>
+<tr>
+  <td height=3D"26" align=3D"left" valign=3D"botton"><a href=3D"http://new=
+s.elong.com/l2/6RDovic8A31/=
+4742367=
+/=
+4246694577.=
+html" ><img src=3D"http://www.elong.com/promotion/web/edm/images/140512/ban=
+ner1_05.jpg"  height=3D"26" style=3D"display:block;" border=3D"0" /></a></t=
+d>
+</tr>
+          </table></td>
+
+          <td width=3D"335" height=3D"145" align=3D"center" valign=3D"middl=
+e"  class=3D"nomobile"><table width=3D"92%" border=3D"0" align=3D"center" c=
+ellpadding=3D"0" cellspacing=3D"0" style=3D"font-family:'=E5=BE=AE=E8=BD=AF=
+=E9=9B=85=E9=BB=91'"  class=3D"width110 autoMargin autoHeight">
+<tr>
+<td width=3D"50%" rowspan=3D"5" align=3D"center" valign=3D"middle" class=3D=
+"width40"><a href=3D"http://news.elong.com/l2/6RDovic8A32/=
+4742367=
+/=
+4246694577.=
+html"><img src=3D"=
+http://www.elongstatic.com/imageapp//spec/Hotel/20131127/11/6086ccd1-0ae9-4126-9764-c40dd2182835_Hotel_17.jpg=
+"width=3D"160" height=3D"110" class=3D"pic90" border=3D"0"   /></a>
+</td>
+<td width=3D"6%" height=3D"140" rowspan=3D"5" class=3D"nomobile"></td=
+>
+<td width=3D"44%" height=3D"22" align=3D"left" ><A href=3D"http://news.elon=
+g.com/l2/6RDovic8A33/=
+4742367=
+/=
+4246694577.=
+html" style=3D" font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';font-siz=
+e:15px; color:#006ad6; text-decoration:none;">=
+=E6=9C=BA=E5=9C=BA=E8=83=B6=E4=B8=9C=E5=A4=A7=E9=85=92=E5=BA=97=
+</A></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left"><A href=3D"http://news.elong.com/l2/6RDovi=
+c8A34/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; color:#aaaaaa; font-family:'=E5=BE=AE=E8=BD=
+=AF=E9=9B=85=E9=BB=91';text-decoration:none;">=
+=E6=96=B0=E5=9B=BD=E5=B1=95=
+</A></td>
+</tr>
+<tr>
+<td height=3D"25" align=3D"left"><table width=3D"100%" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"75" height=3D"" align=3D"left"><a href=3D"http://news.elon=
+g.com/l2/6RDovic8A35/=
+4742367=
+/=
+4246694577.=
+html" style=3D"text-decoration:none" ><font style=3D"font-size:26px; font-f=
+amily:'Arial'; color:#ff6600; font-weight:700;"><span style=3D"font-size:12=
+px;color:#aaaaaa;">&yen;</span>=
+268=
+</font></a></td>
+    <td width=3D"70" align=3D"left" valign=3D"middle" style=3D"line-height:=
+13px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';"><span style=3D"b=
+order: 1px solid #ff9900;background:#ff9900;color: #ffffff;display:inline-b=
+lock; margin-left: 3px; font-size:12px; font-weight:normal;padding: 1px 2px=
+; line-height:15px;">=E8=BF=94</span><span style=3D"border: 1px solid #ff99=
+00;color: #ff9900;display:inline-block; font-size:12px; font-weight:normal;=
+padding: 1px 3px; line-height:15px;">=
+60=
+=E5=85=83</span></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left" valign=3D"top" ><A href=3D"http://news.elo=
+ng.com/l2/6RDovic8A36/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91';color:#ff6600; text-decoration:none;">=
+=E6=8E=A8=E8=8D=90=EF=BC=9A=E8=BF=94=E7=8E=B0=E9=AB=98=E8=BE=BE=
+22=
+%=
+=
+=
+=
+</A></td>
+</tr>
+<tr>
+  <td height=3D"26" align=3D"left" valign=3D"botton"><a href=3D"http://new=
+s.elong.com/l2/6RDovic8A37/=
+4742367=
+/=
+4246694577.=
+html" ><img src=3D"http://www.elong.com/promotion/web/edm/images/140512/ban=
+ner1_05.jpg"  height=3D"26" style=3D"display:block;" border=3D"0" /></a></t=
+d>
+</tr>
+          </table></td>
+</tr>
+        <tr>
+          <td  height=3D"5" colspan=3D"3" align=3D"center" valign=3D"bottom=
+" bgcolor=3D"#ebf6ff"  ></td>
+        </tr>
+      </table>
+
+      <table width=3D"700" border=3D"0" align=3D"center" cellpadding=3D"0" =
+cellspacing=3D"0" bgcolor=3D"#ebf6ff"  class=3D"width100 autoMargin autoHei=
+ght" >
+        <tr>
+          <td width=3D"30" align=3D"center" valign=3D"middle"  class=3D"wid=
+th25">
+          
+<table width=3D"30"  border=3D"0" align=3D"left" cellpadding=3D"0" cellspac=
+ing=3D"0"class=3D"width25">
+            <tr></tr>
+            <tr>
+              <td align=3D"center" valign=3D"middle" height=3D"80" bgcolor=
+=3D"#9ce086" width=3D"10px"><div style=3D"width:20px; margin:4px" align=3D"=
+center" class=3D"autoMargin"><a href=3D"http://news.elong.com/l2/6RDovic8A3=
+8/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:13px; color:#fff; font-family:'=E5=BE=AE=E8=BD=AF=
+=E9=9B=85=E9=BB=91'; text-decoration:none;" target=3D_blank>=
+=E4=B8=8A=E6=B5=B7=
+</a></div></td>
+            </tr>
+          </table>         
+          </td>
+
+          <td width=3D"335" height=3D"145" align=3D"center" valign=3D"middl=
+e"  class=3D"width100 autoMargin autoHeight"><table width=3D"92%" border=3D=
+"0" align=3D"center" cellpadding=3D"0" cellspacing=3D"0" style=3D"font-fami=
+ly:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91'"  class=3D"width110 autoMargin au=
+toHeight">
+<tr>
+<td width=3D"50%" rowspan=3D"5" align=3D"center" valign=3D"middle" class=3D=
+"width40"><a href=3D"http://news.elong.com/l2/6RDovic8A39/=
+4742367=
+/=
+4246694577.=
+html"><img src=3D"=
+http://www.elongstatic.com/imageapp/hotels/hotelimages/0201/10201676/17_62b04bb8-8859-4df6-8f58-67ca6c04557b.jpg=
+"width=3D"160" height=3D"110" class=3D"pic90" border=3D"0"   /></a>
+</td>
+<td width=3D"6%" height=3D"140" rowspan=3D"5" class=3D"nomobile"></td=
+>
+<td width=3D"44%" height=3D"22" align=3D"left" ><A href=3D"http://news.elon=
+g.com/l2/6RDovic8A40/=
+4742367=
+/=
+4246694577.=
+html" style=3D" font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';font-siz=
+e:15px; color:#006ad6; text-decoration:none;">=
+=E5=AE=81=E6=B3=B0158=E5=AE=BE=E9=A6=86=
+</A></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left"><A href=3D"http://news.elong.com/l2/6RDovi=
+c8A41/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; color:#aaaaaa; font-family:'=E5=BE=AE=E8=BD=
+=AF=E9=9B=85=E9=BB=91';text-decoration:none;">=
+=E5=8D=97=E6=B1=87=E5=8F=8A=E9=87=8E=E7=94=9F=E5=8A=A8=E7=89=A9=E5=9B=AD=
+</A></td>
+</tr>
+<tr>
+<td height=3D"25" align=3D"left"><table width=3D"100%" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"75" height=3D"" align=3D"left"><a href=3D"http://news.elon=
+g.com/l2/6RDovic8A42/=
+4742367=
+/=
+4246694577.=
+html" style=3D"text-decoration:none" ><font style=3D"font-size:26px; font-f=
+amily:'Arial'; color:#ff6600; font-weight:700;"><span style=3D"font-size:12=
+px;color:#aaaaaa;">&yen;</span>=
+120=
+</font></a></td>
+    <td width=3D"70" align=3D"left" valign=3D"middle" style=3D"line-height:=
+13px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';"><span style=3D"b=
+order: 1px solid #ff9900;background:#ff9900;color: #ffffff;display:inline-b=
+lock; margin-left: 3px; font-size:12px; font-weight:normal;padding: 1px 2px=
+; line-height:15px;">=E8=BF=94</span><span style=3D"border: 1px solid #ff99=
+00;color: #ff9900;display:inline-block; font-size:12px; font-weight:normal;=
+padding: 1px 3px; line-height:15px;">=
+40=
+=E5=85=83</span></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left" valign=3D"top" ><A href=3D"http://news.elo=
+ng.com/l2/6RDovic8A43/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91';color:#ff6600; text-decoration:none;">=
+=E6=8E=A8=E8=8D=90=EF=BC=9A=E8=BF=94=E7=8E=B0=E9=AB=98=E8=BE=BE=
+33=
+%=
+=
+=
+=
+</A></td>
+</tr>
+<tr>
+  <td height=3D"26" align=3D"left" valign=3D"botton"><a href=3D"http://new=
+s.elong.com/l2/6RDovic8A44/=
+4742367=
+/=
+4246694577.=
+html" ><img src=3D"http://www.elong.com/promotion/web/edm/images/140512/ban=
+ner1_05.jpg"  height=3D"26" style=3D"display:block;" border=3D"0" /></a></t=
+d>
+</tr>
+          </table></td>
+
+          <td width=3D"335" height=3D"145" align=3D"center" valign=3D"middl=
+e"  class=3D"nomobile"><table width=3D"92%" border=3D"0" align=3D"center" c=
+ellpadding=3D"0" cellspacing=3D"0" style=3D"font-family:'=E5=BE=AE=E8=BD=AF=
+=E9=9B=85=E9=BB=91'"  class=3D"width110 autoMargin autoHeight">
+<tr>
+<td width=3D"50%" rowspan=3D"5" align=3D"center" valign=3D"middle" class=3D=
+"width40"><a href=3D"http://news.elong.com/l2/6RDovic8A45/=
+4742367=
+/=
+4246694577.=
+html"><img src=3D"=
+http://www.elongstatic.com/imageapp/hotels/hotelimages/0201/40201959/17_a5874ec8-5b94-473f-81d2-11dceb0d7e18.jpg=
+"width=3D"160" height=3D"110" class=3D"pic90" border=3D"0"   /></a>
+</td>
+<td width=3D"6%" height=3D"140" rowspan=3D"5" class=3D"nomobile"></td=
+>
+<td width=3D"44%" height=3D"22" align=3D"left" ><A href=3D"http://news.elon=
+g.com/l2/6RDovic8A46/=
+4742367=
+/=
+4246694577.=
+html" style=3D" font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';font-siz=
+e:15px; color:#006ad6; text-decoration:none;">=
+=E5=90=8C=E6=B5=8E=E5=90=9B=E7=A6=A7=E5=A4=A7=E9=85=92=E5=BA=97=
+</A></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left"><A href=3D"http://news.elong.com/l2/6RDovi=
+c8A47/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; color:#aaaaaa; font-family:'=E5=BE=AE=E8=BD=
+=AF=E9=9B=85=E9=BB=91';text-decoration:none;">=
+=E4=BA=94=E8=A7=92=E5=9C=BA=E5=95=86=E4=B8=9A=E5=8C=BA=
+</A></td>
+</tr>
+<tr>
+<td height=3D"25" align=3D"left"><table width=3D"100%" border=3D"0" cellspa=
+cing=3D"0" cellpadding=3D"0">
+  <tr>
+    <td width=3D"75" height=3D"" align=3D"left"><a href=3D"http://news.elon=
+g.com/l2/6RDovic8A48/=
+4742367=
+/=
+4246694577.=
+html" style=3D"text-decoration:none" ><font style=3D"font-size:26px; font-f=
+amily:'Arial'; color:#ff6600; font-weight:700;"><span style=3D"font-size:12=
+px;color:#aaaaaa;">&yen;</span>=
+448=
+</font></a></td>
+    <td width=3D"70" align=3D"left" valign=3D"middle" style=3D"line-height:=
+13px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91';"><span style=3D"b=
+order: 1px solid #ff9900;background:#ff9900;color: #ffffff;display:inline-b=
+lock; margin-left: 3px; font-size:12px; font-weight:normal;padding: 1px 2px=
+; line-height:15px;">=E8=BF=94</span><span style=3D"border: 1px solid #ff99=
+00;color: #ff9900;display:inline-block; font-size:12px; font-weight:normal;=
+padding: 1px 3px; line-height:15px;">=
+100=
+=E5=85=83</span></td>
+  </tr>
+</table></td>
+</tr>
+<tr>
+<td height=3D"18" align=3D"left" valign=3D"top" ><A href=3D"http://news.elo=
+ng.com/l2/6RDovic8A49/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; font-family:'=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91';color:#ff6600; text-decoration:none;">=
+=E6=8E=A8=E8=8D=90=EF=BC=9A=E8=BF=94=E7=8E=B0=E9=AB=98=E8=BE=BE=
+22=
+%=
+=
+=
+=
+</A></td>
+</tr>
+<tr>
+  <td height=3D"26" align=3D"left" valign=3D"botton"><a href=3D"http://new=
+s.elong.com/l2/6RDovic8A50/=
+4742367=
+/=
+4246694577.=
+html" ><img src=3D"http://www.elong.com/promotion/web/edm/images/140512/ban=
+ner1_05.jpg"  height=3D"26" style=3D"display:block;" border=3D"0" /></a></t=
+d>
+</tr>
+          </table></td>
+</tr>
+        <tr>
+          <td  height=3D"5" colspan=3D"3" align=3D"center" valign=3D"bottom=
+" bgcolor=3D"#ebf6ff"  ></td>
+        </tr>
+      </table>
+
+      <table width=3D"700" border=3D"0" align=3D"center" cellpadding=3D"0" =
+cellspacing=3D"0" class=3D"width100 autoMargin autoHeight">
+            
+   <tr>
+    <td height=3D"10"></td>
+    </tr>
+   <tr >
+  <td align=3D"center" bgcolor=3D"#c2e4ff" class=3D"width110 autoMargin aut=
+oHeight marginBottom10">
+      <table width=3D"230" border=3D"0" align=3D"left" cellpadding=3D"0" ce=
+llspacing=3D"0" class=3D"width100 autoMargin autoHeight marginBottom10 auto=
+Padding">
+        <tr>
+           <td align=3D"left" valign=3D"middle" class=3D"nomobile " >&nbsp;=
+</td>
+         </tr>
+      </table>
+       <table width=3D"230" border=3D"0" align=3D"left" cellpadding=3D"0" c=
+ellspacing=3D"0" class=3D"width100 autoMargin autoHeight marginBottom10 aut=
+oPadding">
+        <tr>
+           <td height=3D"44" align=3D"center" class=3D"autoPadding" ><a hre=
+f=3D"http://news.elong.com/l2/6RDovic8A51/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:22px; font-family:=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=
+=BB=91; text-decoration:none;color:#ff9d43;">=E6=9F=A5=E7=9C=8B=E6=9B=B4=E5=
+=A4=9A=E4=BC=98=E6=83=A0</a></span></span></a></td>
+         </tr>
+      </table>
+       <table width=3D"230" border=3D"0" align=3D"left" cellpadding=3D"0" c=
+ellspacing=3D"0"  class=3D"width100 autoMargin autoHeight marginBottom10 au=
+toPadding">
+        <tr>
+           <td align=3D"right" valign=3D"middle" class=3D"nomobile " >&nbsp=
+;</td>
+         </tr>
+      </table></td>
+    </tr>
+   <tr  class=3D"nomobile">
+    <td height=3D"5"></td>
+    </tr>
+ </table>
+
+      <table width=3D"700" cellpadding=3D"0" cellspacing=3D"0" align=3D"cen=
+ter" class=3D"width100 autoMargin autoHeight">
+              <tr>
+                <td height=3D"10"></td>
+        </tr>
+              <tr>
+                <td height=3D"15" align=3D"center" style=3D"color:#666; fon=
+t-size:12px;">=E8=AF=B7=E5=8B=BF=E7=9B=B4=E6=8E=A5=E5=9B=9E=E5=A4=8D=E9=82=
+=AE=E4=BB=B6=EF=BC=8C=E9=9C=80=E8=A6=81=E5=B8=AE=E5=8A=A9=E8=AF=B7=E6=9F=A5=
+=E9=98=85<a href=3D"http://news.elong.com/l2/6RDovic8A52/=
+4742367=
+/=
+4246694577.=
+html" style=3D"font-size:12px; font-weight:bold; color:#666; text-decoratio=
+n:none;">=E5=B8=AE=E5=8A=A9=E4=B8=AD=E5=BF=83</a></td>
+              </tr>
+              <tr>
+                <td height=3D"15" align=3D"center" style=3D"color:#666; fon=
+t-size:12px;">=E6=89=80=E6=9C=89=E4=BA=A7=E5=93=81=E4=BB=B7=E6=A0=BC=E8=AF=
+=B7=E4=BB=A5=E8=AE=A2=E8=B4=AD=E5=BD=93=E6=97=A5=E7=BD=91=E7=AB=99=E5=85=AC=
+=E5=B8=83=E4=BB=B7=E6=A0=BC=E4=B8=BA=E5=87=86=EF=BC=8C=E6=9C=AC=E9=82=AE=E4=
+=BB=B6=E5=86=85=E5=AE=B9=E5=A6=82=E6=9C=89=E6=9B=B4=E6=94=B9=EF=BC=8C=E6=81=
+=95=E4=B8=8D=E5=8F=A6=E8=A1=8C=E9=80=9A=E7=9F=A5=EF=BC=81</td>
+              </tr>
+              <tr>
+                <td height=3D"15" align=3D"center" style=3D"color:#666; fon=
+t-size:12px;">Copyright &copy; 1999-2014 eLong, Inc, All Rights Reserved.</=
+td>
+              </tr>
+              <tr>
+                <td height=3D"10"></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
