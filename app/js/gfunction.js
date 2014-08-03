@@ -160,5 +160,15 @@ var gfun={
         }
 
         return pstr;
+    },
+    addpowersettingshow:function(){
+        var ret=[];
+        if(login_user.u_grade>90){
+            ret = [{ boxLabel: '普通组员', name: 'grade[]', inputValue: '0'},{ boxLabel: '组文件管理员', name: 'grade[]', inputValue: '1'},{ boxLabel: '工作组领导', name: 'grade[]', inputValue: '2'},{ boxLabel: '部门负责人', name: 'grade[]', inputValue: '3'},{ boxLabel: '项目部负责人', name: 'grade[]', inputValue: '4' },{ boxLabel: '系统管理员', name: 'grade[]', inputValue: '99' },{ boxLabel: '系统监察员', name: 'grade[]', inputValue: '98' }];
+        } else {
+            ret=[{ boxLabel: '普通组员', name: 'grade[]', inputValue: '0'},{ boxLabel: '组文件管理员', name: 'grade[]', inputValue: '1'},{ boxLabel: '工作组领导', name: 'grade[]', inputValue: '2' }];
+        }
+        return ret;
     }
+
 };

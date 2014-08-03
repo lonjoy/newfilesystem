@@ -8,11 +8,12 @@ Ext.define('FS.controller.Main',{
         'FS.store.menu.EmailTree'
     ],
     init: function(){
+        var me=this;
         this.control({
             'sidebar > treepanel':{
                 afterrender:function(treepanel){
                     treepanel.on('itemclick',function(view,record,item,index){
-                        if (record.get('leaf')) {
+                        if (record.get('leaf') && record.raw['xtypeclass']!='addworkgroup') {
                             var title = treepanel.ownerCt.ownerCt.down('#tabCenter').items.findBy(function(result) {
                                 return result.title === record.get('text');
                             });
@@ -30,6 +31,8 @@ Ext.define('FS.controller.Main',{
                                 treepanel.ownerCt.ownerCt.down('#tabCenter').setActiveTab(title);
                             }
                         
+                        }else if(record.raw['xtypeclass']=='addworkgroup'){
+                            me.getController('WorkgroupView').addworkgroupform();
                         }
                     },this);
                 }

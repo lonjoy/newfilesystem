@@ -8,6 +8,7 @@ Ext.define('FS.model.WorkgroupTree',{
         {name: 'u_email', type: 'string'},
         {name: 'u_isgroup', type: 'int'},
         {name: 'text', type: 'string'},
+        {name: 'u_grade', type: 'string'},
         {name: 'id', type: 'int'}
     ]
 })

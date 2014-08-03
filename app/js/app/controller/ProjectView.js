@@ -183,6 +183,9 @@ Ext.define('FS.controller.ProjectView', {
             this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
             this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
             this.getProjectTree().getSelectionModel().select(rcd);
+
+            this.getParentRecordStore().removeAll();
+            this.getParentRecordStore().add(rcd);
         }
     },
     itemclick : function(view, rcd, item, index, event) {
@@ -286,17 +289,20 @@ Ext.define('FS.controller.ProjectView', {
     },
     //权限菜单
     powermenufun: function(view, rcd, item, index, event){
+        var isdirhere=typeof this.getParentRecordStore().getAt(0)!='undefined';
         if(arguments.length==2){
             arguments[1].preventDefault();
             arguments[1].stopEvent();
-            this.gridview=arguments[0];
-            var obj='gridmenu';
-            this.rcd=this.getParentRecordStore().getAt(0);
-            this.item=undefined;
-            this.rowindex=undefined;
-            this.event=arguments[1];
-            this.powermenu.addMenuItem(null,null, obj, this.rcd); //根据是否是文件进行显示
-            this.powermenu.showAt(arguments[1].getXY());
+            if(isdirhere){
+                this.gridview=arguments[0];
+                var obj='gridmenu';
+                this.rcd=this.getParentRecordStore().getAt(0);
+                this.item=undefined;
+                this.rowindex=undefined;
+                this.event=arguments[1];
+                this.powermenu.addMenuItem(null,null, obj, this.rcd); //根据是否是文件进行显示
+                this.powermenu.showAt(arguments[1].getXY());
+            }
         }else{
             event.preventDefault();
             event.stopEvent();

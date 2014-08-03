@@ -7,6 +7,6 @@ Ext.define('FS.model.WorkgroupList',{
         {name: 'u_parent', type: 'int'},
         {name: 'u_email', type: 'string'},
         {name: 'u_isgroup', type: 'int'},
-        {name: 'u_grade', type: 'int'},
+        {name: 'u_grade', type: 'string'}
     ]
 })

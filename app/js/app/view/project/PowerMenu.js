@@ -91,8 +91,20 @@ Ext.define('FS.view.project.PowerMenu',{
                         this.powermenu[fun[i]].disabled=true;
                     }
                 }
-                this.add(this.powermenu[fun[i]]);
+                if(this.verfiypower(fun[i])){
+                    this.add(this.powermenu[fun[i]]);
+                }
             } 
         }
+    },
+    verfiypower:function(p){
+        //"adddocument","editdocument","readdocument","movedocument","deldocument","recoverdocument","readworkgroup","addworkgroup","editworkgroup","addgroupuser","delgroupuser","showgroupuser","uploadfile","downloadfile","updatefile","powersetting","readsyslog","readdoclog","lookuphistory","sharesetting","copydocumentstruct";
+        var map={'open':'readdocument', 'alterfile':'editdocument','newdir':'editdocument', 'upload':'updatefile', 'del':'deldocument','powersetting':'powersetting', 'addshare':'sharesetting','cannelshare':'sharesetting','copystruct':'copydocumentstruct', 'history':'lookuphistory', 'download':'downloadfile'};
+       for(var i in power){
+            if(map[p]==power[i]){
+                return true;
+            }
+        }
+        return false;
     }
 })
