@@ -59,14 +59,10 @@ Ext.define('FS.controller.ProjectView', {
                 }
             },
             'projectList button[iconCls="go_history"]': {
-                click: function(obj, event){
-                    alert('history');
-                }
+                click: this.gohistory
             },
             'projectList button[iconCls="go_forward"]': {
-                click: function(obj, event){
-                    alert('go_forward');
-                }
+                click: this.goforward
             },
             'powermenu':{
                 click: this.getfunction
@@ -168,6 +164,29 @@ Ext.define('FS.controller.ProjectView', {
         });
         this.powermenu = Ext.widget('powermenu');
     },
+    gohistory:function(obj, event){
+        var treercd=this.getTreeStore().getNodeById(this.getParentRecordStore().getAt(0).get('fs_id'));
+        if(typeof treercd!='undefined'){
+            treercd.collapse(true);
+            treercd.parentNode.expand();
+            //parent record
+            this.getParentRecordStore().removeAll();
+            this.getParentRecordStore().add(treercd.parentNode);
+
+            this.getListStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')};
+            this.getListStore().load();
+        }else{
+            obj.setDisabled(true);
+        }
+        //goforward show
+        //Ext.getCmp('go_forward').setDisabled(false);
+    },
+    goforward:function(){
+        project_nav_index=project_nav_index-1;
+        if(project_nav_index > 0){
+            //屏蔽
+        }
+    },
     delayitemclick:function(){
         if(arguments[1]=='click'){
             this.itemclick.apply(this, arguments[0]);
@@ -186,6 +205,9 @@ Ext.define('FS.controller.ProjectView', {
 
             this.getParentRecordStore().removeAll();
             this.getParentRecordStore().add(rcd);
+            //nav
+            this.getNavbarStore().insert(0, rcd);
+            Ext.getCmp('go_history').setDisabled(false);
         }
     },
     itemclick : function(view, rcd, item, index, event) {
@@ -207,8 +229,10 @@ Ext.define('FS.controller.ProjectView', {
             }
             this.getParentRecordStore().removeAll();
             this.getParentRecordStore().add(rcd);
+            //nav
+            this.getNavbarStore().insert(0, rcd);
+            Ext.getCmp('go_history').setDisabled(false);
         }
-        //this.getProjectTree().getView().getSelectionModel().select(rcd);
     },
     beforeitemmove:function(node, oldParent, newParent, index, eOpts){
         var me=this;

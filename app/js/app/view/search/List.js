@@ -6,9 +6,9 @@ Ext.define('FS.view.search.List',{
     selModel: 'MULTI',
     bodyStyle: 'background:#ffffcc;',
     tbar:[
-    {xtype:'button', text: '', iconCls: 'go_history'},
-    {xtype:'tbseparator'},
-    {xtype:'button', text: '', iconCls: 'go_forward', disabled: true}
+    {xtype:'button', text: '返回上一级', iconCls: 'go_history', disabled: false}
+    //{xtype:'tbseparator'},
+    //{xtype:'button', text: '', iconCls: 'go_forward', disabled: true}
     ],
     initComponent: function(){
         this.columns = [

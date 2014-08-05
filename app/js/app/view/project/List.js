@@ -5,9 +5,9 @@ Ext.define('FS.view.project.List',{
     store: 'List',
     selModel: 'MULTI',
     tbar:[
-    {xtype:'button', text: '', iconCls: 'go_history'},
-    {xtype:'tbseparator'},
-    {xtype:'button', text: '', iconCls: 'go_forward', disabled: true}
+    {xtype:'button', text: '', iconCls: 'go_history', id:'go_history', disabled: true}
+    //{xtype:'tbseparator'},
+    //{xtype:'button', text: '', iconCls: 'go_forward', disabled: true, id:'go_forward'}
     ],
     initComponent: function(){
         this.columns = [

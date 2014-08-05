@@ -1,4 +1,4 @@
-Ext.define('FS.store.Navbar',{
+Ext.define('FS.store.SearchNavbar',{
     extend: 'Ext.data.Store',
     model: 'FS.model.List',
     autoLoad: false

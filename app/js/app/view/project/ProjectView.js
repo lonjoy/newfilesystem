@@ -4,10 +4,7 @@ Ext.define('FS.view.project.ProjectView', {
     layout: 'border',
     
     initComponent: function(){
-
         this.items=[
-        //Ext.create('FS.controller.ProjectTree').getView('project.Tree').create(),
-        //Ext.create('FS.controller.Project').getView('project.List').create()
         {xtype:'projectTreeList'},
         {xtype:'projectList'}
         ];

@@ -1,7 +1,7 @@
 Ext.define('FS.controller.Search', {
     extend: 'Ext.app.Controller',
 
-    stores:['Search'],
+    stores:['Search', 'SearchNavbar'],
     views:[       
     'search.SearchPanel',
     'search.Form',
@@ -30,6 +30,18 @@ Ext.define('FS.controller.Search', {
                     this.getSearchStore().load();
                 }
             },
+            'searchList button[iconCls="go_history"]': {
+                click: function(obj, event){
+                    if(this.getSearchNavbarStore().getCount()>1){
+                        this.getSearchNavbarStore().removeAt(this.getSearchNavbarStore().getCount()-1);
+                        var parentrcd = this.getSearchNavbarStore().getAt(this.getSearchNavbarStore().getCount()-1);
+                        this.getSearchStore().load({params:{fs_id:parentrcd.get('fs_id')}}); //加载grid数据
+                    }else{
+                        this.getSearchNavbarStore().removeAll();
+                        this.getSearchStore().load({params:this.getSearchform().getForm().getValues()});
+                    }
+                }
+            },
             'searchList':{
                 containercontextmenu: this.getController('ProjectView').powermenufun,
                 itemdblclick: this.opendoc,
@@ -43,8 +55,7 @@ Ext.define('FS.controller.Search', {
         event.stopEvent();
         if(rcd.get('fs_isdir')==1){
             //add parent record
-            //this.getParentRecordStore().removeAll();
-            //this.getParentRecordStore().add(rcd);
+            this.getSearchNavbarStore().add(rcd);
             this.getSearchStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
         }
         if(rcd.get('fs_isdir')==0){
