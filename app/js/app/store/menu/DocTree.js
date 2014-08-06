@@ -25,10 +25,14 @@ Ext.define('FS.store.menu.DocTree',{
             text:'公共信息栏',
             xtypeclass:'projectview',
             leaf: true
-        },{
+        }
+        /*
+        ,{
             text:'创建公共信息栏',
             xtypeclass:'projectview',
             leaf: true
-        }]
+        }
+        */
+        ]
     }
 })

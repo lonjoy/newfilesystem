@@ -173,6 +173,64 @@
             }
         });
     });
+    function showrole(role){
+        var roleform = Ext.create('Ext.form.Panel', {
+            autoHeight : true,
+            width: 400,
+            frame: true,
+            buttonAlign: 'center',
+            items:[{
+                xtype:'radiogroup',
+                id: 'grade',
+                margin:"10 0 0 20",
+                columns: 2,
+                vertical: true
+            }],
+            buttons:[
+            {
+                text: '确 定',
+                type: 'submit',
+                handler: function(){
+                    if(roleform.form.isValid()){
+                        roleform.getForm().submit({
+                            url:'<?=$base_path?>index.php?c=login&a=confirminfo',
+                            method:'post',
+                            timeout:50,
+                            waitTitle : "温馨提示",
+                            waitMsg: '正在验证登录信息',
+                            params:roleform.getForm().getValues(),
+                            success: function(form, action){
+                                win.hide();
+                                var obj = Ext.JSON.decode(action.response.responseText);
+                                window.location.href='<?=$base_path?>';
+                            },
+                            failure: function(form, action){
+                                if(action.result.msg){
+                                    Ext.Msg.alert('温馨提示', action.result.msg);
+                                }else{
+                                    Ext.Msg.alert('温馨提示', '操作失败！'); 
+                                }
+                            }
+                        });
+                    }
+                }
+            }]
+        });
+        Ext.getCmp('grade').add(role);
+        var win = Ext.create('Ext.window.Window',{
+            layout:'fit',
+            width:350,
+            closeAction:'destroy',
+            resizable: false,
+            shadow: true,
+            modal: true,
+            closable : true,
+            items: roleform
+        });
+        roleform.form.reset();
+        win.setTitle('选择角色');
+        win.show();
+    }
 </script>
 
 <!--页主体结束-->

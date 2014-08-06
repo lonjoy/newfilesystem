@@ -20,6 +20,7 @@ Ext.define('FS.controller.Search', {
                 click: function(){
                     if(this.getSearchform().getForm().isValid()){
                         this.getSearchStore().load({params:this.getSearchform().getForm().getValues()});
+                        Ext.getCmp('search_go_back').setDisabled(false);
                     }
                 }
             },

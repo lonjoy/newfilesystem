@@ -6,7 +6,7 @@ Ext.define('FS.view.search.List',{
     selModel: 'MULTI',
     bodyStyle: 'background:#ffffcc;',
     tbar:[
-    {xtype:'button', text: '返回上一级', iconCls: 'go_history', disabled: false}
+    {xtype:'button', text: '返回', iconCls: 'go_history', disabled: true, id:'search_go_back'}
     //{xtype:'tbseparator'},
     //{xtype:'button', text: '', iconCls: 'go_forward', disabled: true}
     ],

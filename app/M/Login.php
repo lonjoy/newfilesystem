@@ -7,6 +7,7 @@
     * @todo 验证邮箱正确性      
     * @changelog  
     */  
+    require_once APP_PATH.'/Libs/PEAR/Net/POP3.php';
     class M_Login extends M_Model{
 
         static $db;
@@ -79,35 +80,27 @@
                     }
                     return $rs;
                 } else{  /*todo 开始验证邮箱是否正确**/
-                    $o = new ZF_Libs_SocketPOPClient($userinfo['u_email'], $userpwd, EMAIL_SERVER, '110');
-                    //$response = $o->getResponse();
-                    if($o){
-                        if($o->popLogin()){
-                            //if(false !== strpos($response, EMAIL_RESPONSE)){
-                            $rs['success'] = true; 
-                            $rs['msg'] = $userinfo;
-                            $rs['info'] = $userinfo;
-                            $rs['grade'] = self::getUserrole($userinfo['u_grade']);
-                            $rs['judge'] = $judgerole;
-                            //写入COOKIE
-                            ZF_Libs_Cookie::set($authkey, ZF_Libs_String::authcode("{$userinfo['u_id']}\t{$userinfo['u_email']}\t{$userinfo['u_name']}\t{$userinfo['u_parent']}\t{$userinfo['u_grade']}\t{$userinfo['u_targetgroup']}", 'ENCODE'));
-                            #记住用户登录用户名
-                            ZF_Libs_Cookie::set('useremail', $userinfo['u_email'], 86400*7);
-                            if(!$judgerole){
-                                M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$userinfo['u_email'], 'desc'=>"成功登入系统"));
-                            }
-                            return $rs;
-                        } else {
-                            $rs['success'] = false;
-                            $rs['msg'] = '密码错误';
-                            M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$useremail, 'desc'=>"用户尝试输入密码失败"));
-                            return $rs; 
-                        }
-                    }else{
+                    $pop3 = new Net_POP3();
+                    $pop3->connect(EMAIL_SERVER);
+                    if (PEAR::isError($ret=$pop3->login($userinfo['u_email'], $userpwd, 'USER'))) {
                         $rs['success'] = false;
-                        $rs['msg'] = '请确认网络连接是否正确';
+                        $rs['msg'] = '密码错误';
+                        M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$useremail, 'desc'=>"Email password is error"));
+                        return $rs; 
+                    }else{
+                        $rs['success'] = true; 
+                        $rs['msg'] = $userinfo;
+                        $rs['info'] = $userinfo;
+                        $rs['grade'] = self::getUserrole($userinfo['u_grade']);
+                        $rs['judge'] = $judgerole;
+                        //写入COOKIE
+                        ZF_Libs_Cookie::set($authkey, ZF_Libs_String::authcode("{$userinfo['u_id']}\t{$userinfo['u_email']}\t{$userinfo['u_name']}\t{$userinfo['u_parent']}\t{$userinfo['u_grade']}\t{$userinfo['u_targetgroup']}", 'ENCODE'));
+                        #记住用户登录用户名
+                        ZF_Libs_Cookie::set('useremail', $userinfo['u_email'], 86400*7);
+                        if(!$judgerole){
+                            M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$userinfo['u_email'], 'desc'=>"成功登入系统"));
+                        }
                         return $rs;
-                        M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$useremail, 'desc'=>"用户登录时网络连接失败"));  
                     }
                 }
             } else {
