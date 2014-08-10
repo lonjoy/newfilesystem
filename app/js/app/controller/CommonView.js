@@ -1,113 +1,92 @@
-Ext.define('FS.controller.ProjectView', {
+Ext.define('FS.controller.CommonView', {
     extend: 'Ext.app.Controller',
-    stores: [
-    'List',
-    'Tree',
-    'HistoryList',
-    'ParentRecord',
-    'FileUpload',
-    'Navbar',
-    'WorkgroupTree'
-    ],
+    stores: ['CommonList', 'CommonTree', 'CommonParentRecord', 'FileUpload'],
     views:[
-    'project.List',
-    'project.PowerMenu',
-    'project.HistoryList',
-    'swfupload.UploadPanel',
-    'swfupload.DragUploadPanel',        
-    'project.PowerSetting',
-    'project.ProjectView',        
-    'project.Tree',
-    'project.ShareDoc',
-    'project.CopyDocStructPanel'       
+    'common.List',
+    'common.PowerMenu',
+    'swfupload.ShareUploadPanel',
+    'swfupload.ShareDragUploadPanel',        
+    'common.PowerSetting',
+    'common.CommonView',        
+    'common.Tree'
     ],
     refs:[{
-        ref: 'projectTree',
-        selector: 'projectTreeList'
+        ref: 'commonTree',
+        selector: 'commontree'
     },{
-        ref: 'projectList',
-        selector: 'projectList'
-    },{
-        ref: 'shareDoc',
-        selector: 'sharedoc'
+        ref: 'commonList',
+        selector: 'commonlist'
     },{
         ref: 'powerMenu',
-        selector: 'powermenu'
+        selector: 'commonpowermenu'
     }],
     init: function(){
         this.control({
-            'projectTreeList':{
-                //文件夹树单击事件
+            'commontree':{
                 itemclick : function(){new Ext.util.DelayedTask().delay(1500, this.delayitemclick, this, [arguments,'click']);}, 
                 itemdblclick : function(){new Ext.util.DelayedTask().delay(500, this.delayitemclick, this, [arguments,'dbclick']);},
                 beforeitemexpand: this.beforeitemexpand,
                 itemcollapse: this.itemcollapse,
-                //文件夹数右键事件
                 itemcontextmenu : this.powermenufun,
                 beforeitemmove : this.beforeitemmove
             },
-            'projectList': {
+            'commonlist': {
                 containercontextmenu: this.powermenufun,
                 itemdblclick: this.opendoc,
                 itemcontextmenu: this.powermenufun
             },
-            'projectList pagingtoolbar button': {
+            'commonlist pagingtoolbar button': {
                 click: function(obj, event){
                     //get store getProxy , then proxy has extraParams param to set add param
-                    if(typeof this.getParentRecordStore().getAt(0)!='undefined'){
-                        this.getListStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')};
+                    if(typeof this.getCommonParentRecordStore().getAt(0)!='undefined'){
+                        this.getCommonListStore().getProxy().extraParams={fs_id:this.getCommonParentRecordStore().getAt(0).get('fs_id')};
                     }
                 }
             },
-            'projectList button[iconCls="go_history"]': {
+            'commonlist button[iconCls="go_history"]': {
                 click: this.gohistory
             },
-            'projectList button[iconCls="go_forward"]': {
+            'commonlist button[iconCls="go_forward"]': {
                 click: this.goforward
             },
-            'powermenu':{
+            'commonpowermenu':{
                 click: this.getfunction
             },
-            'fileuploadPanel button[text="使用拖拽上传模式"]':{
+            'sharefileuploadPanel button[text="使用拖拽上传模式"]':{
                 click: function(buttonobj,e){
                     buttonobj.ownerCt.ownerCt.ownerCt.close();
                     this.dragupload(this.gridview, this.rcd, this.event);
                 }
             },
-            'dragfileuploadPanel button[text="返回原有上传模式"]':{
+            'sharedragfileuploadPanel button[text="返回原有上传模式"]':{
                 click: function(buttonobj,e){
                     buttonobj.ownerCt.ownerCt.ownerCt.close();
                     this.upload(this.gridview, this.rcd, this.item, this.rowindex, this.event);
                 }
             },
-            'historypanel':{
-                itemcontextmenu:this.historymenu,
-                containercontextmenu: function(obj, e){
-                    e.stopEvent();
-                }
-            },
-            'powersetting button':{
+            'commonpowersetting button':{
                 click: function(obj, e){
                     var me=this;
                     var rcd=obj.ownerCt.ownerCt.rcd;
                     var win=obj.ownerCt.ownerCt;
-                    var powersettingPanel=Ext.getCmp('powersettingform');
-                    if(powersettingPanel.form.isValid()){
+                    var powersettingPanel=Ext.getCmp('commonpowersettingform');
+                    console.log(powersettingPanel);
+                    if(powersettingPanel.getForm().isValid()){
                         powersettingPanel.getForm().submit({
-                            url: base_path+'index.php?c=document&a=adddocpower',
+                            url: base_path+'index.php?c=document&a=addsharedocpower',
                             method: 'post',
                             timeout: 30,
                             params: powersettingPanel.getForm().getValues(),
                             success: function(form, action){
-                                var fs_group=Ext.getCmp('powersetting_workgroup_id').getValue();
-                                var fs_user=Ext.getCmp('powersetting_user_id').getValue();
-                                var u_id=Ext.getCmp('powersetting_user_id').getValue();
-                                var u_name=Ext.getCmp('powersetting_user_id').getRawValue();
+                                var fs_group=Ext.getCmp('common_workgroup_id').getValue();
+                                var fs_user=Ext.getCmp('common_user_id').getValue();
+                                var u_id=Ext.getCmp('common_user_id').getValue();
+                                var u_name=Ext.getCmp('common_user_id').getRawValue();
                                 //grid change record
-                                me.getListStore().reload();
+                                me.getCommonListStore().reload();
 
                                 //tree change record
-                                var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
+                                var treercd=me.getCommonTreeStore().getNodeById(rcd.get('fs_id'));
                                 treercd.set('fs_group', fs_group);
                                 treercd.set('fs_user', fs_user);
                                 treercd.set('u_id', u_id);
@@ -122,60 +101,21 @@ Ext.define('FS.controller.ProjectView', {
                         });
                     }
                 }
-            },
-            'sharedoc':{
-                beforeitemexpand:function(rcd){
-                    if(!rcd.isRoot()){
-                        var docrcd=this.getShareDoc().initialConfig.docrcd;
-                        this.getWorkgroupTreeStore().setProxy({
-                            type:'ajax', 
-                            url: base_path + "index.php?c=usergroup&a=listgroupuser&type=checkbox&fs_id="+docrcd.get('fs_id')+"&groupid="+rcd.get('u_id'),
-                            reader:'json'
-                        });
-                    }else{
-                        //rcd.removeAll();
-                        this.getWorkgroupTreeStore().setProxy({
-                            type: 'ajax',
-                            url: base_path + "index.php?c=usergroup&a=listworkgroup&type=checkbox",
-                            reader: {
-                                type: 'json',
-                                root: ''
-                            }
-                        });
-                    }
-                },
-                checkchange: function(rcd, checked){
-                    if(rcd.get('u_isgroup')=='1'){
-                        rcd.expand();
-                    }
-                    rcd.checked=checked;
-                    if(rcd.hasChildNodes()){
-                        rcd.eachChild(function(child) {
-                            child.set('checked', checked);
-                            child.fireEvent('checkchange', child, checked);
-                        });
-                    }
-                    if(rcd.parentNode.get('id')!='root'){
-                        if(rcd.parentNode.checked==true && checked==false){
-                            rcd.parentNode.set('checked', false);   
-                        }
-                    }
-                }
             }
         });
-        this.powermenu = Ext.widget('powermenu');
+        this.powermenu = Ext.widget('commonpowermenu');
     },
     gohistory:function(obj, event){
-        var treercd=this.getTreeStore().getNodeById(this.getParentRecordStore().getAt(0).get('fs_id'));
+        var treercd=this.getCommonTreeStore().getNodeById(this.getCommonParentRecordStore().getAt(0).get('fs_id'));
         if(typeof treercd!='undefined'){
             treercd.collapse(true);
             treercd.parentNode.expand();
             //parent record
-            this.getParentRecordStore().removeAll();
-            this.getParentRecordStore().add(treercd.parentNode);
+            this.getCommonParentRecordStore().removeAll();
+            this.getCommonParentRecordStore().add(treercd.parentNode);
 
-            this.getListStore().getProxy().extraParams={fs_id:this.getParentRecordStore().getAt(0).get('fs_id')};
-            this.getListStore().load();
+            this.getCommonListStore().getProxy().extraParams={fs_id:this.getCommonParentRecordStore().getAt(0).get('fs_id')};
+            this.getCommonListStore().load();
         }else{
             obj.setDisabled(true);
         }
@@ -196,43 +136,42 @@ Ext.define('FS.controller.ProjectView', {
         }
     },
     itemcollapse : function(rcd){
-        this.getProjectTree().getSelectionModel().select(rcd);
+        this.getCommonTree().getSelectionModel().select(rcd);
     },
     beforeitemexpand: function(rcd){
         if(!isNaN(rcd.get('fs_id'))){
-            this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
-            this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
-            this.getProjectTree().getSelectionModel().select(rcd);
+            this.getCommonTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
+            this.getCommonListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+            this.getCommonTree().getSelectionModel().select(rcd);
 
-            this.getParentRecordStore().removeAll();
-            this.getParentRecordStore().add(rcd);
+            this.getCommonParentRecordStore().removeAll();
+            this.getCommonParentRecordStore().add(rcd);
             //nav
-            this.getNavbarStore().insert(0, rcd);
-            Ext.getCmp('go_history').setDisabled(false);
+            //this.getNavbarStore().insert(0, rcd);
+            Ext.getCmp('common_go_history').setDisabled(false);
         }
     },
     itemclick : function(view, rcd, item, index, event) {
-        event.preventDefault();
         event.stopEvent();
         view.toggleOnDblClick=false; //取消双击展开折叠菜单行为
         if(rcd.get('fs_isdir')=='1'){
             if(!rcd.isLoaded()){
-                this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
-                this.getTreeStore().load({node:rcd, callback:function(){}});
+                this.getCommonTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
+                this.getCommonTreeStore().load({node:rcd, callback:function(){}});
             }
 
-            if(typeof this.getParentRecordStore().getAt(0)!='undefined'){
-                if(this.getParentRecordStore().getAt(0).get('fs_id')!=rcd.get('fs_id')){
-                    this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+            if(typeof this.getCommonParentRecordStore().getAt(0)!='undefined'){
+                if(this.getCommonParentRecordStore().getAt(0).get('fs_id')!=rcd.get('fs_id')){
+                    this.getCommonListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
                 }
             }else{
-                this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
+                this.getCommonListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
             }
-            this.getParentRecordStore().removeAll();
-            this.getParentRecordStore().add(rcd);
+            this.getCommonParentRecordStore().removeAll();
+            this.getCommonParentRecordStore().add(rcd);
             //nav
-            this.getNavbarStore().insert(0, rcd);
-            Ext.getCmp('go_history').setDisabled(false);
+            //this.getNavbarStore().insert(0, rcd);
+            Ext.getCmp('common_go_history').setDisabled(false);
         }
     },
     beforeitemmove:function(node, oldParent, newParent, index, eOpts){
@@ -258,7 +197,7 @@ Ext.define('FS.controller.ProjectView', {
                         msg: '正在移动……'
                     });
                     Ext.Ajax.request({
-                        url: base_path + "index.php?c=document&a=movedocument",
+                        url: base_path + "index.php?c=document&a=movesharedocument",
                         params : {nodeid:nodeid, nodehashname:node.get('fs_hashname'), oldparentid:oldparentid, newparentid:newparentid, document_name: node.get('fs_name'), fs_type:node.get('fs_type'), fs_size:node.get('fs_size'), fs_intro:node.get('fs_intro'), fs_isdir:node.get('fs_isdir')},
                         method : 'POST',
                         success: function(response, options){
@@ -267,11 +206,11 @@ Ext.define('FS.controller.ProjectView', {
                             if(result.success){
                                 Ext.Msg.alert('提示', result.msg);
                                 node.remove();
-                                me.getTreeStore().getProxy().extraParams={fs_id:newParent.get('fs_id')};
-                                me.getTreeStore().load({node:newParent});
-                                me.getProjectTree().getSelectionModel().select(newParent);
-                                me.getProjectTree().getView().refresh();
-                                me.getListStore().load({params:{fs_id:newParent.get('fs_id')}}); //加载grid数据
+                                me.getCommonTreeStore().getProxy().extraParams={fs_id:newParent.get('fs_id')};
+                                me.getCommonTreeStore().load({node:newParent});
+                                me.getCommonTree().getSelectionModel().select(newParent);
+                                me.getCommonTree().getView().refresh();
+                                me.getCommonListStore().load({params:{fs_id:newParent.get('fs_id')}}); //加载grid数据
                                 return true;
                             }else{
                                 Ext.Msg.alert('提示', result.msg); 
@@ -295,7 +234,7 @@ Ext.define('FS.controller.ProjectView', {
         if(rcd.get('fs_isdir')=='0'){
             this.opendoc(view, rcd, item, index, event);
         }
-        //this.getProjectTree().getSelectionModel().select(rcd);
+        //this.getCommonTree().getSelectionModel().select(rcd);
     },
     //菜单功能
     opendoc: function(view, rcd, item, index, event){
@@ -303,25 +242,25 @@ Ext.define('FS.controller.ProjectView', {
         event.stopEvent();
         if(rcd.get('fs_isdir')==1){
             //add parent record
-            this.getParentRecordStore().removeAll();
-            this.getParentRecordStore().add(rcd);
-            this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
-            this.getTreeStore().getNodeById(rcd.get('fs_id')).expand();//加载tree数据
+            this.getCommonParentRecordStore().removeAll();
+            this.getCommonParentRecordStore().add(rcd);
+            this.getCommonListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 
+            this.getCommonTreeStore().getNodeById(rcd.get('fs_id')).expand();//加载tree数据
         }
         if(rcd.get('fs_isdir')==0){
-            window.open(base_path+"index.php?c=document&a=openfile&fs_id="+rcd.get('fs_id')+'&t='+rcd.get('fs_type'));
+            window.open(base_path+"index.php?c=document&a=opensharefile&fs_id="+rcd.get('fs_id')+'&t='+rcd.get('fs_type'));
         }
     },
     //权限菜单
     powermenufun: function(view, rcd, item, index, event){
-        var isdirhere=typeof this.getParentRecordStore().getAt(0)!='undefined';
+        var isdirhere=typeof this.getCommonParentRecordStore().getAt(0)!='undefined';
         if(arguments.length==2){
             arguments[1].preventDefault();
             arguments[1].stopEvent();
             if(isdirhere){
                 this.gridview=arguments[0];
                 var obj='gridmenu';
-                this.rcd=this.getParentRecordStore().getAt(0);
+                this.rcd=this.getCommonParentRecordStore().getAt(0);
                 this.item=undefined;
                 this.rowindex=undefined;
                 this.event=arguments[1];
@@ -409,10 +348,10 @@ Ext.define('FS.controller.ProjectView', {
         if(regex_istree.test(rcd.id)){
             parentrcd=rcd.parentNode;
         }else{
-            parentrcd=this.getParentRecordStore().getAt(0);
+            parentrcd=this.getCommonParentRecordStore().getAt(0);
         }
         //判断是否是tree触发
-        
+
         var win=Ext.widget('copydocstruct', {parentrcd:parentrcd, rcd:rcd, new_fs_name:new_fs_name, projectview: this});
         win.show();
     },
@@ -427,132 +366,10 @@ Ext.define('FS.controller.ProjectView', {
 
     /*设置共享*/
     addshare: function(view, rcd, item, index, event){
-        var me=this;
-        var docrcd=rcd;
-        var treepanel=Ext.widget('sharedoc', {"docrcd":docrcd});//Ext.create('widget.sharedoc', {docrcd:rcd});
-        var win = Ext.create('Ext.window.Window',{
-            layout:'fit',
-            width:400,
-            height:400,
-            resizable: false,
-            modal: true,
-            closable : true,
-            closeAction:'destroy',
-            items: treepanel,
-            buttons:[{
-                text: '确认',
-                handler:function(){
-                    var checkedrcd=treepanel.getChecked();
-                    var user_arr=[];
-                    var ischeck =false;
-                    if(checkedrcd.length>0){
-                        for(var i=0; i<checkedrcd.length; i++){
-                            if(checkedrcd[i].get('u_isgroup')=='0'){
-                                ischeck = true;
-                                user_arr.push(checkedrcd[i].get('u_id'));
-                            }
-                        }
-                        user_str = user_arr.join(',');
-                    }
-                    if(ischeck){
-                        Ext.Ajax.request({
-                            url: base_path + "index.php?c=document&a=sharedocument",
-                            params : {uids: user_str, fs_id: docrcd.get('fs_id'), fs_code: docrcd.get('fs_code'), fs_parent:docrcd.get('fs_parent')},
-                            method : 'POST',
-                            timeout: 600000,
-                            success: function(response, options){
-                                var result = Ext.JSON.decode(response.responseText);
-                                if(result.success){
-                                    //grid change record
-                                    me.getListStore().reload();
-                                    //tree change record
-                                    var treercd=me.getTreeStore().getNodeById(docrcd.get('fs_id'));
-                                    treercd.set('fs_is_share', 1);
-                                    treercd.commit();
-                                    Ext.Msg.alert('提示', result.msg);
-                                    win.close();
-                                }else{
-                                    Ext.Msg.alert('提示', result.msg); 
-                                    win.close();
-                                }
-                            },
-                            failure: function(resp,opts) {
-                                Ext.Msg.alert('提示', '操作失败！  ');
-                                win.close();   
-                            }      
-                        });
-                    }else{
-                        var msgTip = new Ext.LoadMask(Ext.getBody(),{  
-                            msg:'正在处理，请稍候...',  
-                            removeMask : true                     
-                        });  
-                        msgTip.show();
-                        Ext.Ajax.request({
-                            url: base_path + "index.php?c=document&a=removesharesetting",
-                            params : docrcd.raw,
-                            method : 'POST',
-                            timeout: 600000,
-                            success: function(response, options){
-                                msgTip.hide();
-                                var result = Ext.JSON.decode(response.responseText); 
-                                if(result.success){
-                                    //grid change record
-                                    var listrcd=me.getListStore().reload();
-                                    //tree change record
-                                    var treercd=me.getTreeStore().getNodeById(docrcd.get('fs_id'));
-                                    treercd.set('fs_is_share', 0);
-                                    treercd.commit();
-                                    Ext.Msg.alert('提示', result.msg);
-                                }else{
-                                    Ext.Msg.alert('提示', result.msg); 
-                                }
-                            },
-                            failure: function(resp,opts) {
-                                msgTip.hide();
-                                Ext.Msg.alert('提示', '操作失败！  ');   
-                            }      
-                        });
-                    }
-                }
-            }]
-        });
-        win.setTitle('请选择共享给的人员');
-        win.show();
     },
 
     /*取消共享*/
     cannelshare: function(view, rcd, item, index, event){
-        var me=this;
-        var msgTip = new Ext.LoadMask(Ext.getBody(),{  
-            msg:'正在处理，请稍候...',  
-            removeMask : true                     
-        });  
-        msgTip.show();
-        Ext.Ajax.request({
-            url: base_path + "index.php?c=document&a=removesharesetting",
-            params : rcd.raw,
-            method : 'POST',
-            timeout: 600000,
-            success: function(response, options){
-                msgTip.hide();
-                var result = Ext.JSON.decode(response.responseText); 
-                if(result.success){
-                    //grid change record
-                    var listrcd=me.getListStore().reload();
-                    //tree change record
-                    var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
-                    treercd.set('fs_is_share', 0);
-                    treercd.commit();
-                    Ext.Msg.alert('提示', result.msg);
-                }else{
-                    Ext.Msg.alert('提示', result.msg); 
-                }
-            },
-            failure: function(resp,opts) {
-                msgTip.hide();
-                Ext.Msg.alert('提示', '操作失败！  ');   
-            }      
-        });
     },
     history: function(view, rcd, item, index, event){
         var panel = Ext.widget("historypanel");
@@ -601,14 +418,14 @@ Ext.define('FS.controller.ProjectView', {
                     });
 
                     Ext.Ajax.request({
-                        url: base_path + "index.php?c=document&a=downloadfile",
+                        url: base_path + "index.php?c=document&a=downloadsharefile",
                         params : rcd.getData(),
                         method : 'POST',
                         success: function(response, options){
                             msgTip.hide();
                             var result = Ext.JSON.decode(response.responseText);
                             if(result.success){
-                                location.href=base_path + "index.php?c=document&a=downloadfile&file="+result.msg;
+                                location.href=base_path + "index.php?c=document&a=downloadsharefile&file="+result.msg;
                                 return true;
                             }else{
                                 Ext.Msg.alert('提示', result.msg); 
@@ -622,7 +439,7 @@ Ext.define('FS.controller.ProjectView', {
         });
     },
     powersetting: function(view, rcd, item, index, event){
-        var powersettingWin=Ext.widget('powersetting', {rcd:rcd});
+        var powersettingWin=Ext.widget('commonpowersetting', {rcd:rcd});
         powersettingWin.show();
     },
     del: function(view, rcd, item, index, event){
@@ -637,8 +454,8 @@ Ext.define('FS.controller.ProjectView', {
             fn: function(btn){
                 if(btn=='ok'){
                     me.startdeldocument(selected_rcd, 0);
-                    me.getProjectList().getView().refresh();
-                    me.getProjectTree().getView().refresh();
+                    me.getCommonList().getView().refresh();
+                    me.getCommonTree().getView().refresh();
                 }
                 return false;
             } 
@@ -654,15 +471,15 @@ Ext.define('FS.controller.ProjectView', {
         var rcd=selected_rcd.items[0]; //first rcd
         if(selected_rcd.length>0){
             Ext.Ajax.request({
-                url: base_path + "index.php?c=document&a=deldocument",
+                url: base_path + "index.php?c=document&a=delsharedocument",
                 params : rcd.getData(),
                 method : 'POST',
                 success: function(response, options){
                     var result = Ext.JSON.decode(response.responseText);
                     if(result.success){
                         Ext.Msg.alert('提示', result.msg);
-                        me.getListStore().remove(rcd);
-                        me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
+                        me.getCommonListStore().remove(rcd);
+                        me.getCommonTreeStore().getNodeById(rcd.get('fs_id')).remove();
                         me.startdeldocument(selected_rcd);
 
                     }else{
@@ -677,7 +494,7 @@ Ext.define('FS.controller.ProjectView', {
     newdir: function(view, rcd, item, index, event){
         var me=this;
         if(typeof rcd=='undefined'){ //if it is gridmenu
-            var parent_record = this.getParentRecordStore().getAt(0);
+            var parent_record = this.getCommonParentRecordStore().getAt(0);
         }else{
             var parent_record=rcd;
         }
@@ -733,14 +550,14 @@ Ext.define('FS.controller.ProjectView', {
                 handler: function(){
                     if(adddocumentformPanel.form.isValid()){
                         adddocumentformPanel.getForm().submit({
-                            url: base_path+'index.php?c=document&a=adddocument',
+                            url: base_path+'index.php?c=document&a=addsharedocument',
                             method: 'post',
                             timeout: 30,
                             params: adddocumentformPanel.getForm().getValues,
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-                                me.getListStore().load({params:{fs_id:parent_record.get('fs_id')}});
-                                me.getTreeStore().load({node:rcd, callback:function(){}});
+                                me.getCommonListStore().load({params:{fs_id:parent_record.get('fs_id')}});
+                                me.getCommonTreeStore().load({node:rcd, callback:function(){}});
                                 win.close();
                             },
                             failure: function(form, action){
@@ -764,15 +581,15 @@ Ext.define('FS.controller.ProjectView', {
     },
     upload: function(view, rcd, item, index, event){
         if(typeof rcd=='undefined'){ //if it is gridmenu
-            var parent_record = this.getParentRecordStore().getAt(0);
+            var parent_record = this.getCommonParentRecordStore().getAt(0);
         }else{
             var parent_record=rcd;
         }
-        var fileitem=Ext.widget('fileuploadPanel', {
+        var fileitem=Ext.widget('sharefileuploadPanel', {
             parent_record:parent_record,
             savePath:parent_record.get('fs_fullpath'),
-            ListStore:this.getListStore(),
-            TreeStore:this.getTreeStore() 
+            ListStore:this.getCommonListStore(),
+            TreeStore:this.getCommonTreeStore() 
         });
         var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{
@@ -794,15 +611,15 @@ Ext.define('FS.controller.ProjectView', {
     },    
     dragupload: function(view, rcd, event){
         if(typeof rcd=='undefined'){ //if it is gridmenu
-            var parent_record = this.getParentRecordStore().getAt(0);
+            var parent_record = this.getCommonParentRecordStore().getAt(0);
         }else{
             var parent_record=rcd;
         }
-        var fileitem=Ext.widget('dragfileuploadPanel', {
+        var fileitem=Ext.widget('sharedragfileuploadPanel', {
             parent_record:parent_record,
             savePath:parent_record.get('fs_fullpath'),
-            ListStore:this.getListStore(),
-            TreeStore:this.getTreeStore()
+            ListStore:this.getCommonListStore(),
+            TreeStore:this.getCommonTreeStore()
         });
         var fileuploadstore=this.getFileUploadStore();
         var win = Ext.create('Ext.window.Window',{
@@ -881,16 +698,16 @@ Ext.define('FS.controller.ProjectView', {
                 handler: function(){
                     if(editprojectform.form.isValid()){
                         editprojectform.getForm().submit({
-                            url: base_path+'index.php?c=document&a=editdocument',
+                            url: base_path+'index.php?c=document&a=editsharedocument',
                             method: 'post',
                             timeout: 30,
                             params: editprojectform.getForm().getValues(),
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
                                 //grid change record
-                                var listrcd=me.getListStore().findRecord('fs_id',rcd.get('fs_id'));
+                                var listrcd=me.getCommonListStore().findRecord('fs_id',rcd.get('fs_id'));
                                 if(listrcd==null){
-                                    me.getListStore().reload();
+                                    me.getCommonListStore().reload();
                                 }else{
                                     listrcd.set('text', action.result.data.document_pathname);
                                     listrcd.set('fs_name', action.result.data.document_name);
@@ -900,7 +717,7 @@ Ext.define('FS.controller.ProjectView', {
                                     listrcd.commit();
                                 }
                                 //tree change record
-                                var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
+                                var treercd=me.getCommonTreeStore().getNodeById(rcd.get('fs_id'));
                                 treercd.set('text', action.result.data.document_pathname+'（'+action.result.data.document_intro+'）');
                                 treercd.set('fs_name', action.result.data.document_name);
                                 treercd.set('fs_intro', action.result.data.document_intro);
@@ -1003,7 +820,7 @@ Ext.define('FS.controller.ProjectView', {
                 handler: function(){
                     if(editprojectform.form.isValid()){
                         editprojectform.getForm().submit({
-                            url: base_path+'index.php?c=document&a=editfile',
+                            url: base_path+'index.php?c=document&a=editsharefile',
                             method: 'post',
                             timeout: 30,
                             params: editprojectform.getForm().getValues(),
@@ -1011,7 +828,7 @@ Ext.define('FS.controller.ProjectView', {
                                 win.hide();
                                 Ext.Msg.alert('温馨提示', action.result.msg);
                                 //grid change record
-                                var listrcd=me.getListStore().findRecord('fs_id',rcd.get('fs_id'));
+                                var listrcd=me.getCommonListStore().findRecord('fs_id',rcd.get('fs_id'));
                                 listrcd.set('text', action.result.data.document_pathname);
                                 listrcd.set('fs_name', action.result.data.document_name);
                                 listrcd.set('fs_intro', action.result.data.document_intro);
@@ -1020,7 +837,7 @@ Ext.define('FS.controller.ProjectView', {
                                 listrcd.set('fs_lastmodify', action.result.data.fs_lastmodify);
                                 listrcd.commit();
                                 //tree change record
-                                var treercd=me.getTreeStore().getNodeById(rcd.get('fs_id'));
+                                var treercd=me.getCommonTreeStore().getNodeById(rcd.get('fs_id'));
                                 treercd.set('text', action.result.data.document_pathname+'（'+action.result.data.document_intro+'）');
                                 treercd.set('fs_name', action.result.data.document_name);
                                 treercd.set('fs_intro', action.result.data.document_intro);

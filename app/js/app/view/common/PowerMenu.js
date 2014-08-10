@@ -1,6 +1,6 @@
-Ext.define('FS.view.project.PowerMenu',{
+Ext.define('FS.view.common.PowerMenu',{
     extend:'Ext.menu.Menu',
-    alias: 'widget.powermenu',
+    alias: 'widget.commonpowermenu',
     initComponent: function(){
         Ext.apply(this,{
             float: true,
@@ -31,11 +31,14 @@ Ext.define('FS.view.project.PowerMenu',{
                 text:'删除',
                 iconCls:'icon-doc-remove',
                 ename: 'del'
-            },"copystruct":{
+            },
+            /*
+            "copystruct":{
                 text: '复制文件夹结构',
                 iconCls: 'icon-doc-open',
                 ename: 'copystruct'
-            },"addshare":{
+            },
+            "addshare":{
                 text: '设置共享',
                 iconCls:'icon-share-doc-setting',
                 ename: 'addshare'
@@ -48,7 +51,8 @@ Ext.define('FS.view.project.PowerMenu',{
                 text:'历史版本',
                 iconCls:'icon-doc-history',
                 ename:'history'
-            },"download":{
+            },
+            */"download":{
                 text:'下载',
                 iconCls:'icon-doc-download',
                 ename:'download'
@@ -70,10 +74,10 @@ Ext.define('FS.view.project.PowerMenu',{
                 fun=['open']; 
             }
             else if(isdir==1){
-                fun=['open', 'alterfile','newdir', 'upload', 'del','powersetting', 'addshare','cannelshare', 'copystruct'];
+                fun=['open', 'alterfile','newdir', 'upload', 'del','powersetting'];
                 treefun=['refresh','copystruct'];
             }else{
-                fun=['open', 'alterfile', 'del', 'download', 'history'];
+                fun=['alterfile', 'del', 'download'];
             }
         }else if(obj=='gridmenu'){
             fun=['newdir', 'upload'];

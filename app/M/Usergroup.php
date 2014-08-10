@@ -39,7 +39,7 @@
                 }else{
                     $sql = "SELECT * from ".self::$usergroup_table." WHERE u_id='{$login_user_info['u_parent']}' and u_isgroup='1'";
                 }
-            }//echo $sql;
+            }
             $res = self::$db->get_results($sql);
             if($res){
                 if(!empty($res)){

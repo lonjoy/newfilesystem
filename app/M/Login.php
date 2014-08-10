@@ -83,12 +83,12 @@
                     $pop3 = new Net_POP3();
                     $pop3->connect(EMAIL_SERVER);
                     if (PEAR::isError($ret=$pop3->login($userinfo['u_email'], $userpwd, 'USER'))) {
+                    //if (1) {
                         $rs['success'] = false;
                         $rs['msg'] = '密码错误';
-                        M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$useremail, 'desc'=>"Email password is error"));
                         return $rs; 
                     }else{
-                        $rs['success'] = true; 
+                        $rs['success'] = true;
                         $rs['msg'] = $userinfo;
                         $rs['info'] = $userinfo;
                         $rs['grade'] = self::getUserrole($userinfo['u_grade']);
@@ -110,7 +110,10 @@
                 M_Log::systemlog(array('login_user_name'=>'未知用户', 'login_user_email'=>$useremail, 'desc'=>"输入错误邮箱")); 
             }
         }
-
+        
+        public static function writeLog($userinfo, $useremail){
+            M_Log::systemlog(array('login_user_name'=>$userinfo['u_name'], 'login_user_email'=>$useremail, 'desc'=>"输入密码错误"));
+        }
 
         /**
         * put your comment there...

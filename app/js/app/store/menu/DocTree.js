@@ -23,7 +23,7 @@ Ext.define('FS.store.menu.DocTree',{
             leaf: true
         },{
             text:'公共信息栏',
-            xtypeclass:'projectview',
+            xtypeclass:'commonview',
             leaf: true
         }
         /*

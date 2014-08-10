@@ -18,6 +18,7 @@ Ext.define('FS.controller.Search', {
         this.control({
             'searchform button':{
                 click: function(){
+                    this.getSearchNavbarStore().removeAll();
                     if(this.getSearchform().getForm().isValid()){
                         this.getSearchStore().load({params:this.getSearchform().getForm().getValues()});
                         Ext.getCmp('search_go_back').setDisabled(false);
@@ -34,12 +35,14 @@ Ext.define('FS.controller.Search', {
             'searchList button[iconCls="go_history"]': {
                 click: function(obj, event){
                     if(this.getSearchNavbarStore().getCount()>1){
+                        obj.setDisabled(false);
                         this.getSearchNavbarStore().removeAt(this.getSearchNavbarStore().getCount()-1);
                         var parentrcd = this.getSearchNavbarStore().getAt(this.getSearchNavbarStore().getCount()-1);
                         this.getSearchStore().load({params:{fs_id:parentrcd.get('fs_id')}}); //加载grid数据
                     }else{
                         this.getSearchNavbarStore().removeAll();
                         this.getSearchStore().load({params:this.getSearchform().getForm().getValues()});
+                        obj.setDisabled(true);
                     }
                 }
             },
@@ -55,6 +58,7 @@ Ext.define('FS.controller.Search', {
         event.preventDefault();
         event.stopEvent();
         if(rcd.get('fs_isdir')==1){
+            Ext.getCmp('search_go_back').setDisabled(false);
             //add parent record
             this.getSearchNavbarStore().add(rcd);
             this.getSearchStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据 

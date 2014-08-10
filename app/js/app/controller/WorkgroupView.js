@@ -150,7 +150,11 @@ Ext.define('FS.controller.WorkgroupView', {
         }
     },
     itemexpand: function(rcd){
-        this.getWorkgroupListStore().getProxy().extraParams={workgroup_id:rcd.get('u_id')};
+        if(login_user.u_grade=='1'){
+            this.getWorkgroupListStore().getProxy().extraParams={workgroup_id:login_user.u_targetgroup}; 
+        }else{
+            this.getWorkgroupListStore().getProxy().extraParams={workgroup_id:rcd.get('u_id')}; 
+        }
         this.getWorkgroupListStore().load();
     },
     itemclick:function(view, rcd, item, index, event){

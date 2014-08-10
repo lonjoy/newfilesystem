@@ -42,6 +42,7 @@ class M_Uploadshare extends M_Model
             if(!$savepath){
                 $savepath = PROJECT_DOC_PATH.M_Sharedocument::splitdocpath(M_Sharedocument::getParentpath($fs_parent));
             }
+            
             $hashname = parent::hashname($savepath . DS . $fs_name);
             $savefilename = $hashname. '.' . $file_info['extension']; //要保存的文件名
             $save = $savepath . DS . $savefilename;

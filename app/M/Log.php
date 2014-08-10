@@ -23,14 +23,14 @@
         * 
         */
         public static function systemlog($data) {
-
+            $desc = ($data['desc']);
             self::init();
             $now = date('Y-m-d H:i:s');
             $sql = "insert into ".self::$syslog_table_name." set 
             log_date='{$now}',
             log_user='{$data['login_user_name']}',
             log_email='{$data['login_user_email']}',
-            log_desc='".mysql_escape_string($data['desc'])."'";
+            log_desc='{$desc}'";//echo $sql;die;
             $rs = self::$db->query($sql);
             return true;
         }

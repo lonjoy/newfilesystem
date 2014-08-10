@@ -16,6 +16,7 @@ Ext.application({
     'ProjectView',
     'Email',
     'GenerateDoc',
-    'WorkgroupView'
+    'WorkgroupView',
+    'CommonView'
     ]
 });

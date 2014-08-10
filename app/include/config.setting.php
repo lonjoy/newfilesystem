@@ -10,7 +10,7 @@
 */
 
 /* include judge */
-error_reporting(7);
+error_reporting(0);
 date_default_timezone_set('Asia/Shanghai');
 define('APP_NAME','app');
 define('DS', DIRECTORY_SEPARATOR);
@@ -20,16 +20,17 @@ $pathlen = strlen(APP_NAME)+8;
 define('ROOT_PATH',   substr(dirname(__FILE__), 0, -$pathlen));
 define('APP_PATH',   ROOT_PATH.APP_NAME);
 define('CACHE_PATH',   APP_PATH.DS.'cache');
+define('APP_DOMAIN',   'filesystem.ikuday.com');
 
 #文件访问服务器地址
 define('DOC_SERVER', APP_PATH);
 define('PROJECT_DOC_PATH', DOC_SERVER.DS. 'project'); //项目文档存放目录
-define('PROJECT_DOC_URL', 'http://filesystem.ikuday.com/project'); //项目文档下载使用的URL
+define('PROJECT_DOC_URL', 'http://'.APP_DOMAIN.'/project'); //项目文档下载使用的URL
 define('FILE_BACKUP_PATH', APP_PATH.DS.'bak'); //文件备份路径
 define('LOG_PATH', APP_PATH.DS.'log');
 
 /* base file */
-$base_path = "http://filesystem.ikuday.com/"; 
+$base_path = "http://".APP_DOMAIN."/"; 
 #$base_path = "http://27.0.0.1/"; 
 $tempurl = $base_path == '/' ? '' : $base_path;
 $css_path = $tempurl."css/";
@@ -48,7 +49,7 @@ $_cookiearr = array(
 //@extract($_COOKIE);
 require APP_PATH."/include/global.function.php";
 #APP
-define('EMAIL_SERVER', 'pop.126.com');
+define('EMAIL_SERVER', 'pop.mail.cntv.cn');
 define('EMAIL_RESPONSE', '+OK');
 
 #
