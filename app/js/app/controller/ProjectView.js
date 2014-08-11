@@ -314,7 +314,7 @@ Ext.define('FS.controller.ProjectView', {
     },
     //权限菜单
     powermenufun: function(view, rcd, item, index, event){
-        var isdirhere=typeof this.getParentRecordStore().getAt(0)!='undefined';
+        var isdirhere=typeof this.getParentRecordStore().getAt(0)!='undefined' && !isNaN(this.getParentRecordStore().getAt(0).get('id'));
         if(arguments.length==2){
             arguments[1].preventDefault();
             arguments[1].stopEvent();
@@ -412,7 +412,7 @@ Ext.define('FS.controller.ProjectView', {
             parentrcd=this.getParentRecordStore().getAt(0);
         }
         //判断是否是tree触发
-        
+
         var win=Ext.widget('copydocstruct', {parentrcd:parentrcd, rcd:rcd, new_fs_name:new_fs_name, projectview: this});
         win.show();
     },
@@ -658,15 +658,19 @@ Ext.define('FS.controller.ProjectView', {
                 params : rcd.getData(),
                 method : 'POST',
                 success: function(response, options){
-                    var result = Ext.JSON.decode(response.responseText);
-                    if(result.success){
-                        Ext.Msg.alert('提示', result.msg);
-                        me.getListStore().remove(rcd);
-                        me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
-                        me.startdeldocument(selected_rcd);
+                    if(response.respons){
+                        var result = Ext.JSON.decode(response.responseText);
+                        if(result.success){
+                            Ext.Msg.alert('提示', result.msg);
+                            me.getListStore().remove(rcd);
+                            me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
+                            me.startdeldocument(selected_rcd);
 
+                        }else{
+                            Ext.Msg.alert('提示', result.msg);
+                        }
                     }else{
-                        Ext.Msg.alert('提示', result.msg);
+                        Ext.Msg.alert('提示', '操作失败');
                     }
                 }
             });

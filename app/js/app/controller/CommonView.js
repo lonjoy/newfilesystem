@@ -321,7 +321,7 @@ Ext.define('FS.controller.CommonView', {
             int_fs_name=parseInt(fs_name);
             new_fs_name=(int_fs_name + 1);
         }
-        regex_b=/^0+\d+/;
+        var regex_b=/^0+\d+/;
         if(regex_b.test(fs_name)){
             int_fs_name=parseInt(fs_name);
             var pos=fs_name.indexOf(int_fs_name);
@@ -331,7 +331,7 @@ Ext.define('FS.controller.CommonView', {
             }
             new_fs_name=zerostr + '' + (parseInt(fs_name) + 1);
         }
-        regex_c=/^([A-Za-z]+)(\d+)$/;
+        var regex_c=/^([A-Za-z]+)(\d+)$/;
         if(regex_c.test(fs_name)){
             regex_c_a=/\d+$/g;
             var regexstr=fs_name.match(regex_c);
@@ -344,7 +344,7 @@ Ext.define('FS.controller.CommonView', {
             }
             new_fs_name=regexstr[1] + '' + zerostr + (int_fs_name + 1);
         }
-        regex_istree=/.*?Tree.*?/
+        var regex_istree=/.*?Tree.*?/
         if(regex_istree.test(rcd.id)){
             parentrcd=rcd.parentNode;
         }else{

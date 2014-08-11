@@ -6,10 +6,8 @@ Ext.define('FS.view.layout.Main',{
             region: 'center',
             activeTab: 0,
             items:[{
-                id: 'HomePage',
-                title: '首页',
-                layout: 'fit',
-                html:'xxxxx'
+                title:'项目管理',
+                xtype:'projectview'
             }],
             listeners:{
                 'remove': function(obj, component, eOpts){

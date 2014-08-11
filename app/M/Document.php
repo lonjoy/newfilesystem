@@ -1910,7 +1910,13 @@
                         $value['leaf'] = $value['fs_isdir']==1?false:true;
                         #修复BUG
                         /*系统管理员分给组文件管理员的文件夹只有系统管理员可以修改，组文件管理员分给组员的文件夹只有组管理员和系统管理员可以修改，下面自己建的文件夹就自己可以随便修改了，修改只能修改自己建的，不是自己建的就没有权限修改*/ 
-                        $value['managerok'] = true;
+                        //$value['managerok'] = true;
+                        #添加对文件夹的编辑权限， 没有fs_id的时候所能看到的文件夹应该都是上一级管理人员分配过来的文件夹
+                        if($fs_id){
+                            $value['managerok'] = true; 
+                        }else{
+                            $value['managerok'] = false;
+                        }
                     }
 
                     if(!isset($data['sort'])){

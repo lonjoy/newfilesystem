@@ -67,13 +67,18 @@ Ext.define('FS.view.project.PowerMenu',{
         var treefun=[];
         if(obj=='powermenu'){
             if(isdir==1 && isproject==0){
-                fun=['open']; 
+                fun=['refresh', 'open']; 
             }
             else if(isdir==1){
-                fun=['open', 'alterfile','newdir', 'upload', 'del','powersetting', 'addshare','cannelshare', 'copystruct'];
-                treefun=['refresh','copystruct'];
+                fun=['refresh','open', 'alterfile','newdir', 'upload', 'del','powersetting', 'addshare','cannelshare'];
+                var regex_istree=/.*?Tree.*?/
+                if(regex_istree.test(rcd.id)){
+                    if(rcd.get('managerok')=='true'){
+                        fun.push('copystruct');
+                    }
+                }
             }else{
-                fun=['open', 'alterfile', 'del', 'download', 'history'];
+                fun=['refresh', 'open', 'alterfile', 'del', 'download', 'history'];
             }
         }else if(obj=='gridmenu'){
             fun=['newdir', 'upload'];
@@ -99,8 +104,13 @@ Ext.define('FS.view.project.PowerMenu',{
     },
     verfiypower:function(p){
         //"adddocument","editdocument","readdocument","movedocument","deldocument","recoverdocument","readworkgroup","addworkgroup","editworkgroup","addgroupuser","delgroupuser","showgroupuser","uploadfile","downloadfile","updatefile","powersetting","readsyslog","readdoclog","lookuphistory","sharesetting","copydocumentstruct";
-        var map={'open':'readdocument', 'alterfile':'editdocument','newdir':'editdocument', 'upload':'updatefile', 'del':'deldocument','powersetting':'powersetting', 'addshare':'sharesetting','cannelshare':'sharesetting','copystruct':'copydocumentstruct', 'history':'lookuphistory', 'download':'downloadfile'};
-       for(var i in power){
+        var map={'refresh':'refresh', 'open':'readdocument', 'alterfile':'editdocument','newdir':'editdocument', 'upload':'updatefile', 'del':'deldocument','powersetting':'powersetting', 'addshare':'sharesetting','cannelshare':'sharesetting','copystruct':'copydocumentstruct', 'history':'lookuphistory', 'download':'downloadfile'};
+        for(var i in power){
+            /*
+            if(map[p]=='refresh'){
+            return true;
+            }
+            */
             if(map[p]==power[i]){
                 return true;
             }
