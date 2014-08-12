@@ -636,7 +636,7 @@ Ext.define('FS.controller.ProjectView', {
             buttons: Ext.Msg.OKCANCEL,
             fn: function(btn){
                 if(btn=='ok'){
-                    me.startdeldocument(selected_rcd, 0);
+                    me.startdeldocument(selected_rcd);
                     me.getProjectList().getView().refresh();
                     me.getProjectTree().getView().refresh();
                 }
@@ -658,14 +658,17 @@ Ext.define('FS.controller.ProjectView', {
                 params : rcd.getData(),
                 method : 'POST',
                 success: function(response, options){
-                    if(response.respons){
+                    if(response.responseText){
                         var result = Ext.JSON.decode(response.responseText);
                         if(result.success){
-                            Ext.Msg.alert('提示', result.msg);
+                            if(selected_rcd.length>1){
+                                selected_rcd.remove(rcd);
+                                me.startdeldocument(selected_rcd);
+                            }
                             me.getListStore().remove(rcd);
                             me.getTreeStore().getNodeById(rcd.get('fs_id')).remove();
-                            me.startdeldocument(selected_rcd);
-
+                            me.getProjectTree().getView().refresh();
+                            Ext.Msg.alert('提示', result.msg);
                         }else{
                             Ext.Msg.alert('提示', result.msg);
                         }
@@ -743,8 +746,9 @@ Ext.define('FS.controller.ProjectView', {
                             params: adddocumentformPanel.getForm().getValues,
                             success: function(form, action){
                                 Ext.Msg.alert('温馨提示', action.result.msg);
-                                me.getListStore().load({params:{fs_id:parent_record.get('fs_id')}});
-                                me.getTreeStore().load({node:rcd, callback:function(){}});
+                                me.getListStore().load({params:{fs_id:parent_record.get('fs_id')}});                                
+                                me.getTreeStore().load({node:parent_record, params:{fs_id:parent_record.get('fs_id')}});
+                                me.getProjectTree().getView().refresh();
                                 win.close();
                             },
                             failure: function(form, action){
