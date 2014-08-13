@@ -625,8 +625,11 @@ Ext.define("FS.view.swfupload.DragUploadPanel", {
             for (var index = 0; index <store.getCount(); index++) {
                 if(store.getAt(index).get("filestatus")==-4){++finish;}
                 if(finish==store.getCount()){
-                    //refreshtree(ownerobj.parentNode, 1);
-                    //console.log(ownerobj.getComponent('dragfileuploadgrid'));
+                    //refresh list grid data to show new add file
+                    ownerobj.initialConfig.ListStore.load({params:{fs_id:ownerobj.parentNode.get('fs_id')}});
+                    //refresh tree data to show new add file
+                    ownerobj.initialConfig.TreeStore.load({node: ownerobj.parentNode,params:{fs_id:ownerobj.parentNode.get('fs_id')}});
+
                     ownerobj.getComponent('dragfileuploadgrid').getView().refresh();
                     //store.load(store.getProxy());
                 }

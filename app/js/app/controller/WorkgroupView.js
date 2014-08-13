@@ -38,6 +38,9 @@ Ext.define('FS.controller.WorkgroupView', {
                 itemcontextmenu : this.workcontextmenu,
                 itemclick: this.itemclick
             },
+            'workgroupList':{
+                itemdblclick: this.itemclick
+            },
             'editworkgroup button':{
                 click:this.summitworkgroupinfo
             },

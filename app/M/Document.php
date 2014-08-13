@@ -181,7 +181,7 @@
                         }else{
                             $value['managerok'] = false;
                         }
-                        if($value['fs_is_share'] && $value['fs_user']!=$login_user_info['u_id'] && $login_user_info['u_grade']=='0')                                  {
+                        if($value['fs_is_share'] && $value['fs_user']!=$login_user_info['u_id'] && $login_user_info['u_grade']=='0' && $value['fs_isdir']==1){
                             $value['iconCls'] = 'icon-share-doc-setting';
                         }
                         if($login_user_info['u_grade']=='10'){
@@ -1821,7 +1821,7 @@
                 #获取统计总数、分页使用
                 $sql =  "select count(*) from ".self::$document_table." where " . $where;
                 $count_arr = self::$db->get_col($sql);
-                $sql = "select * from ".self::$document_table." as d left join (select u_id, u_name from ".self::$usergroup_table.")  as u on d.fs_user=u.u_id  where " . $where ;//. " order by  fs_isdir " . $sort .',' . $sortfield .' '. $sort . $limit;
+                $sql = "select * from ".self::$document_table."  where " . $where ;//. " order by  fs_isdir " . $sort .',' . $sortfield .' '. $sort . $limit;
 
                 //echo $sql;
                 $res_doc = self::$db->get_results($sql);

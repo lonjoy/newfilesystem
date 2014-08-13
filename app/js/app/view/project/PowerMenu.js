@@ -96,6 +96,15 @@ Ext.define('FS.view.project.PowerMenu',{
                         this.powermenu[fun[i]].disabled=true;
                     }
                 }
+
+                var fobidenfun=['alterfile', 'newdir', 'del', 'addshare', 'cannelshare', 'upload', 'copystruct'];
+                if(Ext.Array.contains(fobidenfun, fun[i])){
+                    if(rcd.get('fs_is_share')=='1' && rcd.get('fs_user')!=login_user.u_id){
+                        this.powermenu[fun[i]].disabled=true;
+                    }else{
+                        this.powermenu[fun[i]].disabled=false;
+                    } 
+                }
                 if(this.verfiypower(fun[i])){
                     this.add(this.powermenu[fun[i]]);
                 }
@@ -104,7 +113,7 @@ Ext.define('FS.view.project.PowerMenu',{
     },
     verfiypower:function(p){
         //"adddocument","editdocument","readdocument","movedocument","deldocument","recoverdocument","readworkgroup","addworkgroup","editworkgroup","addgroupuser","delgroupuser","showgroupuser","uploadfile","downloadfile","updatefile","powersetting","readsyslog","readdoclog","lookuphistory","sharesetting","copydocumentstruct";
-        var map={'refresh':'refresh', 'open':'readdocument', 'alterfile':'editdocument','newdir':'editdocument', 'upload':'updatefile', 'del':'deldocument','powersetting':'powersetting', 'addshare':'sharesetting','cannelshare':'sharesetting','copystruct':'copydocumentstruct', 'history':'lookuphistory', 'download':'downloadfile'};
+        var map={'refresh':'refresh', 'open':'readdocument', 'alterfile':'editdocument','newdir':'editdocument', 'upload':'uploadfile', 'del':'deldocument','powersetting':'powersetting', 'addshare':'sharesetting','cannelshare':'sharesetting','copystruct':'copydocumentstruct', 'history':'lookuphistory', 'download':'downloadfile'};
         for(var i in power){
             /*
             if(map[p]=='refresh'){

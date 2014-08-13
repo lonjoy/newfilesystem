@@ -594,10 +594,12 @@ Ext.define("FS.view.swfupload.UploadPanel", {
     uploadSuccess : function(file, serverdata){
         if(serverdata){
             //serverdata = eval('('+serverdata+')');
-            //refresh list grid data to show new add file
-            this.customSettings.scope_handler.initialConfig.ListStore.load({params:{fs_id:this.customSettings.scope_handler.parentNode.get('fs_id')}});
-            //refresh tree data to show new add file
-            this.customSettings.scope_handler.initialConfig.TreeStore.load({node: this.customSettings.scope_handler.parentNode,params:{fs_id:this.customSettings.scope_handler.parentNode.get('fs_id')}});
+            if(this.getStats().files_queued==0){  //文件队列中没有文件了刷新
+                //refresh list grid data to show new add file
+                this.customSettings.scope_handler.initialConfig.ListStore.load({params:{fs_id:this.customSettings.scope_handler.parentNode.get('fs_id')}});
+                //refresh tree data to show new add file
+                this.customSettings.scope_handler.initialConfig.TreeStore.load({node: this.customSettings.scope_handler.parentNode,params:{fs_id:this.customSettings.scope_handler.parentNode.get('fs_id')}});
+            }
         }
     },
     uploadComplete:function(file){
