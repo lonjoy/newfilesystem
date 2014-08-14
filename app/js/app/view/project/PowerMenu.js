@@ -89,21 +89,31 @@ Ext.define('FS.view.project.PowerMenu',{
         this.removeAll();
         if(fun.length>0){
             for(var i=0;i<fun.length; i++){
+                if(login_user.u_grade>0){ 
+                    if(fun[i]=='addshare' || fun[i]=='cannelshare'){
+                        continue;
+                    }
+                }
+                var fobidenfun=['alterfile', 'newdir', 'del', 'addshare', 'cannelshare', 'upload', 'copystruct', 'powersetting'];
+                if(Ext.Array.contains(fobidenfun, fun[i])){
+                    if(rcd.get('fs_is_share')=='1'){
+                        if(rcd.get('fs_user')!=login_user.u_id && login_user.u_grade==0){
+                            this.powermenu[fun[i]].disabled=true;
+                        }else{
+                            this.powermenu[fun[i]].disabled=false;
+                        } 
+                    }else{
+                        if(rcd.get('fs_user')!=login_user.u_id && login_user.u_grade==0){
+                            this.powermenu[fun[i]].disabled=true;
+                        }
+                    }
+                }
                 if(fun[i]=='cannelshare'){
                     if(rcd.get('fs_is_share')=='1'){
                         this.powermenu[fun[i]].disabled=false; 
                     }else{
                         this.powermenu[fun[i]].disabled=true;
                     }
-                }
-
-                var fobidenfun=['alterfile', 'newdir', 'del', 'addshare', 'cannelshare', 'upload', 'copystruct'];
-                if(Ext.Array.contains(fobidenfun, fun[i])){
-                    if(rcd.get('fs_is_share')=='1' && rcd.get('fs_user')!=login_user.u_id){
-                        this.powermenu[fun[i]].disabled=true;
-                    }else{
-                        this.powermenu[fun[i]].disabled=false;
-                    } 
                 }
                 if(this.verfiypower(fun[i])){
                     this.add(this.powermenu[fun[i]]);

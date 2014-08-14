@@ -542,7 +542,7 @@
                             return false;
                         }
                     }
-                    if($op=='readdocument' || $op=='readworkgroup' || $op=='readsyslog' || $op=='readdoclog' || $op=='lookuphistory' || $op=='showgroupuser' || $op=='downloadfile'){
+                    if($op=='readdocument' || $op=='readworkgroup' || $op=='readsyslog' || $op=='readdoclog' || $op=='lookuphistory' || $op=='showgroupuser' || $op=='downloadfile' || $op=='copydocumentstruct'){
                         return true;
                     }
                     return false; 

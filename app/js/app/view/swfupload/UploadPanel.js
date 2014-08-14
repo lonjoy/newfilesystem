@@ -533,7 +533,7 @@ Ext.define("FS.view.swfupload.UploadPanel", {
 
     onFileError : function(file,errorCode,msg){
         var msg="";
-
+        
         switch(errorCode){
             case SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED : msg='待上传文件列表数量超限，不能选择！';
                 break;
