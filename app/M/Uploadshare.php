@@ -80,6 +80,7 @@ class M_Uploadshare extends M_Model
 
             #判断文件是否已存在
             $checkresult = M_Sharedocument::checkSamedoc($fs_name, $fs_parent, 0);
+            
             if($checkresult['flag']==1){
                 if(isset($_REQUEST['coverfile'])&& $_REQUEST['coverfile']==1){ //判断用户是否对现有文件允许备份， 不允许的返回错误
                     #对现有文件进行更新操作, 对旧文件进行备份
