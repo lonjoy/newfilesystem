@@ -1,0 +1,28 @@
+array (
+  'msg' => '没有文件',
+  'success' => true,
+  'flag' => 0,
+  'data' => '',
+)array (
+  'msg' => '没有文件',
+  'success' => true,
+  'flag' => 0,
+  'data' => '',
+)array (
+  'u_targetgroup' => '2',
+  'u_grade' => '99',
+  'u_parent' => '2',
+  'u_name' => '系统管理员',
+  'u_email' => 'guanli@cmecfs.com',
+  'u_id' => '3',
+)array (
+  'msg' => '没有文件',
+  'success' => true,
+  'flag' => 0,
+  'data' => '',
+)array (
+  'msg' => '没有文件',
+  'success' => true,
+  'flag' => 0,
+  'data' => '',
+)

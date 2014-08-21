@@ -831,7 +831,12 @@ Ext.define('FS.controller.ProjectView', {
         win.show();
     },
     refreshtree: function(view, rcd, item, index, event){
-        refreshtree(rcd, 1);
+        this.getTreeStore().getProxy().extraParams={fs_id:rcd.get('fs_id')};
+        this.getTreeStore().load({node:rcd, callback:function(){}});
+        this.getListStore().load({params:{fs_id:rcd.get('fs_id')}}); //加载grid数据
+
+        this.getParentRecordStore().removeAll();
+        this.getParentRecordStore().add(rcd);
     },
 
     //文件夹编辑

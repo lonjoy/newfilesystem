@@ -7,6 +7,7 @@ Ext.define('FS.model.DocumentLog',{
         {name: 'fs_parent', type: 'int'},
         {name: 'fs_textname', type: 'string'},
         {name: 'fs_name', type: 'string'},
+        {name: 'fs_hashname', type: 'string'},
         {name: 'fs_intro', type: 'string'},
         {name: 'log_user', type: 'string'},
         {name: 'fs_size', type: 'string'},
