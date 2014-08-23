@@ -233,6 +233,7 @@ class C_Document extends C_Controller
     * 
     */
     function doExportUserDocument(){
+        set_time_limit(0);
         $data = !empty($_POST['fs_tree_content']) ? $_POST['fs_tree_content'] : '';
         $op = isset($_GET['download']) ? $_GET['download'] : '';
         if(!$op){
@@ -264,9 +265,7 @@ class C_Document extends C_Controller
             $workbook = new Spreadsheet_Excel_Writer();
             ob_end_clean();
             $filename = '目录结构_'.date('YmdHis').'.xls';//csv
-            //$workbook->send(mb_convert_encoding($filename, 'gbk', 'utf-8')); // 发送 Excel 文件名供下载
             $workbook->send($filename); // 发送 Excel 文件名供下载
-            //$workbook->setVersion(8);
 
             //创建Worksheet
             $worksheet = $workbook->addWorksheet(date('YmdHis'));
@@ -287,10 +286,8 @@ class C_Document extends C_Controller
                         if(empty($arr[$i][$j])){continue;}
                         if($i==0){
                             $worksheet->writeString($i, $j, mb_convert_encoding($arr[$i][$j], 'gb2312', 'utf-8'), $headFormat);
-                            //$worksheet->write($i, $j, $arr[$i][$j], $headFormat);
                         } else{
                             $worksheet->writeString($i, $j, mb_convert_encoding($arr[$i][$j], 'gb2312', 'utf-8'), $dataFormat);
-                            //$worksheet->write($i, $j, $arr[$i][$j], $dataFormat);
                         }
                     }
                 }
