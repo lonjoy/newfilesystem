@@ -1,10 +1,11 @@
 Ext.define('FS.controller.Log', {
     extend: 'Ext.app.Controller',
 
-    stores:['SystemLog', 'DocumentLog'],
+    stores:['SystemLog', 'DocumentLog', 'Tree'],
     views:[       
     'log.SystemLog',
-    'log.DocumentLog'
+    'log.DocumentLog',
+    'log.DocumentTree'
     ],
     init: function(){
         this.control({
@@ -22,7 +23,7 @@ Ext.define('FS.controller.Log', {
             }
         }
         if(recoverdocument_flag && rcd.get('log_type')=='删除' && parseInt(rcd.get('fs_size'))>0){
-            console.log(rcd.getData());
+            var obj=this;
             var menu = Ext.create('Ext.menu.Menu', {
                 float: true,
                 items:[{
@@ -47,11 +48,14 @@ Ext.define('FS.controller.Log', {
                                     Ext.Msg.alert('提示', result.msg);
                                     return true;
                                 }else{
-                                    Ext.Msg.alert('提示', result.msg); 
-                                    return false;
+                                    var win=Ext.widget("documenttree", {rcd:rcd, store:obj.getTreeStore()});;
+                                    win.show();
+                                    //Ext.Msg.alert('提示', result.msg); 
+                                    //return false;
                                 }
                             }
                         });
+
                     }
                 }]
             });
