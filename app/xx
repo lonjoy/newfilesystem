@@ -1,28 +1,37 @@
-array (
-  'msg' => '没有文件',
-  'success' => true,
-  'flag' => 0,
-  'data' => '',
-)array (
-  'msg' => '没有文件',
-  'success' => true,
-  'flag' => 0,
-  'data' => '',
-)array (
-  'u_targetgroup' => '2',
-  'u_grade' => '99',
-  'u_parent' => '2',
-  'u_name' => '系统管理员',
-  'u_email' => 'guanli@cmecfs.com',
-  'u_id' => '3',
-)array (
-  'msg' => '没有文件',
-  'success' => true,
-  'flag' => 0,
-  'data' => '',
-)array (
-  'msg' => '没有文件',
-  'success' => true,
-  'flag' => 0,
-  'data' => '',
-)
+        //导出报表
+        $excel = new Excel_Core();
+        $res = array(array(
+                'A1' => '退课明细报表',
+            ),array(
+                'A3' => '序号',
+                'B3' => '用户ID',
+                'C3' => '姓名',
+                'D3' => '课程名称',
+                'E3' => '返还金币',
+                'F3' => '班级ID',
+                'G3' => '退课节数',
+                'H3' => '提交时间',
+                'I3' => '来源',
+            ));
+
+            $i = 0;
+            foreach($redundsList as $k => $l){
+                array_push($res,array(
+                    'A'.($i+4) => $i+1,
+                    'B'.($i+4) => isset($l['user_id'])?$l['user_id']:0,
+                    'C'.($i+4) => isset($l['user_name'])?$l['user_name']:'',
+                    'D'.($i+4) => isset($l['name'])?$l['name']:'',
+                    'E'.($i+4) => isset($l['credit'])?$l['credit']:0,
+                    'F'.($i+4) => isset($l['class_id'])?$l['class_id']:0,
+                    'G'.($i+4) => isset($l['num'])?$l['num']:0,
+                    'H'.($i+4) => isset($l['ctime'])?date('Y-m-d H:i:s',$l['ctime']):'',
+                    'I'.($i+4) => (isset($l['source']) && ($l['source'] == Config_Student::SOURCE_ADMIN))?'后台':((isset($l['source']) && ($l['source'] == Config_Student::SOURCE_WEB))?'前台':'未知'),
+                ));
+                $i++;
+            }
+        $excel->mergeCells('A1:I1')->setValue($res)->setWidth(array(
+            'D' => '30',
+            'F' => '15',
+            'H' => '20'
+        ));
+    	$excel->out('退课明细报表_'.date('m月',  time()));
